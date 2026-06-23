@@ -1,0 +1,164 @@
+.mcp {
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  background: var(--surface);
+  padding: 16px;
+  margin: 4px 0;
+}
+
+/* toolbar + segmented toggles */
+.mcp-toolbar {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+.mcp-seg {
+  display: inline-flex;
+  border: 1px solid var(--line2);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.mcp-seg button {
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--tx2);
+  background: transparent;
+  border: none;
+  padding: 5px 12px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.mcp-seg button.on {
+  background: var(--accent-dim);
+  color: var(--accent-bright);
+  font-weight: 600;
+}
+.mcp-spacer {
+  flex: 1;
+}
+.mcp-transnote {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--tx3);
+}
+
+/* stage */
+.mcp-stage {
+  width: 100%;
+  height: auto;
+}
+.mcp-node.on {
+  animation: mcp-pulse 1.6s ease-in-out infinite;
+}
+.mcp-gate {
+  animation: mcp-pulse 1.2s ease-in-out infinite;
+}
+@keyframes mcp-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.62; }
+}
+
+/* detail + log */
+.mcp-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 14px;
+  margin-top: 8px;
+}
+@media (max-width: 680px) {
+  .mcp-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.mcp-panel {
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  background: var(--s2);
+  padding: 12px 13px;
+}
+.mcp-step-no {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--tx3);
+}
+.mcp-chip {
+  display: inline-block;
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-radius: 999px;
+  padding: 2px 9px;
+  margin: 6px 0;
+  color: var(--ink);
+}
+.mcp-label {
+  font-size: 14.5px;
+  color: var(--tx);
+  font-weight: 500;
+  margin: 2px 0 6px;
+}
+.mcp-detail {
+  font-size: 13px;
+  color: var(--tx2);
+  line-height: 1.5;
+}
+.mcp-rpc {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--sem-tool);
+  background: var(--code-bg);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 2px 7px;
+  display: inline-block;
+  margin-top: 8px;
+}
+.mcp-rpc.gate {
+  color: var(--sem-warn);
+}
+.mcp-log {
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  background: var(--code-bg);
+  padding: 10px 12px;
+  max-height: 188px;
+  overflow-y: auto;
+}
+.mcp-log-row {
+  font-size: 12px;
+  color: var(--tx2);
+  padding: 2px 0;
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+}
+.mcp-log-row .ph {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  width: 64px;
+  flex: 0 0 auto;
+}
+
+/* controls */
+.mcp-controls {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+.mcp-hint {
+  font-size: 11.5px;
+  color: var(--tx3);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mcp-node.on,
+  .mcp-gate {
+    animation: none;
+  }
+}

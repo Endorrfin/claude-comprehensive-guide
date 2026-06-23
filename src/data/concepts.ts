@@ -1171,6 +1171,215 @@ const m10: Module = {
 };
 
 /* ======================================================================
+   M11 · Connectors & MCP — fully authored (★ MCP Flow)
+   ====================================================================== */
+const m11: Module = {
+  id: "m11",
+  section: "s3",
+  order: 11,
+  level: "senior",
+  title: L("Connectors & MCP", "Connectors і MCP"),
+  tagline: L(
+    "Give Claude new powers by plugging it into your apps through one open protocol — and stay in control of exactly what each connection can touch.",
+    "Дай Claude нові можливості, під'єднавши його до твоїх застосунків через один відкритий протокол — і контролюй, що саме може чіпати кожне з'єднання.",
+  ),
+  readMins: 13,
+  mentalModel: L(
+    "MCP is a USB-C port for AI: one open protocol so any Claude app can plug into any tool. A connector is just an MCP server made one-click — and you decide what each plug may touch.",
+    "MCP — це USB-C порт для AI: один відкритий протокол, щоб будь-який застосунок Claude під'єднувався до будь-якого інструмента. Connector — це MCP server у «один клік», і ти вирішуєш, що кожен роз'єм може чіпати.",
+  ),
+  topics: [
+    {
+      id: "t1",
+      title: L("What MCP is", "Що таке MCP"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "**MCP — the Model Context Protocol** — is an open standard Anthropic introduced in **November 2024**, often called the “USB-C for AI”: one universal port so any AI app can plug into any tool. Before MCP, every app × every tool needed its own bespoke integration — an **M×N** glue problem. MCP turns that into **M+N**: build one server and every MCP-aware app can use it.\n\nThe shape is **client–server**. A **host** — a Claude app like Desktop, Code or Cowork — runs **one MCP client per server**. Each **server** exposes three primitives over **JSON-RPC**: **tools** (actions Claude can call), **resources** (data it can read) and **prompts** (reusable templates). In Claude, a **connector** is just an MCP server with a friendly install and sign-in.",
+            "**MCP — Model Context Protocol** — це відкритий стандарт, представлений Anthropic у **листопаді 2024**, який часто називають «USB-C для AI»: один універсальний порт, щоб будь-який AI-застосунок під'єднувався до будь-якого інструмента. До MCP кожен застосунок × кожен інструмент потребував власної інтеграції — проблема **M×N**. MCP перетворює це на **M+N**: побудуй один server — і кожен MCP-сумісний застосунок зможе ним користуватися.\n\nФорма — **client–server**. **Host** — застосунок Claude (Desktop, Code чи Cowork) — запускає **один MCP client на кожен server**. Кожен **server** надає три примітиви через **JSON-RPC**: **tools** (дії, які викликає Claude), **resources** (дані для читання) і **prompts** (шаблони). У Claude **connector** — це просто MCP server зі зручним встановленням і входом.",
+          ),
+        },
+        { kind: "figure", fig: "mcp-architecture", caption: L("The host runs one MCP client per server; the server is the adapter that calls the external app's API with your scoped token.", "Host запускає один MCP client на server; server — це адаптер, що викликає API застосунку з твоїм обмеженим token.") },
+        {
+          kind: "compare",
+          a: L("Without MCP", "Без MCP"),
+          b: L("With MCP", "З MCP"),
+          rows: [
+            [L("Integration cost", "Вартість інтеграції"), L("M×N — bespoke glue per app × tool", "M×N — окремий код на кожен застосунок × інструмент"), L("M+N — one protocol for all", "M+N — один протокол для всіх")],
+            [L("Adding a tool", "Додати інструмент"), L("Write custom code in each app", "Писати окремий код у кожному застосунку"), L("Point the host at an MCP server", "Спрямувати host на MCP server")],
+            [L("Portability", "Портативність"), L("Locked to one app", "Прив'язано до одного застосунку"), L("Any MCP host can use it", "Будь-який MCP host може це використати")],
+          ],
+        },
+        {
+          kind: "callout",
+          tone: "tip",
+          title: L("A connector is an MCP server, productized", "Connector — це MCP server у продуктовій обгортці"),
+          md: L(
+            "Whether you click a verified directory connector or run your own server, the protocol underneath is identical. Learn MCP once and every connector — present and future — makes sense.",
+            "Чи клікаєш ти перевірений connector з directory, чи запускаєш власний server — протокол під капотом однаковий. Вивчи MCP один раз — і кожен connector, теперішній і майбутній, стане зрозумілим.",
+          ),
+        },
+      ],
+    },
+    {
+      id: "t2",
+      title: L("The Connectors Directory", "Connectors Directory"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "The **Connectors Directory** holds **hundreds** of pre-built, **Anthropic-verified** connectors across dozens of categories, and the directory itself is available on **every plan, including Free**. They fall into two broad families: **work / productivity** (Notion, Gmail, Google Calendar & Drive, GitHub, Jira, Linear, Asana, Microsoft 365…) and **consumer / lifestyle** (Spotify, Uber, Instacart, Booking.com and more, added in **April 2026**).\n\nWhen the directory doesn't have what you need, add a **custom connector** by pointing Claude at a **remote MCP server URL** — available on Free, Pro, Max, Team and Enterprise, including in **Cowork** and **Claude Desktop**.",
+            "**Connectors Directory** містить **сотні** готових, **перевірених Anthropic** конекторів у десятках категорій, і сам directory доступний на **кожному плані, включно з Free**. Вони діляться на дві великі родини: **робочі / продуктивність** (Notion, Gmail, Google Calendar і Drive, GitHub, Jira, Linear, Asana, Microsoft 365…) і **споживчі / lifestyle** (Spotify, Uber, Instacart, Booking.com та інші, додані у **квітні 2026**).\n\nКоли в directory немає потрібного, додай **custom connector**, вказавши Claude **URL віддаленого MCP server** — доступно на Free, Pro, Max, Team і Enterprise, зокрема в **Cowork** і **Claude Desktop**.",
+          ),
+        },
+        {
+          kind: "table",
+          head: [L("Aspect", "Аспект"), L("Directory connector", "Directory connector"), L("Custom connector", "Custom connector")],
+          rows: [
+            [L("Who builds it", "Хто будує"), L("Anthropic & verified partners", "Anthropic і перевірені партнери"), L("You (or a third party)", "Ти (або третя сторона)")],
+            [L("Verified", "Перевірено"), L("Yes — vetted by Anthropic", "Так — перевірено Anthropic"), L("No — an arbitrary, unverified service", "Ні — довільний, неперевірений сервіс")],
+            [L("How you add it", "Як додати"), L("One click from the directory", "Один клік із directory"), L("Paste the remote MCP server URL", "Встав URL віддаленого MCP server")],
+            [L("Plans", "Плани"), L("All plans, incl. Free", "Усі плани, включно з Free"), L("Free, Pro, Max, Team, Enterprise", "Free, Pro, Max, Team, Enterprise")],
+          ],
+        },
+        {
+          kind: "callout",
+          tone: "senior",
+          title: L("Two axes — don't conflate them", "Дві осі — не плутай їх"),
+          md: L(
+            "**Directory vs custom** is about **who built and vetted** the connector. **Remote vs local** (next topic) is about **where it runs and how Claude reaches it**. They're independent: a connector can be directory + remote, custom + remote, or a local stdio server you run yourself.",
+            "**Directory vs custom** — про те, **хто збудував і перевірив** connector. **Remote vs local** (наступний топік) — про те, **де він працює і як Claude його дістає**. Вони незалежні: connector може бути directory + remote, custom + remote або локальним stdio-сервером, який ти запускаєш сам.",
+          ),
+        },
+      ],
+    },
+    {
+      id: "t3",
+      title: L("Remote vs local servers", "Remote vs local сервери"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "The deeper distinction is the **transport**. A **local** server runs as a **stdio** process on your own machine (configured in Claude Desktop or Claude Code): direct process I/O, **no network, no OAuth**, ideal for local files, scripts and private data — and it typically serves a single client. A **remote** server is reachable over **HTTP** (Streamable HTTP, with optional Server-Sent Events for streaming), authenticated with **OAuth**, and can serve many clients at once.\n\nThere's a crucial deployment detail for remote connectors: Claude connects to the server **from Anthropic's cloud, not from your device**. So a custom remote server must be **publicly reachable** from Anthropic's IP ranges — `localhost` won't do. If the data is local, use a local stdio server instead. Step the same request through both modes below.",
+            "Глибша відмінність — це **transport**. **Локальний** server працює як **stdio**-процес на твоїй машині (налаштовується в Claude Desktop або Claude Code): прямий process I/O, **без мережі, без OAuth**, ідеально для локальних файлів, скриптів і приватних даних — і зазвичай обслуговує одного клієнта. **Віддалений** server доступний по **HTTP** (Streamable HTTP, з опційними Server-Sent Events для стрімінгу), автентифікується через **OAuth** і може обслуговувати багато клієнтів одночасно.\n\nВажлива деталь розгортання для remote: Claude під'єднується до server **із хмари Anthropic, а не з твого пристрою**. Тож custom remote server має бути **публічно доступним** з IP-діапазонів Anthropic — `localhost` не підійде. Якщо дані локальні — використай локальний stdio-сервер. Прокрути той самий запит нижче в обох режимах.",
+          ),
+        },
+        {
+          kind: "callout",
+          tone: "senior",
+          title: L("“Remote” ≠ “Anthropic-hosted”", "«Remote» ≠ «hosted в Anthropic»"),
+          md: L(
+            "Remote only means **reached over HTTP**. The server can be hosted by Anthropic, by the vendor (Notion, Google…), or by you. The common “Anthropic-hosted vs local” shorthand is imprecise — the real axis is the **transport** (stdio vs HTTP), not who owns the box.",
+            "Remote означає лише **доступ по HTTP**. Server може хоститися в Anthropic, у вендора (Notion, Google…) або в тебе. Поширене скорочення «hosted в Anthropic vs local» неточне — справжня вісь це **transport** (stdio vs HTTP), а не те, чий це сервер.",
+          ),
+        },
+        { kind: "sim", sim: "mcp-flow" },
+        {
+          kind: "table",
+          head: [L("Aspect", "Аспект"), L("Remote (HTTP)", "Remote (HTTP)"), L("Local (stdio)", "Local (stdio)")],
+          rows: [
+            [L("Transport", "Transport"), L("Streamable HTTP (+ SSE)", "Streamable HTTP (+ SSE)"), L("stdio (process I/O)", "stdio (process I/O)")],
+            [L("Where it runs", "Де працює"), L("A server on the internet", "Server в інтернеті"), L("A process on your machine", "Процес на твоїй машині")],
+            [L("Auth", "Auth"), L("OAuth 2.1 (scoped token)", "OAuth 2.1 (обмежений token)"), L("None — local trust", "Немає — локальна довіра")],
+            [L("Reached by", "Як дістається"), L("Claude, from Anthropic's cloud", "Claude, із хмари Anthropic"), L("The host process, directly", "Host-процесом, напряму")],
+            [L("Best for", "Найкраще для"), L("SaaS apps, shared connectors", "SaaS-застосунки, спільні connectors"), L("Local files, scripts, private data", "Локальні файли, скрипти, приватні дані")],
+          ],
+        },
+      ],
+    },
+    {
+      id: "t4",
+      title: L("OAuth & permission scopes", "OAuth і scopes дозволів"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "Remote connectors authenticate with **OAuth 2.1** — modern, PKCE-protected (S256), no implicit grant, exact redirect-URI matching. You sign in to the **service** and grant specific **scopes**; Claude receives a **scoped access token** and **never sees your password**. Under the hood the MCP server acts as an OAuth **resource server**, while a separate **authorization server** issues the token, valid only for that server.\n\nIn the app you stay in control: enable connectors **per conversation** (the **“+”** button → **Connectors**), and use the **“Search and tools”** menu to switch off any tool you don't want Claude to invoke in this chat. Every tool or permission can be set to **Always allow**, **Needs approval**, or **Blocked** — and on Enterprise these are role-based, additive across roles, with the most-permissive grant winning.",
+            "Remote-конектори автентифікуються через **OAuth 2.1** — сучасний, із захистом PKCE (S256), без implicit grant, із точним збігом redirect-URI. Ти входиш у **сервіс** і надаєш конкретні **scopes**; Claude отримує **обмежений access token** і **ніколи не бачить твій пароль**. Під капотом MCP server виступає OAuth **resource server**, а окремий **authorization server** видає token, дійсний лише для цього server.\n\nУ застосунку контроль лишається в тебе: вмикай connectors **на рівні розмови** (кнопка **«+»** → **Connectors**) і через меню **«Search and tools»** вимикай будь-який tool, який не хочеш дозволяти в цьому чаті. Кожен tool чи дозвіл можна поставити на **Always allow**, **Needs approval** або **Blocked** — а на Enterprise це ще й рольове, додається між ролями, і перемагає найдозвільніший грант.",
+          ),
+        },
+        {
+          kind: "table",
+          head: [L("Permission", "Дозвіл"), L("Means", "Означає"), L("Use it for", "Використовуй для")],
+          rows: [
+            [L("Always allow", "Always allow"), L("Claude runs the tool without asking", "Claude виконує tool без запиту"), L("Safe reads you trust", "Безпечні читання, яким довіряєш")],
+            [L("Needs approval", "Needs approval"), L("Claude pauses; you confirm each call", "Claude зупиняється; ти підтверджуєш кожен виклик"), L("Writes & destructive actions", "Записи та руйнівні дії")],
+            [L("Blocked", "Blocked"), L("The tool can't be called at all", "Tool не можна викликати взагалі"), L("Anything out of scope", "Усе поза межами задачі")],
+          ],
+        },
+        {
+          kind: "callout",
+          tone: "security",
+          title: L("Least privilege, human-in-the-loop", "Найменші привілеї, human-in-the-loop"),
+          md: L(
+            "A connector can do **anything your account can**. Grant the **narrowest scope** that works, keep **write / destructive** tools on **“Needs approval”**, disable tools you don't need in this chat, and only connect services you trust. The OAuth token is scoped — make that scope small.",
+            "Connector може робити **все, що може твій акаунт**. Надавай **найвужчий scope**, тримай **write / руйнівні** tools на **«Needs approval»**, вимикай непотрібні в цьому чаті tools і під'єднуй лише довірені сервіси. OAuth-token обмежений — зроби це обмеження малим.",
+          ),
+        },
+      ],
+    },
+    {
+      id: "t5",
+      title: L("Walkthroughs — Notion · Gmail · Calendar", "Розбори — Notion · Gmail · Calendar"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "Once you've seen one connector, you've seen them all — the shape repeats: **add it from the directory → OAuth sign-in → grant scopes → enable it in the chat → ask in plain language**, and Claude discovers the tools and calls them (exactly the flow you just stepped through). The differences are only in which tools each server exposes and which you should keep on a leash.",
+            "Побачивши один connector, ти бачив усі — форма повторюється: **додай із directory → вхід через OAuth → надай scopes → увімкни в чаті → попроси звичайною мовою**, і Claude виявить tools і викличе їх (рівно той потік, який ти щойно прокрутив). Різниця лише в тому, які tools надає кожен server і які варто тримати на повідку.",
+          ),
+        },
+        {
+          kind: "table",
+          head: [L("Connector", "Connector"), L("Claude can…", "Claude може…"), L("Safe default", "Безпечний дефолт")],
+          rows: [
+            [L("Notion", "Notion"), L("Search, read, create & update pages", "Шукати, читати, створювати й оновлювати сторінки"), L("Start read-only", "Почни з read-only")],
+            [L("Gmail", "Gmail"), L("Search, read, draft email", "Шукати, читати, готувати чернетки"), L("Draft — you press send", "Чернетка — надсилаєш ти")],
+            [L("Google Calendar", "Google Calendar"), L("List, create, update events", "Список, створення, оновлення подій"), L("Confirm each write", "Підтверджуй кожен запис")],
+            [L("Google Drive", "Google Drive"), L("Search & read files", "Шукати й читати файли"), L("Read-only is plenty", "Read-only достатньо")],
+          ],
+        },
+        {
+          kind: "callout",
+          tone: "tip",
+          title: L("“Draft, then you send”", "«Чернетка, далі надсилаєш ти»"),
+          md: L(
+            "For email and messaging connectors, the safest default is to let Claude **prepare** the message and keep the **send** in your hands. Same idea for calendars and boards: let Claude assemble, you approve the write.",
+            "Для пошти й месенджерів найбезпечніше — дати Claude **підготувати** повідомлення, а **надсилання** лишити собі. Та сама ідея для календарів і дошок: Claude збирає, ти підтверджуєш запис.",
+          ),
+        },
+      ],
+    },
+  ],
+  keyPoints: [
+    L("MCP is an open standard (Anthropic, Nov 2024) — the “USB-C for AI” — turning M×N custom integrations into M+N.", "MCP — відкритий стандарт (Anthropic, лист. 2024) — «USB-C для AI» — перетворює M×N інтеграцій на M+N."),
+    L("Client–server: a host runs one MCP client per server; servers expose tools, resources & prompts over JSON-RPC.", "Client–server: host запускає один MCP client на server; servers надають tools, resources і prompts через JSON-RPC."),
+    L("Two axes: directory (verified, all plans) vs custom; remote (HTTP + OAuth, reached from Anthropic's cloud) vs local (stdio, your machine).", "Дві осі: directory (перевірені, усі плани) vs custom; remote (HTTP + OAuth, із хмари Anthropic) vs local (stdio, твоя машина)."),
+    L("Remote auth is OAuth 2.1: you grant scopes, Claude gets a scoped token and never sees your password. Remote ≠ Anthropic-hosted.", "Remote-auth — це OAuth 2.1: ти надаєш scopes, Claude отримує обмежений token і не бачить пароль. Remote ≠ hosted в Anthropic."),
+    L("You stay in control: enable per chat, disable tools, set Always allow / Needs approval / Blocked — and grant least privilege.", "Контроль у тебе: вмикай на чат, вимикай tools, став Always allow / Needs approval / Blocked — і давай найменші привілеї."),
+  ],
+  pitfalls: [
+    { title: L("Confusing “remote” with “Anthropic-hosted”", "Плутати «remote» з «hosted в Anthropic»"), body: L("Remote just means reached over HTTP; the server may be the vendor's or your own. The real axis is the transport (stdio vs HTTP).", "Remote означає лише доступ по HTTP; server може бути вендорський чи твій. Справжня вісь — transport (stdio vs HTTP).") },
+    { title: L("Granting broad scopes and Always-allow on writes", "Надавати широкі scopes і Always-allow на записи"), body: L("A connector inherits your account's power. Use least privilege and keep write / destructive tools on Needs approval.", "Connector успадковує можливості твого акаунта. Дотримуйся найменших привілеїв і тримай write / руйнівні tools на Needs approval.") },
+    { title: L("Pointing a custom remote connector at localhost", "Спрямовувати custom remote connector на localhost"), body: L("Claude connects from Anthropic's cloud, so the server must be publicly reachable. For local data, run a local stdio server instead.", "Claude під'єднується з хмари Anthropic, тож server має бути публічно доступним. Для локальних даних запусти локальний stdio-сервер.") },
+  ],
+  interview: [
+    { q: L("What problem does MCP solve, and how is it structured?", "Яку проблему вирішує MCP і як він структурований?"), a: L("It replaces M×N bespoke integrations with one open protocol (M+N). It's client–server: a host runs one MCP client per server, and servers expose tools, resources and prompts over JSON-RPC, so any MCP-aware app can use any server.", "Він замінює M×N окремих інтеграцій одним відкритим протоколом (M+N). Це client–server: host запускає один MCP client на server, а servers надають tools, resources і prompts через JSON-RPC, тож будь-який MCP-сумісний застосунок може використати будь-який server."), level: "senior" },
+    { q: L("Remote vs local MCP servers — transport, auth and reach?", "Remote vs local MCP servers — transport, auth і доступ?"), a: L("Local = stdio process on your machine, no network, no OAuth, single client — great for local data. Remote = Streamable HTTP (+SSE), OAuth 2.1, many clients, reached by Claude from Anthropic's cloud — so it must be publicly reachable.", "Local = stdio-процес на машині, без мережі, без OAuth, один клієнт — добре для локальних даних. Remote = Streamable HTTP (+SSE), OAuth 2.1, багато клієнтів, Claude дістає його з хмари Anthropic — тож він має бути публічно доступним."), level: "senior" },
+    { q: L("How does auth work for a remote connector, and what's the security model?", "Як працює auth для remote connector і яка модель безпеки?"), a: L("OAuth 2.1 with PKCE: the MCP server is a resource server, a separate authorization server issues a scoped token, and Claude never sees your password. You enable connectors per chat and set each tool to Always allow / Needs approval / Blocked. Best practice: least privilege and human-in-the-loop on writes.", "OAuth 2.1 з PKCE: MCP server — це resource server, окремий authorization server видає обмежений token, і Claude не бачить пароль. Ти вмикаєш connectors на чат і ставиш кожен tool на Always allow / Needs approval / Blocked. Найкраща практика: найменші привілеї і human-in-the-loop на записах."), level: "staff" },
+  ],
+  seeAlso: ["m12", "m9", "m25", "m19"],
+  sources: [
+    { title: "Introducing the Model Context Protocol — Anthropic", url: "https://www.anthropic.com/news/model-context-protocol" },
+    { title: "Architecture overview — Model Context Protocol", url: "https://modelcontextprotocol.io/docs/learn/architecture" },
+    { title: "Authorization — Model Context Protocol specification", url: "https://modelcontextprotocol.io/specification/2025-11-25/basic/authorization" },
+    { title: "Use connectors to extend Claude's capabilities — Claude Help Center", url: "https://support.claude.com/en/articles/11176164-use-connectors-to-extend-claude-s-capabilities" },
+    { title: "Get started with custom connectors using remote MCP — Claude Help Center", url: "https://support.claude.com/en/articles/11175166-get-started-with-custom-connectors-using-remote-mcp" },
+  ],
+};
+
+/* ======================================================================
    Planned modules (topics carry over from CURRICULUM.md; bodies fill in)
    ====================================================================== */
 const planned: Module[] = [
@@ -1236,19 +1445,7 @@ const planned: Module[] = [
 
   // Section II  (m6 · m7 · m8 · m9 · m10 are fully authored above)
 
-  // Section III
-  mod("m11", "s3", 11, "senior",
-    L("Connectors & MCP", "Connectors і MCP"),
-    L("The directory, remote vs local, OAuth, and the big connectors.", "Directory, remote vs local, OAuth і ключові connectors."),
-    L("MCP is a universal adapter between Claude and your apps.", "MCP — це універсальний адаптер між Claude і твоїми застосунками."),
-    9,
-    [
-      ["What MCP is", "Що таке MCP"],
-      ["The Connectors Directory", "Connectors Directory"],
-      ["Remote vs local servers", "Remote vs local сервери"],
-      ["OAuth & permission scopes", "OAuth і scopes дозволів"],
-      ["Notion, Gmail, Google Calendar", "Notion, Gmail, Google Calendar"],
-    ], ["m12", "m9", "m25"]),
+  // Section III  (m11 is fully authored above)
   mod("m12", "s3", 12, "senior",
     L("Skills — concepts & using them", "Skills — концепції та використання"),
     L("SKILL.md anatomy, pre-built skills and progressive disclosure.", "Анатомія SKILL.md, готові skills і progressive disclosure."),
@@ -1437,7 +1634,7 @@ const planned: Module[] = [
 ];
 
 /* ---- assembled, ordered, and indexed ------------------------------------ */
-export const MODULES: Module[] = [...planned, m6, m7, m8, m9, m10, m15].sort((a, b) => a.order - b.order);
+export const MODULES: Module[] = [...planned, m6, m7, m8, m9, m10, m11, m15].sort((a, b) => a.order - b.order);
 
 export function sectionById(id: string): Section | undefined {
   return SECTIONS.find((s) => s.id === id);
