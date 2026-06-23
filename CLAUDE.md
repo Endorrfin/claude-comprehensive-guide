@@ -363,3 +363,10 @@ Footer: **"Vasyl Krupka · Senior Fullstack Engineer"** + 🇺🇦. Dark is prim
   123 topics, unique ids, valid section/sim/figure refs). Workspace holds source only (node_modules built
   in scratch to avoid linux/darwin binary mismatch — user runs `npm install` locally).
   **Next (S2): Ch.6 Prompting mastery + Prompt Anatomy; Ch.7 Projects.**
+- **2026-06-23 · S2 plan locked (user)** — S2 = **M6 Prompting mastery + ★ Prompt Anatomy (2nd signature
+  sim)** and **M7 Projects**, both to golden quality. Cadence confirmed: **1–2 modules per session;
+  speed is NOT a priority — material quality, learning UX and depth are HIGH priority.** Build Prompt
+  Anatomy as the second signature interactive (assemble a prompt from parts → see how structure shifts
+  the result; reuse the sim/quiz framework; reduced-motion fallback; bilingual). Recommended to run S2 in
+  a **fresh session** (clean context; bootstrap by reading this file + `CURRICULUM.md` §M6/M7 + the S1
+  patterns in `src/components/*` and `src/data/concepts.ts`). Land S1 on `main` first so S2 branches cleanly.
