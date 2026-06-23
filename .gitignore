@@ -23,7 +23,6 @@ _arhive/
 scripts/ssr/
 scripts/_*
 preview-*.html
-demo/
 _ci/
 dist_ci_*
 outputs_tmp_check.mjs
