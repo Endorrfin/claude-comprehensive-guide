@@ -438,3 +438,30 @@ Footer: **"Vasyl Krupka · Senior Fullstack Engineer"** + 🇺🇦. Dark is prim
   *(Note: the working tree had briefly reverted to S2; a `git pull` restored S3 — PR #2
   `s3-artifacts-live-artifacts` — so M8/M9 are committed and present. S4 built cleanly on top.)*
   **Next (S4b): Ch.11 Connectors & MCP + ★ MCP Flow.**
+- **2026-06-23 · S4b Connectors & MCP (M11)** — DONE. Web-verified every fact first (official MCP site
+  — architecture + transports + the 2025-11-25 authorization spec; Anthropic's "Introducing MCP" launch;
+  Claude Help Center "Use connectors" + "Get started with custom connectors using remote MCP").
+  **M11** fully authored to golden quality (5 topics: what MCP is · the Connectors Directory (directory
+  vs custom) · remote vs local servers · OAuth & permission scopes · walkthroughs Notion/Gmail/Calendar)
+  with key points, 3 pitfalls, 3 interview Q&A (senior/senior/staff), 5 sources. Built the **4th signature
+  interactive ★ MCP Flow** (`McpFlowSim` + `mcpFlow.css`): step/play/pause through prompt → plan →
+  connect → discover (tools/list) → choose → **permission gate** → tool call → external app → result
+  back into context → answer, with a **Remote·HTTP / Local·stdio** toggle AND a **Read / Write** toggle.
+  Per the user's question, the sim shows **two flagged security gates**: OAuth **consent** on first
+  connect (remote only) and a tool-call **approval** gate that is a hard pause for writes but **auto-allows**
+  reads ("Always allow") — teaching least-privilege + human-in-the-loop. New `McpArchitecture` figure
+  (host + client ↔ MCP server ↔ external app; transport + scoped-OAuth-token + trust boundary). Registered
+  1 sim + 1 figure in `registry.tsx`; removed the m11 stub; spliced m11 into `MODULES`.
+  **Correctness notes / user-rule-8 challenges:** (1) **"Remote ≠ Anthropic-hosted"** — remote only means
+  *reached over HTTP*; the server may be the vendor's or your own. The curriculum's "Anthropic-hosted vs
+  local" shorthand is imprecise; the real axis is the **transport** (stdio vs HTTP). Authored a `senior`
+  callout teaching this. (2) **Two independent axes** — *directory vs custom* (who built/vetted it) is not
+  *remote vs local* (where it runs); added a callout so they aren't conflated. (3) Directory size: third
+  parties cite 369–418 (Jun 2026) and disagree, so the copy says **"hundreds, on all plans incl. Free"**
+  rather than pinning a number. **Verified (mounted deps + linux arm64 native bindings via `NODE_PATH`):**
+  `tsc --noEmit` clean (strict · noUnusedLocals/Parameters) · `vite build` OK (**47 modules**, JS ≈133.7 kB
+  gzip, CSS ≈6.6 kB gzip, 243 ms) · data-integrity **ALL PASS** (28 modules · **7 authored**; m11 ★ in
+  SIGNATURE_SIMS; mcp-flow sim + mcp-architecture figure resolve; bilingual coverage; table/compare
+  shapes; ids/orders/seeAlso valid). Workspace holds source only (built into scratch outDir to dodge the
+  sandbox unlink/`emptyOutDir` limit; `node_modules` untouched).
+  **Next (S5): Ch.12 Skills + ★ Progressive Disclosure; Ch.13 Building skills; Ch.14 Plugins/marketplaces.**
