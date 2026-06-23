@@ -1625,6 +1625,404 @@ const m12: Module = {
 };
 
 /* ======================================================================
+   M13 · Building your own skills  — authored
+   ====================================================================== */
+const m13: Module = {
+  id: "m13",
+  section: "s3",
+  order: 13,
+  level: "senior",
+  title: L("Building your own skills", "Створення власних skills"),
+  tagline: L(
+    "Turn a workflow you keep re-explaining into a folder Claude loads on its own — then prove it works by running real tasks with and without it.",
+    "Перетвори процес, який щоразу пояснюєш заново, на теку, яку Claude вантажить сам — і доведи, що вона працює, прогнавши реальні задачі з нею і без неї.",
+  ),
+  readMins: 12,
+  mentalModel: L(
+    "Authoring a Skill is writing a runbook for a sharp colleague: state plainly when to reach for it and what to do, push the heavy detail into files they open only when needed, and trust it only after it passes real tasks in a fresh session.",
+    "Створити Skill — це написати runbook для тямущого колеги: чітко скажи, коли його брати і що робити, винеси важкі деталі у файли, які відкривають лише за потреби, і довіряй йому лише після того, як він пройде реальні задачі в новій сесії.",
+  ),
+  topics: [
+    {
+      id: "t1",
+      title: L("Author a basic skill (the recipe)", "Створення базового skill (рецепт)"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "The smallest possible Skill is **a folder with one `SKILL.md` file**: YAML frontmatter carrying the two required fields — **`name`** and **`description`** — and a Markdown **body** of plain instructions. No code is required; you can write a useful Skill in five minutes.\n\nReach for a Skill the moment you notice a **repeated pattern**: you keep pasting the same checklist or multi-step procedure into chat, or a section of your project instructions has quietly grown from a *fact* into a *procedure*. Because a Skill's body loads **only when it's used**, moving that procedure into a Skill keeps it out of every prompt until the task actually calls for it.\n\nThe fastest way to start clean is the **`skill-creator`** Skill: its `init_skill.py` script scaffolds the whole folder — a `SKILL.md` template with valid frontmatter plus empty `scripts/`, `references/` and `assets/` directories — so you fill in content instead of boilerplate.",
+            "Найменший можливий Skill — це **тека з одним файлом `SKILL.md`**: YAML frontmatter із двома обовʼязковими полями — **`name`** і **`description`** — та Markdown-**body** зі звичайними інструкціями. Код не потрібен; корисний Skill пишеться за пʼять хвилин.\n\nБери Skill, щойно помітив **повторюваний патерн**: раз у раз вставляєш той самий чеклист чи багатокроковий процес у чат, або секція інструкцій проєкту тихо переросла з *факту* в *процедуру*. Оскільки body Skill вантажиться **лише коли використовується**, винесення цієї процедури у Skill тримає її поза кожним prompt, поки задача справді її не покличе.\n\nНайшвидший чистий старт — Skill **`skill-creator`**: його скрипт `init_skill.py` створює всю теку — шаблон `SKILL.md` із валідним frontmatter плюс порожні теки `scripts/`, `references/` і `assets/` — тож ти наповнюєш зміст, а не boilerplate.",
+          ),
+        },
+        { kind: "figure", fig: "skill-build-pipeline", caption: L("Five stages, not one shot: draft the SKILL.md, bundle supporting files, write the trigger, test in a fresh session, then share — looping back from real results.", "Пʼять етапів, а не один постріл: напиши SKILL.md, додай допоміжні файли, склади тригер, протестуй у новій сесії, тоді поділись — повертаючись від реальних результатів.") },
+        {
+          kind: "code",
+          lang: "markdown",
+          code: "---\nname: conventional-commits\ndescription: Write a Conventional Commits message from the staged diff. Use\n  whenever the user asks for a commit message, says they're about to commit, or\n  wants a changelog entry — even if they don't say \"conventional commits\".\n---\n\n# Conventional Commits\n\n## Steps\n1. Read the staged diff.\n2. Choose a type: feat, fix, docs, refactor, perf, test, chore.\n3. Write `type(scope): summary` in the imperative mood, under 72 chars.\n4. Add a body only if the change needs context; put issue refs in a footer.\n\n## Example\nInput: added JWT auth to the login route\nOutput: feat(auth): add JWT authentication to login route",
+          note: L(
+            "A complete, useful Skill in a dozen lines: the frontmatter is the trigger, the body is the playbook. Prefer the imperative mood and a worked example over long prose.",
+            "Повноцінний корисний Skill у десяток рядків: frontmatter — тригер, body — інструкція. Обирай наказовий спосіб і робочий приклад замість довгих абзаців.",
+          ),
+        },
+        {
+          kind: "callout",
+          tone: "tip",
+          title: L("Build a Skill, not a longer prompt", "Будуй Skill, а не довший prompt"),
+          md: L(
+            "If you've pasted the same instructions twice, that's the signal. A prompt helps **this** chat; a Skill helps **every** chat, loads only when relevant, and lives in version control where your team can improve it.",
+            "Якщо ти вставив ті самі інструкції двічі — це сигнал. Prompt допомагає **цьому** чату; Skill допомагає **кожному**, вантажиться лише за потреби й живе в системі контролю версій, де команда може його покращувати.",
+          ),
+        },
+      ],
+    },
+    {
+      id: "t2",
+      title: L("Add scripts & resources", "Додавання scripts і resources"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "When the body outgrows one screen, or a step has to be **exact**, split the work into **bundled files** and reference them from `SKILL.md`. The convention has three folders, each with a distinct job — and each pulled into context **only when that file is actually needed**, which is progressive disclosure working for *you* as the author.\n\nTwo rules of thumb keep a Skill fast: keep **`SKILL.md` under ~500 lines** (when it nears that, add a layer of hierarchy and point Claude to the right file), and open any reference file over ~300 lines with a **table of contents**. If a Skill spans variants (AWS / GCP / Azure), give each its own file under `references/` so Claude reads only the one that matters.",
+            "Коли body переростає один екран або крок має бути **точним**, розбий роботу на **вкладені файли** й посилайся на них із `SKILL.md`. Конвенція має три теки, кожна зі своєю роллю — і кожна тягнеться в context **лише коли цей файл справді потрібен**; це progressive disclosure, що працює на *тебе* як автора.\n\nДва правила тримають Skill швидким: тримай **`SKILL.md` до ~500 рядків** (коли наближається — додай рівень ієрархії й вкажи Claude потрібний файл), а будь-який reference-файл понад ~300 рядків відкривай **змістом (table of contents)**. Якщо Skill охоплює варіанти (AWS / GCP / Azure), дай кожному окремий файл у `references/`, щоб Claude читав лише потрібний.",
+          ),
+        },
+        {
+          kind: "table",
+          head: [L("Folder", "Тека"), L("Holds", "Містить"), L("Loaded", "Вантажиться")],
+          rows: [
+            [L("`scripts/`", "`scripts/`"), L("Executable code for deterministic / repetitive steps", "Виконуваний код для детермінованих / повторюваних кроків"), L("Run via bash — only the output enters context, never the code", "Запуск через bash — у context іде лише вивід, не код")],
+            [L("`references/`", "`references/`"), L("Docs Claude reads as needed — API specs, schemas, long guides", "Доки, які Claude читає за потреби — API-специфікації, схеми, довгі гайди"), L("Read on demand, when SKILL.md points to it", "За потреби, коли SKILL.md на це вказує")],
+            [L("`assets/`", "`assets/`"), L("Files used in the output — templates, fonts, icons, boilerplate", "Файли для результату — шаблони, шрифти, іконки, boilerplate"), L("Used by scripts / copied into deliverables", "Використовуються скриптами / копіюються в результати")],
+          ],
+        },
+        {
+          kind: "code",
+          lang: "markdown",
+          code: "---\nname: weekly-report\ndescription: Build the team's weekly status report. Use when the user asks for\n  the weekly report, a status update, or a sprint summary.\n---\n\n# Weekly Report\n\n1. Gather merged PRs and closed issues for the last 7 days.\n2. Fill the template, then render it:\n\n   `python3 ${CLAUDE_SKILL_DIR}/scripts/build_report.py`\n\nFor the section order and tone rules, read references/STYLE.md.",
+          note: L(
+            "Reference files by name with a one-line “when to read it”, and call scripts with `${CLAUDE_SKILL_DIR}` so the path resolves wherever the Skill is installed (personal, project or plugin).",
+            "Посилайся на файли за назвою з одним рядком “коли читати”, а скрипти викликай через `${CLAUDE_SKILL_DIR}`, щоб шлях працював, де б Skill не був встановлений (personal, project чи plugin).",
+          ),
+        },
+        {
+          kind: "callout",
+          tone: "senior",
+          title: L("Bundle a script when you catch Claude re-deriving it", "Додавай скрипт, коли Claude виводить логіку щоразу заново"),
+          md: L(
+            "If several runs of a task all end with Claude writing a similar `build_x.py`, that's a strong signal to **write it once** and put it in `scripts/`. Deterministic execution is cheaper (a few tokens of output vs. hundreds of regenerated lines) and more reliable than the model re-deriving logic each time.",
+            "Якщо кілька прогонів задачі щоразу закінчуються тим, що Claude пише схожий `build_x.py`, це сильний сигнал **написати його раз** і покласти в `scripts/`. Детермінований запуск дешевший (кілька токенів виводу проти сотень рядків щоразу) і надійніший, ніж модель, що виводить логіку наново.",
+          ),
+        },
+      ],
+    },
+    {
+      id: "t3",
+      title: L("Write a description that triggers", "Description, що тригериться"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "Besides the name, the **`description` is the only part of your Skill Claude sees by default** — it's the line Claude reads to decide whether to load the Skill at all. So it's the single highest-leverage thing you write. Pack in **what the Skill does *and* the concrete situations that should fire it**, in the **third person**, within the **~1024-character** budget, key use case first.\n\nThe non-obvious part: today's models tend to **under-trigger** Skills — they skip them when they'd help. The fix is to write the description a little **“pushy”**, naming the triggers explicitly: *“Use whenever the user mentions X, Y or Z, even if they don't ask for it by name.”* One caveat from how triggering works — Claude only consults a Skill for tasks it **can't trivially handle alone**, so a one-step request may not fire a Skill no matter how perfect the description.",
+            "Окрім name, **`description` — єдина частина Skill, яку Claude бачить за замовчуванням** — це рядок, який Claude читає, щоб вирішити, чи взагалі вантажити Skill. Тож це найважливіше, що ти пишеш. Вклади **що Skill робить *і* конкретні ситуації, що мають його запустити**, у **третій особі**, в межах **~1024 символів**, ключовий кейс — першим.\n\nНеочевидне: сучасні моделі схильні **недотригерювати** Skills — пропускають їх там, де вони б допомогли. Лік — писати description трохи **“напористо”**, прямо називаючи тригери: *“Use whenever the user mentions X, Y чи Z, навіть якщо не просить цього прямо.”* Застереження з механіки тригера — Claude звертається до Skill лише для задач, які **не може легко зробити сам**, тож однокроковий запит може не запустити Skill, хоч би яким ідеальним був description.",
+          ),
+        },
+        {
+          kind: "compare",
+          a: L("Weak description", "Слабкий description"),
+          b: L("Strong description", "Сильний description"),
+          rows: [
+            [L("The line", "Сам рядок"), L("“Formats data.”", "“Formats data.”"), L("“Cleans & reshapes messy CSV/Excel exports… Use whenever the user uploads a spreadsheet or mentions cleaning, pivoting or reformatting tabular data.”", "“Cleans & reshapes messy CSV/Excel exports… Use whenever the user uploads a spreadsheet or mentions cleaning, pivoting or reformatting tabular data.”")],
+            [L("Says when?", "Каже коли?"), L("No — only a vague “what”", "Ні — лише розмите “що”"), L("Yes — names the situations and keywords", "Так — називає ситуації й ключові слова")],
+            [L("Result", "Результат"), L("Silently never fires", "Мовчки не спрацьовує"), L("Fires on the cases you meant", "Спрацьовує там, де ти задумав")],
+          ],
+        },
+        {
+          kind: "callout",
+          tone: "warn",
+          title: L("Tune both ways: should-trigger and should-not", "Налаштовуй у два боки: should-trigger і should-not"),
+          md: L(
+            "Over-correcting makes a Skill fire on everything. Test it against a set of **should-trigger** prompts *and* **near-miss should-not-trigger** prompts — queries that share keywords but need something else. The near-misses are what catch an over-eager description.",
+            "Перебір змушує Skill спрацьовувати на все. Тестуй його набором **should-trigger** prompt *і* **близьких should-not-trigger** — запитів, що мають спільні ключові слова, але потребують іншого. Саме близькі промахи ловлять надто жадібний description.",
+          ),
+        },
+      ],
+    },
+    {
+      id: "t4",
+      title: L("Test & iterate", "Тестування та ітерації"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "Seeing a Skill trigger tells you Claude **found** it — not that it **worked**. Measure two things separately: does it **trigger on the prompts it should** (and stay quiet on the near-misses), and is the **output right** when it does fire. The method for both is a **baseline comparison**: take a few realistic prompts and run each in a **fresh session** once with the Skill and once with it disabled, then compare. A fresh session is essential — leftover context from authoring masks the gaps in your written instructions.\n\nThe **`skill-creator`** plugin automates this loop in Claude Code (`/plugin install skill-creator@claude-plugins-official`): it stores test prompts in `evals/evals.json`, runs each in an isolated subagent, grades assertions with evidence, and aggregates a **benchmark** of pass-rate, time and tokens for *with-skill vs without* — so you can see whether the Skill earns its overhead. It can also run a blind A/B between two versions and auto-tune the description.",
+            "Те, що Skill спрацював, каже, що Claude його **знайшов** — а не що він **спрацював як треба**. Міряй дві речі окремо: чи **тригериться на потрібних prompt** (і мовчить на близьких промахах) і чи **правильний вивід**, коли спрацьовує. Метод для обох — **baseline-порівняння**: візьми кілька реалістичних prompt і прожени кожен у **новій сесії** раз зі Skill і раз із вимкненим, тоді порівняй. Нова сесія критична — залишковий контекст з авторингу маскує прогалини в інструкціях.\n\nPlugin **`skill-creator`** автоматизує цей цикл у Claude Code (`/plugin install skill-creator@claude-plugins-official`): зберігає тест-prompt у `evals/evals.json`, виконує кожен в ізольованому subagent, оцінює assertions з доказами й агрегує **benchmark** із pass-rate, часу й токенів для *зі Skill vs без* — тож видно, чи Skill виправдовує накладні витрати. Він також робить сліпе A/B між версіями й автоналаштовує description.",
+          ),
+        },
+        {
+          kind: "callout",
+          tone: "tip",
+          title: L("Always test in a fresh session", "Завжди тестуй у новій сесії"),
+          md: L(
+            "The chat where you wrote the Skill already “knows” everything you meant — so it will succeed even if the instructions are incomplete. Open a clean session (or a subagent) so you're testing the Skill, not your memory of it.",
+            "Чат, де ти писав Skill, уже “знає” все, що ти мав на увазі — тож він упорається навіть із неповними інструкціями. Відкрий чисту сесію (чи subagent), щоб тестувати Skill, а не свою памʼять про нього.",
+          ),
+        },
+        {
+          kind: "callout",
+          tone: "senior",
+          title: L("Iterate by explaining the why, not piling on MUSTs", "Ітеруй, пояснюючи «чому», а не нагромаджуючи MUST"),
+          md: L(
+            "When a result is off, resist hard-coding a fix for that one example. Generalize from the feedback, keep the body lean, and **explain the reasoning** behind an instruction — capitalised ALWAYS/NEVER are a yellow flag. A model that understands *why* follows the intent into cases the examples never covered.",
+            "Коли результат не той, не вшивай фікс під цей один приклад. Узагальни з фідбеку, тримай body компактним і **пояснюй причину** інструкції — великими літерами ALWAYS/NEVER це жовтий прапорець. Модель, що розуміє *чому*, тримається задуму й у кейсах, яких приклади не покривали.",
+          ),
+        },
+      ],
+    },
+    {
+      id: "t5",
+      title: L("Package & share", "Пакування та поширення"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "A finished Skill is just a folder, so sharing it means **getting that folder to your audience** — and the right channel depends on who that is. To hand one to a person, package it as a **`.skill` file** (a ZIP of the folder; `skill-creator`'s `package_skill.py` builds it) and they install it. To ship many at once, or to bundle Skills with sub-agents, commands and connectors, put a `skills/` directory inside a **plugin** (next module). For a whole org, push Skills through **managed settings**.\n\nThe authoring format is the same **open standard** everywhere (`agentskills.io`), but the **install path differs per surface** and **custom Skills don't sync across surfaces** — a Skill you upload to claude.ai is not automatically on the API or in Claude Code.",
+            "Готовий Skill — це просто тека, тож поділитися ним означає **доставити цю теку аудиторії** — а канал залежить від того, хто вона. Щоб дати одній людині, запакуй у **`.skill`-файл** (ZIP теки; його будує `package_skill.py` зі `skill-creator`), і вона його встановить. Щоб віддати багато одразу або зібрати Skills із sub-agents, commands і connectors — поклади теку `skills/` у **plugin** (наступний модуль). Для всієї організації — розкочуй Skills через **managed settings**.\n\nФормат авторингу всюди один — **відкритий стандарт** (`agentskills.io`), але **шлях встановлення різний на кожній поверхні**, і **custom Skills не синхронізуються між поверхнями** — Skill, залитий на claude.ai, не зʼявляється автоматично в API чи Claude Code.",
+          ),
+        },
+        {
+          kind: "table",
+          head: [L("Audience", "Аудиторія"), L("Channel", "Канал"), L("How", "Як")],
+          rows: [
+            [L("One person", "Одна людина"), L("`.skill` file (ZIP)", "`.skill`-файл (ZIP)"), L("Package the folder; they upload it in Settings > Capabilities", "Запакуй теку; вони заливають у Settings > Capabilities")],
+            [L("A project / repo", "Проєкт / repo"), L("Committed folder", "Закомічена тека"), L("Commit `.claude/skills/<name>/` to version control", "Закоміть `.claude/skills/<name>/` у систему контролю версій")],
+            [L("A role / toolkit", "Роль / набір"), L("Plugin", "Plugin"), L("A `skills/` dir in a plugin, shared via a marketplace → M14", "Тека `skills/` у plugin, поширюється через marketplace → M14")],
+            [L("A whole org", "Уся організація"), L("Managed settings", "Managed settings"), L("Team / Enterprise Owners provision Skills org-wide", "Owners на Team / Enterprise розкочують Skills на всю організацію")],
+          ],
+        },
+        {
+          kind: "callout",
+          tone: "security",
+          title: L("Principle of lack of surprise", "Принцип відсутності несподіванок"),
+          md: L(
+            "A Skill ships **instructions and runnable code**, so its behaviour must match what its description promises — no hidden actions, no malware, no exploit code, no data exfiltration. Author honestly; and on the consuming side **audit any Skill from an untrusted source** before enabling it — read every bundled file and watch for unexpected network calls.",
+            "Skill постачає **інструкції й виконуваний код**, тож його поведінка має збігатися з обіцянкою в description — без прихованих дій, malware, exploit-коду чи витоку даних. Пиши чесно; а з боку споживача **перевіряй будь-який Skill із недовіреного джерела** перед увімкненням — прочитай кожен вкладений файл і пильнуй несподівані мережеві виклики.",
+          ),
+        },
+      ],
+    },
+  ],
+  keyPoints: [
+    L("A Skill is just a folder with a SKILL.md — required name + description plus a Markdown body. Build one the moment you're repeating instructions; skill-creator's init_skill.py scaffolds it.", "Skill — це просто тека з SKILL.md — обовʼязкові name + description плюс Markdown-body. Створюй його, щойно повторюєш інструкції; init_skill.py зі skill-creator робить каркас."),
+    L("Push detail into bundled files referenced from SKILL.md: scripts/ (run via bash — code never enters context), references/ (read on demand), assets/ (used in output). Keep SKILL.md under ~500 lines.", "Виноси деталі у вкладені файли, на які посилається SKILL.md: scripts/ (запуск через bash — код не входить у context), references/ (читаються за потреби), assets/ (для результату). Тримай SKILL.md до ~500 рядків."),
+    L("The description is the trigger and your highest-leverage line: what it does AND when to use it, third person, ~1024 chars, key use first — and a little “pushy”, because models under-trigger.", "Description — це тригер і твій найважливіший рядок: що робить І коли використовувати, у третій особі, ~1024 символи, ключовий кейс перший — і трохи “напористо”, бо моделі недотригерюють."),
+    L("Prove it with a baseline comparison in a fresh session (with vs without). Measure triggering and output quality separately; the skill-creator plugin automates evals, grading, benchmarks and description tuning.", "Доведи baseline-порівнянням у новій сесії (зі Skill і без). Міряй тригер і якість виводу окремо; plugin skill-creator автоматизує evals, оцінювання, benchmark і тюнінг description."),
+    L("Share by audience: a .skill ZIP for one person, a committed .claude/skills/ folder for a repo, a plugin's skills/ dir for a toolkit, managed settings for an org. Same open standard, but custom Skills don't sync across surfaces — and must not surprise the user.", "Поширюй за аудиторією: .skill (ZIP) для однієї людини, закомічена тека .claude/skills/ для repo, тека skills/ у plugin для набору, managed settings для організації. Стандарт один, але custom Skills не синхронізуються між поверхнями — і не мають дивувати користувача."),
+  ],
+  pitfalls: [
+    { title: L("A vague description, so the Skill never fires", "Розмитий description — Skill не спрацьовує"), body: L("Claude decides from name + description alone. If it doesn't name what the Skill does and the situations that should trigger it, the Skill stays silent. Be specific, lean a bit pushy, and test should- and should-not-trigger prompts.", "Claude вирішує лише за name + description. Якщо там не названо, що Skill робить і в яких ситуаціях тригериться, він мовчить. Будь конкретним, пиши трохи напористо й тестуй should- і should-not-trigger prompt.") },
+    { title: L("Stuffing everything into SKILL.md", "Запихати все в SKILL.md"), body: L("A bloated body is slow, costly and hard to follow. Keep SKILL.md lean, move long docs to references/, deterministic logic to scripts/, and reference them with a one-line “when to read it”.", "Роздутий body повільний, дорогий і важкий для виконання. Тримай SKILL.md компактним, довгі доки винось у references/, детерміновану логіку — у scripts/, і посилайся на них одним рядком “коли читати”.") },
+    { title: L("“Works in the chat I wrote it in”", "“Працює в чаті, де я його писав”"), body: L("Testing a Skill in the same session you authored it hides missing instructions — that chat already knows what you meant. Always validate in a fresh session, ideally with the Skill vs without it.", "Тестувати Skill у тій самій сесії, де ти його писав, ховає відсутні інструкції — той чат уже знає, що ти мав на увазі. Завжди перевіряй у новій сесії, бажано зі Skill і без нього.") },
+  ],
+  interview: [
+    { q: L("How do you author a Skill, and what's the minimum it needs?", "Як створити Skill і що йому потрібно щонайменше?"), a: L("A Skill is a folder containing SKILL.md: YAML frontmatter with a required name and description, then a Markdown body of instructions — no code required. Build one when you keep repeating a procedure; skill-creator's init_skill.py scaffolds the folder with scripts/, references/ and assets/. The body loads only when the Skill triggers, so it costs nothing until used.", "Skill — це тека з SKILL.md: YAML frontmatter з обовʼязковими name і description, далі Markdown-body з інструкціями — код не потрібен. Створюй, коли повторюєш процедуру; init_skill.py зі skill-creator робить каркас із scripts/, references/ і assets/. Body вантажиться лише коли Skill тригериться, тож до використання він нічого не коштує."), level: "senior" },
+    { q: L("How do you write a description that triggers reliably without over-triggering?", "Як написати description, що надійно тригериться без перебору?"), a: L("Put what the Skill does AND the concrete situations that should fire it, in third person, within ~1024 chars, key use first. Because models under-trigger, make it a little pushy and name the keywords/contexts explicitly. Then tune both directions with should-trigger and near-miss should-not-trigger prompts so it doesn't fire on everything. And remember Claude won't consult a Skill for trivial one-step tasks regardless of the description.", "Вкажи що Skill робить І конкретні ситуації, що мають його запустити, у третій особі, у межах ~1024 символів, ключовий кейс першим. Бо моделі недотригерюють — пиши трохи напористо й прямо називай ключові слова/контексти. Тоді налаштуй у два боки should-trigger і близькими should-not-trigger prompt, щоб не спрацьовував на все. І памʼятай: для тривіальних однокрокових задач Claude не звернеться до Skill, хоч би яким був description."), level: "senior" },
+    { q: L("How do you know a Skill actually helps, and how do you ship it to a team?", "Як зрозуміти, що Skill справді допомагає, і як віддати його команді?"), a: L("Use a baseline comparison in fresh sessions: run realistic prompts with the Skill and with it disabled, and measure triggering and output quality separately. The skill-creator plugin automates it — evals.json, isolated subagent runs, graded assertions, and a benchmark of pass-rate/time/tokens with vs without, plus blind A/B and description tuning. To ship: package as a .skill, bundle into a plugin's skills/ dir, or provision via managed settings for an org. Mind that custom Skills don't sync across claude.ai, API and Code, and audit anything untrusted (lack of surprise).", "Baseline-порівняння у нових сесіях: прожени реалістичні prompt зі Skill і з вимкненим, і міряй тригер та якість виводу окремо. Plugin skill-creator це автоматизує — evals.json, ізольовані subagent-прогони, оцінені assertions і benchmark із pass-rate/часу/токенів для зі Skill vs без, плюс сліпе A/B і тюнінг description. Щоб віддати: запакуй у .skill, поклади в теку skills/ plugin або розкоти через managed settings для організації. Памʼятай, що custom Skills не синхронізуються між claude.ai, API і Code, і перевіряй усе недовірене (lack of surprise)."), level: "staff" },
+  ],
+  seeAlso: ["m12", "m14", "m11", "m24"],
+  sources: [
+    { title: "Equipping agents for the real world with Agent Skills — Anthropic Engineering", url: "https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills" },
+    { title: "Skill authoring best practices — Claude Docs", url: "https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices" },
+    { title: "Extend Claude with skills — Claude Code Docs", url: "https://code.claude.com/docs/en/skills" },
+    { title: "skill-creator — anthropics/skills (GitHub)", url: "https://github.com/anthropics/skills/blob/main/skills/skill-creator/SKILL.md" },
+    { title: "How to create custom skills — Claude Help Center", url: "https://support.claude.com/en/articles/12512198-how-to-create-custom-skills" },
+  ],
+};
+
+/* ======================================================================
+   M14 · Plugins & marketplaces  — authored
+   ====================================================================== */
+const m14: Module = {
+  id: "m14",
+  section: "s3",
+  order: 14,
+  level: "senior",
+  title: L("Plugins & marketplaces", "Plugins і marketplaces"),
+  tagline: L(
+    "Bundle the skills, commands, sub-agents, hooks and connectors for a whole job into one install — and distribute them through a marketplace.",
+    "Зведи skills, commands, sub-agents, hooks і connectors для цілої ролі в одну інсталяцію — і поширюй їх через marketplace.",
+  ),
+  readMins: 10,
+  mentalModel: L(
+    "A plugin is a “role in a box”: one folder, defined by a plugin.json manifest, that bundles many extensions at once. A marketplace is the app store — a git repo — you install it from.",
+    "Plugin — це “роль у коробці”: одна тека, описана маніфестом plugin.json, що зводить багато розширень разом. Marketplace — це застосунковий магазин (git repo), звідки ти його ставиш.",
+  ),
+  topics: [
+    {
+      id: "t1",
+      title: L("What a plugin bundles", "Що містить plugin"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "Where a Skill teaches one procedure, a **plugin packages a whole capability set into a single install**. One plugin can carry up to five kinds of extension at once: **skills**, **sub-agents**, **slash commands**, **hooks** and **MCP connectors** (Claude Code adds LSP servers too). The folder is defined by a **`.claude-plugin/plugin.json`** manifest plus component directories — `skills/`, `agents/`, `commands/`, `hooks/` and an `.mcp.json`. For Cowork's role plugins it's all **file-based — Markdown and JSON, with no code or build step**.",
+            "Якщо Skill учить однієї процедури, то **plugin пакує цілий набір можливостей в одну інсталяцію**. Один plugin може нести до пʼяти видів розширень одразу: **skills**, **sub-agents**, **slash commands**, **hooks** і **MCP connectors** (у Claude Code ще й LSP-сервери). Теку описує маніфест **`.claude-plugin/plugin.json`** плюс теки компонентів — `skills/`, `agents/`, `commands/`, `hooks/` і `.mcp.json`. Для рольових plugins у Cowork усе **на файлах — Markdown і JSON, без коду чи build-кроку**.",
+          ),
+        },
+        { kind: "figure", fig: "plugin-bundle", caption: L("One plugin, one install: a plugin.json manifest over a bundle of skills, sub-agents, commands, hooks and MCP connectors — added from a marketplace and activated in Cowork or Claude Code.", "Один plugin, одна інсталяція: маніфест plugin.json над набором skills, sub-agents, commands, hooks і MCP connectors — додається з marketplace й активується в Cowork чи Claude Code.") },
+        {
+          kind: "compare",
+          a: L("A Skill", "Skill"),
+          b: L("A plugin", "Plugin"),
+          rows: [
+            [L("Scope", "Обсяг"), L("One procedure / capability", "Одна процедура / можливість"), L("A bundle of many extensions", "Набір багатьох розширень")],
+            [L("Contains", "Містить"), L("SKILL.md + optional files", "SKILL.md + опційні файли"), L("skills + agents + commands + hooks + MCP", "skills + agents + commands + hooks + MCP")],
+            [L("Defined by", "Описується"), L("The SKILL.md frontmatter", "Frontmatter у SKILL.md"), L("A plugin.json manifest + component dirs", "Маніфест plugin.json + теки компонентів")],
+            [L("Best for", "Найкраще для"), L("Teaching one task", "Навчити однієї задачі"), L("Equipping a whole role or toolkit", "Оснастити цілу роль чи набір")],
+          ],
+        },
+        {
+          kind: "table",
+          head: [L("Component", "Компонент"), L("What it adds", "Що додає"), L("How it's used", "Як використовується")],
+          rows: [
+            [L("`skills/`", "`skills/`"), L("Domain know-how", "Доменне знання"), L("Claude loads it automatically when relevant", "Claude вантажить автоматично за потреби")],
+            [L("`agents/`", "`agents/`"), L("Sub-agents", "Sub-agents"), L("Delegated, isolated work in their own context", "Делегована, ізольована робота у власному context")],
+            [L("`commands/`", "`commands/`"), L("Slash commands", "Slash commands"), L("You invoke them, e.g. `/sales:call-prep`", "Викликаєш ти, напр. `/sales:call-prep`")],
+            [L("`hooks/`", "`hooks/`"), L("Event scripts", "Скрипти на події"), L("Run on tool calls & lifecycle events", "Запускаються на викликах tools і подіях життєвого циклу")],
+            [L("`.mcp.json`", "`.mcp.json`"), L("MCP connectors", "MCP connectors"), L("Wire Claude to external tools & data", "Підʼєднують Claude до зовнішніх tools і даних")],
+          ],
+        },
+      ],
+    },
+    {
+      id: "t2",
+      title: L("Installing plugins & marketplaces", "Встановлення plugins і marketplaces"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "A **marketplace** is simply a **git repo that catalogs plugins**, described by a `marketplace.json`. You **add** the marketplace once, then **install** plugins from it. In **Claude Code**: `/plugin marketplace add owner/repo`, then `/plugin install name@marketplace`; the official **`claude-plugins-official`** marketplace is available automatically. In **Cowork**, browse and install from **claude.com/plugins**.\n\nSince **v2.1.145** the installer shows a **“Will install”** summary — every command, sub-agent, skill, hook and MCP server the plugin adds — so you review exactly what you're getting **before** trusting it. After install, `/reload-plugins` activates it in the current session, and slash commands arrive **namespaced** by plugin (`/sales:call-prep`, `/data:write-query`).",
+            "**Marketplace** — це просто **git repo, що каталогізує plugins**, описаний файлом `marketplace.json`. Ти один раз **додаєш** marketplace, потім **ставиш** із нього plugins. У **Claude Code**: `/plugin marketplace add owner/repo`, далі `/plugin install name@marketplace`; офіційний **`claude-plugins-official`** доступний автоматично. У **Cowork** — переглядай і став із **claude.com/plugins**.\n\nЗ **v2.1.145** інсталятор показує зведення **“Will install”** — кожну command, sub-agent, skill, hook і MCP server, які додає plugin — тож ти бачиш, що саме отримуєш, **перш ніж** довіряти. Після встановлення `/reload-plugins` активує його в поточній сесії, а slash commands приходять із **namespace** за plugin (`/sales:call-prep`, `/data:write-query`).",
+          ),
+        },
+        {
+          kind: "table",
+          head: [L("Step", "Крок"), L("Claude Code", "Claude Code"), L("Cowork", "Cowork")],
+          rows: [
+            [L("Add a marketplace", "Додати marketplace"), L("`/plugin marketplace add owner/repo`", "`/plugin marketplace add owner/repo`"), L("Built-in catalog at claude.com/plugins", "Вбудований каталог на claude.com/plugins")],
+            [L("Install a plugin", "Встановити plugin"), L("`/plugin install name@market`", "`/plugin install name@market`"), L("Click Install from the catalog", "Натиснути Install у каталозі")],
+            [L("Review first", "Спершу переглянь"), L("The “Will install” list", "Список “Will install”"), L("The plugin's listed contents", "Перелічений вміст plugin")],
+            [L("Activate", "Активувати"), L("`/reload-plugins` (in-session)", "`/reload-plugins` (у сесії)"), L("Automatic", "Автоматично")],
+          ],
+        },
+        {
+          kind: "callout",
+          tone: "security",
+          title: L("A plugin runs code on your behalf", "Plugin виконує код від твого імені"),
+          md: L(
+            "Hooks fire on events, MCP servers get tool access, and skills can run scripts — so a plugin is **executable trust**, not just text. Review the **“Will install”** list, prefer **verified or official marketplaces**, and treat an unknown third-party plugin the way you'd treat installing unvetted software.",
+            "Hooks спрацьовують на події, MCP servers отримують доступ до tools, а skills можуть запускати скрипти — тож plugin це **виконувана довіра**, а не просто текст. Переглядай список **“Will install”**, надавай перевагу **перевіреним чи офіційним marketplaces** і стався до незнайомого стороннього plugin, як до встановлення неперевіреного ПЗ.",
+          ),
+        },
+      ],
+    },
+    {
+      id: "t3",
+      title: L("The role plugins (Cowork)", "Рольові plugins (Cowork)"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "Anthropic open-sourced **11 role plugins** for Cowork (they also run in Claude Code) in the **`knowledge-work-plugins`** repository. Each bundles the skills, slash commands, sub-agents and connectors for one **job function**, as a strong **generic starting point** you then **customize for your company** — swap the connectors in `.mcp.json` for your tool stack, drop your terminology and processes into the skill files, and adjust the workflows to how your team actually works. Install them from Cowork, browse them on GitHub, or use the **`cowork-plugin-management`** plugin to build your own.",
+            "Anthropic відкрила код **11 рольових plugins** для Cowork (вони працюють і в Claude Code) у репозиторії **`knowledge-work-plugins`**. Кожен зводить skills, slash commands, sub-agents і connectors для однієї **робочої функції** як міцну **загальну відправну точку**, яку ти потім **підлаштовуєш під свою компанію** — заміни connectors у `.mcp.json` на свій стек, додай свою термінологію й процеси у файли skills і підправ workflows під те, як реально працює команда. Став їх із Cowork, дивись на GitHub або будуй власні через plugin **`cowork-plugin-management`**.",
+          ),
+        },
+        {
+          kind: "table",
+          head: [L("Plugin", "Plugin"), L("What it helps with", "З чим допомагає")],
+          rows: [
+            [L("`productivity`", "`productivity`"), L("Tasks, calendars, daily workflows, personal context", "Задачі, календарі, щоденні workflows, персональний контекст")],
+            [L("`sales`", "`sales`"), L("Research prospects, prep calls, review pipeline, draft outreach, battlecards", "Дослідження лідів, підготовка дзвінків, pipeline, outreach, battlecards")],
+            [L("`customer-support`", "`customer-support`"), L("Triage tickets, draft replies, package escalations, write KB articles", "Тріаж тікетів, чернетки відповідей, ескалації, статті в KB")],
+            [L("`product-management`", "`product-management`"), L("Specs, roadmaps, user research, stakeholder updates, competitive tracking", "Специфікації, roadmaps, user research, апдейти стейкхолдерам, конкуренти")],
+            [L("`marketing`", "`marketing`"), L("Draft content, plan campaigns, enforce brand voice, competitor briefs, reporting", "Контент, кампанії, brand voice, брифи по конкурентах, звітність")],
+            [L("`legal`", "`legal`"), L("Review contracts, triage NDAs, compliance, risk, templated responses", "Контракти, тріаж NDA, compliance, ризики, шаблонні відповіді")],
+            [L("`finance`", "`finance`"), L("Journal entries, reconciliation, statements, variance analysis, close", "Проводки, звірки, звіти, аналіз відхилень, закриття періоду")],
+            [L("`data`", "`data`"), L("Write SQL, run statistical analysis, build dashboards, validate results", "SQL, статаналіз, дашборди, валідація результатів")],
+            [L("`enterprise-search`", "`enterprise-search`"), L("One query across email, chat, docs and wikis", "Один запит по пошті, чатах, доках і wiki")],
+            [L("`bio-research`", "`bio-research`"), L("Literature search, genomics analysis, target prioritization", "Пошук літератури, genomics-аналіз, пріоритизація таргетів")],
+            [L("`cowork-plugin-management`", "`cowork-plugin-management`"), L("Create & customize plugins for your org's tools and workflows", "Створення й кастомізація plugins під інструменти й workflows організації")],
+          ],
+        },
+        {
+          kind: "callout",
+          tone: "tip",
+          title: L("Make them yours", "Зроби їх своїми"),
+          md: L(
+            "The role plugins are **generic starting points**, not turnkey products. The real value appears once you customize: point `.mcp.json` at your actual tools, add your company's terminology and processes to the skill files, and bake your workflows into the commands. That context then applies in every relevant interaction.",
+            "Рольові plugins — це **загальні відправні точки**, а не готові продукти. Справжня користь зʼявляється після кастомізації: спрямуй `.mcp.json` на свої реальні інструменти, додай термінологію й процеси компанії у файли skills і вший свої workflows у commands. Цей контекст потім застосовується в кожній доречній взаємодії.",
+          ),
+        },
+      ],
+    },
+    {
+      id: "t4",
+      title: L("Building & sharing a plugin", "Створення та поширення plugin"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "Building one mirrors the structure you install: create the folder, add a **`.claude-plugin/plugin.json`** manifest (name, version…), and drop your components into `skills/`, `agents/`, `commands/`, `hooks/` and `.mcp.json`. To **distribute**, host the folder in a **git repo**; to make that repo a marketplace others can `add`, include a **`.claude-plugin/marketplace.json`** that catalogs your plugins. Because the role plugins are *just Markdown and JSON*, the workflow is literally **fork, edit, PR** — and in Cowork the `cowork-plugin-management` plugin scaffolds it for you.",
+            "Створення дзеркалить структуру встановлення: зроби теку, додай маніфест **`.claude-plugin/plugin.json`** (name, version…) і поклади компоненти в `skills/`, `agents/`, `commands/`, `hooks/` і `.mcp.json`. Щоб **поширювати**, розмісти теку в **git repo**; щоб зробити цей repo marketplace, який інші можуть `add`, додай **`.claude-plugin/marketplace.json`** із каталогом твоїх plugins. Оскільки рольові plugins — це *лише Markdown і JSON*, процес буквально **fork, edit, PR** — а в Cowork plugin `cowork-plugin-management` зробить каркас за тебе.",
+          ),
+        },
+        {
+          kind: "code",
+          lang: "text",
+          code: "my-team-plugin/\n├── .claude-plugin/\n│   ├── plugin.json        # { \"name\": \"my-team\", \"version\": \"0.1.0\" }\n│   └── marketplace.json   # catalog — only if this repo is a marketplace\n├── skills/                # domain know-how Claude uses automatically\n├── commands/              # /my-team:* slash commands you invoke\n├── agents/                # sub-agents\n├── hooks/                 # scripts run on tool & lifecycle events\n└── .mcp.json              # connectors to your tools",
+          note: L(
+            "A plugin is just files. The manifest names it; the component folders are picked up by convention; one repo can host many plugins and double as their marketplace.",
+            "Plugin — це просто файли. Маніфест дає назву; теки компонентів підхоплюються за конвенцією; один repo може містити багато plugins і бути їхнім marketplace.",
+          ),
+        },
+        {
+          kind: "callout",
+          tone: "senior",
+          title: L("Standardize a team with a company marketplace", "Стандартизуй команду через корпоративний marketplace"),
+          md: L(
+            "To get consistent outcomes across a team, publish your plugins in **one git repo as a marketplace** (or push them via **managed settings**). Everyone adds it once and installs the same role plugins, so your tools, terminology and workflows are baked into every relevant interaction — less time enforcing process, more time improving it.",
+            "Щоб мати узгоджені результати в команді, публікуй свої plugins в **одному git repo як marketplace** (або розкочуй через **managed settings**). Кожен додає його раз і ставить ті самі рольові plugins, тож твої інструменти, термінологія й workflows вшиті в кожну доречну взаємодію — менше часу на контроль процесу, більше на його покращення.",
+          ),
+        },
+      ],
+    },
+  ],
+  keyPoints: [
+    L("A plugin bundles many extensions — skills + sub-agents + slash commands + hooks + MCP connectors — into one installable folder defined by a .claude-plugin/plugin.json manifest.", "Plugin зводить багато розширень — skills + sub-agents + slash commands + hooks + MCP connectors — в одну тeку для встановлення, описану маніфестом .claude-plugin/plugin.json."),
+    L("A marketplace is a git repo that catalogs plugins (marketplace.json). Add it, then install: /plugin marketplace add owner/repo → /plugin install name@market; the official marketplace is built in, and Cowork installs from claude.com/plugins.", "Marketplace — це git repo, що каталогізує plugins (marketplace.json). Додай, потім встанови: /plugin marketplace add owner/repo → /plugin install name@market; офіційний marketplace вбудований, а Cowork ставить із claude.com/plugins."),
+    L("Since v2.1.145 the installer shows a “Will install” list of every command/agent/skill/hook/MCP — review it before trusting, because a plugin runs code on your behalf.", "З v2.1.145 інсталятор показує список “Will install” кожної command/agent/skill/hook/MCP — переглянь перед довірою, бо plugin виконує код від твого імені."),
+    L("Anthropic open-sourced 11 Cowork role plugins (knowledge-work-plugins): productivity, sales, customer-support, product-management, marketing, legal, finance, data, enterprise-search, bio-research, cowork-plugin-management — generic starts you customize per company.", "Anthropic відкрила 11 рольових plugins для Cowork (knowledge-work-plugins): productivity, sales, customer-support, product-management, marketing, legal, finance, data, enterprise-search, bio-research, cowork-plugin-management — загальні старти, які кастомізуєш під компанію."),
+    L("Build your own by adding plugin.json + component dirs and hosting in git; turn the repo into a marketplace with marketplace.json. Role plugins are just Markdown + JSON — fork, edit, PR.", "Будуй власні, додавши plugin.json + теки компонентів і розмістивши в git; зроби repo marketplace через marketplace.json. Рольові plugins — це лише Markdown + JSON — fork, edit, PR."),
+  ],
+  pitfalls: [
+    { title: L("Installing a plugin without reading what it bundles", "Ставити plugin, не читаючи, що він містить"), body: L("A plugin can add hooks (run on events), MCP servers (tool access) and skills (run scripts). Review the “Will install” summary and install only from marketplaces you trust — it's running code on your behalf.", "Plugin може додати hooks (запуск на події), MCP servers (доступ до tools) і skills (запуск скриптів). Переглянь зведення “Will install” і став лише з довірених marketplaces — це виконання коду від твого імені.") },
+    { title: L("Confusing a skill with a plugin", "Плутати skill із plugin"), body: L("A skill is one procedure; a plugin is a bundle, often many skills plus commands, sub-agents, hooks and connectors. Ship a single procedure as a skill; ship a role or toolkit as a plugin.", "Skill — це одна процедура; plugin — це набір, часто багато skills плюс commands, sub-agents, hooks і connectors. Одну процедуру віддавай як skill; роль чи набір — як plugin.") },
+    { title: L("Treating the role plugins as turnkey", "Сприймати рольові plugins як готові «під ключ»"), body: L("They're generic starting points. The value comes from customizing: point .mcp.json at your tools and add your company's terminology and workflows to the skill files.", "Це загальні відправні точки. Користь — у кастомізації: спрямуй .mcp.json на свої інструменти й додай термінологію та workflows компанії у файли skills.") },
+  ],
+  interview: [
+    { q: L("What does a plugin bundle, and how is it structured?", "Що містить plugin і як він влаштований?"), a: L("A plugin packages several kinds of extension into one install: skills, sub-agents, slash commands, hooks and MCP connectors. It's a folder with a .claude-plugin/plugin.json manifest plus component directories — skills/, agents/, commands/, hooks/ and an .mcp.json. Where a skill is one procedure, a plugin equips a whole role.", "Plugin пакує кілька видів розширень в одну інсталяцію: skills, sub-agents, slash commands, hooks і MCP connectors. Це тека з маніфестом .claude-plugin/plugin.json плюс теки компонентів — skills/, agents/, commands/, hooks/ і .mcp.json. Якщо skill — це одна процедура, то plugin оснащує цілу роль."), level: "senior" },
+    { q: L("How do marketplaces and installation work, and how do you vet a plugin?", "Як працюють marketplaces і встановлення, і як перевірити plugin?"), a: L("A marketplace is a git repo cataloging plugins via marketplace.json. You add it (/plugin marketplace add owner/repo) then install (/plugin install name@market); the official marketplace is built in and Cowork installs from claude.com/plugins. Vet with the “Will install” list — it shows every command, agent, skill, hook and MCP server added — and only install from trusted marketplaces, since hooks, MCP and skill scripts run code.", "Marketplace — це git repo, що каталогізує plugins через marketplace.json. Додаєш (/plugin marketplace add owner/repo), потім ставиш (/plugin install name@market); офіційний marketplace вбудований, а Cowork ставить із claude.com/plugins. Перевіряй списком “Will install” — він показує кожну command, agent, skill, hook і MCP server — і став лише з довірених marketplaces, бо hooks, MCP і скрипти skills виконують код."), level: "senior" },
+    { q: L("Skill vs connector vs plugin — when each, and how would you standardize a team?", "Skill vs connector vs plugin — коли що і як стандартизувати команду?"), a: L("A skill teaches one procedure; a connector (MCP) wires in one external tool or data source; a plugin bundles both plus commands, sub-agents and hooks for a whole role. For a single repeatable task, ship a skill. To give Claude access to a tool, add a connector. To equip a role or standardize a team, build a plugin and distribute it through a company marketplace (or managed settings) — Anthropic's 11 knowledge-work plugins are a customizable starting point.", "Skill учить однієї процедури; connector (MCP) підʼєднує один зовнішній інструмент чи джерело даних; plugin зводить обидва плюс commands, sub-agents і hooks для цілої ролі. Для однієї повторюваної задачі — skill. Щоб дати Claude доступ до інструмента — connector. Щоб оснастити роль чи стандартизувати команду — збудуй plugin і поширюй через корпоративний marketplace (чи managed settings); 11 knowledge-work plugins від Anthropic — кастомізовна відправна точка."), level: "staff" },
+  ],
+  seeAlso: ["m13", "m11", "m24", "m19"],
+  sources: [
+    { title: "Plugins — Claude Code Docs", url: "https://code.claude.com/docs/en/plugins" },
+    { title: "Discover and install prebuilt plugins through marketplaces — Claude Code Docs", url: "https://code.claude.com/docs/en/discover-plugins" },
+    { title: "Plugins reference — Claude Code Docs", url: "https://code.claude.com/docs/en/plugins-reference" },
+    { title: "Knowledge Work Plugins — anthropics/knowledge-work-plugins (GitHub)", url: "https://github.com/anthropics/knowledge-work-plugins" },
+  ],
+};
+
+/* ======================================================================
    Planned modules (topics carry over from CURRICULUM.md; bodies fill in)
    ====================================================================== */
 const planned: Module[] = [
@@ -1690,30 +2088,7 @@ const planned: Module[] = [
 
   // Section II  (m6 · m7 · m8 · m9 · m10 are fully authored above)
 
-  // Section III  (m11 is fully authored above)
-  mod("m13", "s3", 13, "senior",
-    L("Building your own skills", "Створення власних skills"),
-    L("Authoring basic → advanced, scripts, resources and testing.", "Створення від базових до просунутих: scripts, resources, тестування."),
-    L("Author once, trigger forever — if the description fires.", "Напиши раз, спрацьовує завжди — якщо description тригериться."),
-    9,
-    [
-      ["Authoring a basic skill", "Створення базового skill"],
-      ["Adding scripts & resources", "Додавання scripts і resources"],
-      ["Descriptions that trigger correctly", "Descriptions, що правильно тригеряться"],
-      ["Testing & iterating", "Тестування та ітерації"],
-      ["Packaging & sharing", "Пакування та поширення"],
-    ], ["m12", "m14"]),
-  mod("m14", "s3", 14, "senior",
-    L("Plugins & marketplaces", "Plugins і marketplaces"),
-    L("Bundles of skills, subagents, commands, hooks and MCP.", "Набори skills, subagents, commands, hooks і MCP."),
-    L("A plugin bundles many extensions into one install.", "Plugin зводить багато розширень в одну інсталяцію."),
-    7,
-    [
-      ["What a plugin bundles", "Що містить plugin"],
-      ["Installing plugins & marketplaces", "Встановлення plugins і marketplaces"],
-      ["The role plugins", "Рольові plugins"],
-      ["Building & sharing a plugin", "Створення та поширення plugin"],
-    ], ["m12", "m13"]),
+  // Section III  (m11 · m12 · m13 · m14 are fully authored above)
 
   // Section IV (m15 authored above)
   mod("m16", "s4", 16, "middle",
@@ -1867,7 +2242,7 @@ const planned: Module[] = [
 ];
 
 /* ---- assembled, ordered, and indexed ------------------------------------ */
-export const MODULES: Module[] = [...planned, m6, m7, m8, m9, m10, m11, m12, m15].sort((a, b) => a.order - b.order);
+export const MODULES: Module[] = [...planned, m6, m7, m8, m9, m10, m11, m12, m13, m14, m15].sort((a, b) => a.order - b.order);
 
 export function sectionById(id: string): Section | undefined {
   return SECTIONS.find((s) => s.id === id);
