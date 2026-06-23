@@ -1,17 +1,23 @@
 import type React from "react";
 import { AgentLoopSim } from "../components/sims/AgentLoopSim";
 import { PromptAnatomySim } from "../components/sims/PromptAnatomySim";
+import { LiveArtifactDemo } from "../components/sims/LiveArtifactDemo";
 import { CoworkArchitecture } from "../components/figures/CoworkArchitecture";
 import { ProjectWorkspace } from "../components/figures/ProjectWorkspace";
+import { ChatArtifactPanel } from "../components/figures/ChatArtifactPanel";
+import { LiveArtifactFlow } from "../components/figures/LiveArtifactFlow";
 
 /** Interactive widgets, referenced by key from concepts.ts blocks (kind: 'sim'). */
 export const SIMS: Record<string, React.FC> = {
   "agent-loop": AgentLoopSim,
   "prompt-anatomy": PromptAnatomySim,
+  "live-artifact-demo": LiveArtifactDemo,
 };
 
 /** Static diagrams, referenced by key from concepts.ts blocks (kind: 'figure'). */
 export const FIGURES: Record<string, React.FC> = {
   "cowork-architecture": CoworkArchitecture,
   "project-workspace": ProjectWorkspace,
+  "chat-artifact-panel": ChatArtifactPanel,
+  "live-artifact-flow": LiveArtifactFlow,
 };

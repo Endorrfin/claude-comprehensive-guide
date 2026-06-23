@@ -659,6 +659,337 @@ const m7: Module = {
 };
 
 /* ======================================================================
+   M8 · Artifacts — fully authored (figure: chat-artifact-panel)
+   ====================================================================== */
+const m8: Module = {
+  id: "m8",
+  section: "s2",
+  order: 8,
+  level: "middle",
+  title: L("Artifacts", "Artifacts"),
+  tagline: L(
+    "When an answer is something you'll keep, edit, or run, Claude lifts it out of the chat into its own window — editable, versioned, shareable.",
+    "Коли відповідь — це те, що ти збережеш, відредагуєш чи запустиш, Claude виносить її з чату в окреме вікно — редаговане, з версіями, готове ділитись.",
+  ),
+  readMins: 9,
+  mentalModel: L(
+    "The chat is the workshop; the artifact is the thing you're building — a document or app that lives beside the conversation and outlives any single turn.",
+    "Чат — це майстерня; artifact — те, що ти будуєш: документ чи застосунок, який живе поруч із розмовою і переживає будь-який окремий хід.",
+  ),
+  topics: [
+    {
+      id: "t1",
+      title: L("What artifacts are", "Що таке artifacts"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "An **artifact** is a substantial, self-contained piece of content that Claude opens in a **dedicated window to the right of the chat**, instead of burying it in the message stream. Claude reaches for one when the content is significant (**typically over ~15 lines**), stands on its own, and is something you'll want to **edit, iterate on, reuse, or come back to** later.\n\nThe chat is where you think out loud; the artifact is the deliverable taking shape next to it. Artifacts are available on **all plans** (Free → Enterprise) and toggle under **Settings → Capabilities**; the runnable kinds also need **Code execution and file creation** enabled.",
+            "**Artifact** — це вагомий, самодостатній фрагмент контенту, який Claude відкриває в **окремому вікні праворуч від чату**, а не ховає в потоці повідомлень. Claude обирає його, коли контент значний (**зазвичай понад ~15 рядків**), самодостатній і його захочеться **редагувати, ітерувати, перевикористати чи повернутись** до нього пізніше.\n\nЧат — це де ти думаєш уголос; artifact — результат, що набуває форми поруч. Artifacts доступні на **всіх планах** (Free → Enterprise) і вмикаються в **Settings → Capabilities**; для запускних типів потрібно ще ввімкнути **Code execution and file creation**.",
+          ),
+        },
+        { kind: "figure", fig: "chat-artifact-panel", caption: L("Significant, self-contained output moves out of the chat into its own window — with versions, code view, copy, download and publish.", "Значний самодостатній результат виходить із чату в окреме вікно — з версіями, переглядом коду, copy, download і publish.") },
+        {
+          kind: "compare",
+          a: L("Plain chat output", "Звичайний вивід у чаті"),
+          b: L("Artifact", "Artifact"),
+          rows: [
+            [L("Lives in", "Живе в"), L("The message stream — scrolls away", "Потоці повідомлень — губиться при прокрутці"), L("A dedicated side window", "Окремому бічному вікні")],
+            [L("Editing", "Редагування"), L("Re-ask and copy-paste the new version", "Перепитай і копіюй нову версію"), L("Iterate in place; versions are kept", "Ітеруй на місці; версії зберігаються")],
+            [L("Runs?", "Запускається?"), L("No — it's just text", "Ні — це лише текст"), L("HTML / React / SVG render and run", "HTML / React / SVG рендеряться й працюють")],
+            [L("Sharing", "Поширення"), L("Copy the text manually", "Копіюй текст вручну"), L("One published link, view or remix", "Одне published-посилання, перегляд чи remix")],
+          ],
+        },
+        {
+          kind: "callout",
+          tone: "tip",
+          title: L("The \"is this an artifact?\" test", "Тест «це artifact?»"),
+          md: L(
+            "Significant · self-contained · reusable · roughly 15+ lines. If you'd want to keep it, edit it, or run it, it belongs in an artifact. A two-line answer does not.",
+            "Значний · самодостатній · перевикористовний · приблизно 15+ рядків. Якщо це хочеться зберегти, редагувати чи запустити — місце в artifact. Відповідь у два рядки — ні.",
+          ),
+        },
+      ],
+    },
+    {
+      id: "t2",
+      title: L("Types: documents, code, mini-apps, diagrams", "Типи: документи, код, mini-apps, діаграми"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "Artifacts span a small, well-defined set of types. The first few are **content**; the last two are where artifacts become **runnable apps** you can click, not just read.",
+            "Artifacts охоплюють невеликий чіткий набір типів. Перші — це **контент**; останні два — там, де artifacts стають **запускними застосунками**, які можна клікати, а не лише читати.",
+          ),
+        },
+        {
+          kind: "table",
+          head: [L("Type", "Тип"), L("What it's for", "Для чого"), L("Reach for it when", "Обирай, коли")],
+          rows: [
+            [L("Document (Markdown / text)", "Документ (Markdown / текст)"), L("Reports, specs, posts, letters", "Звіти, специфікації, пости, листи"), L("You want prose you'll edit and export", "Потрібна проза, яку редагуватимеш і експортуватимеш")],
+            [L("Code snippet", "Фрагмент коду"), L("A function, script or config", "Функція, скрипт чи config"), L("You need code to keep and copy out", "Потрібен код, щоб зберегти й скопіювати")],
+            [L("Single-page HTML site", "Односторінковий HTML-сайт"), L("Landing pages, prototypes", "Лендінги, прототипи"), L("You want a self-contained page", "Потрібна самодостатня сторінка")],
+            [L("Interactive React component", "Інтерактивний React-компонент"), L("Mini-apps, tools, games", "Mini-apps, інструменти, ігри"), L("State and interaction matter", "Важливі стан і взаємодія")],
+            [L("SVG image", "SVG-зображення"), L("Logos, icons, illustrations", "Логотипи, іконки, ілюстрації"), L("You need crisp, editable vector art", "Потрібна чітка редаговна векторна графіка")],
+            [L("Diagram / flowchart (Mermaid)", "Діаграма / flowchart (Mermaid)"), L("Architecture, flows, org charts", "Архітектура, потоки, оргсхеми"), L("A picture beats paragraphs", "Картинка краща за абзаци")],
+          ],
+          caption: L("Six core artifact types. HTML and React are the \"mini-app\" tiers — they execute.", "Шість основних типів artifact. HTML і React — це рівні «mini-app»: вони виконуються."),
+        },
+        {
+          kind: "callout",
+          tone: "senior",
+          title: L("HTML & React artifacts are real single-file apps", "HTML- і React-artifacts — це справжні односторінкові застосунки"),
+          md: L(
+            "They run in a sandboxed VM (hence the **Code execution** toggle), bundle everything into one file, and can pull common libraries (charts, Tailwind utility classes, 3D). This is what turns \"a set of flashcards\" into \"a flashcard **app** that generates its own cards.\"",
+            "Вони працюють у sandbox-VM (звідси перемикач **Code execution**), збирають усе в один файл і можуть підтягувати поширені бібліотеки (charts, Tailwind utility-класи, 3D). Саме це перетворює «набір flashcards» на «flashcard-**застосунок**, що сам генерує картки».",
+          ),
+        },
+      ],
+    },
+    {
+      id: "t3",
+      title: L("Inline visualizations & data analytics", "Візуалізації та аналітика"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "Because the runnable tiers execute code in a sandbox, an artifact doubles as a **data-analysis surface**. Drop in a CSV or paste numbers and ask for a chart, a dashboard, or a calculator — Claude writes the code, runs it, and renders the result you can poke at. The analysis happens in the same window as the output, so you iterate on the *view*, not just the prose describing it.",
+            "Оскільки запускні рівні виконують код у sandbox, artifact водночас стає **поверхнею для аналізу даних**. Кинь CSV або встав числа й попроси chart, dashboard чи калькулятор — Claude пише код, запускає його й рендерить результат, з яким можна гратись. Аналіз відбувається в тому ж вікні, що й вивід, тож ти ітеруєш *подання*, а не лише прозу про нього.",
+          ),
+        },
+        {
+          kind: "table",
+          head: [L("You bring", "Ти приносиш"), L("Ask for", "Проси"), L("You get", "Отримуєш")],
+          rows: [
+            [L("A messy CSV", "Сирий CSV"), L("\"Chart revenue by month\"", "«Chart доходу по місяцях»"), L("An interactive chart you can restyle", "Інтерактивний chart, який можна перестилювати")],
+            [L("A pile of survey rows", "Купу рядків опитування"), L("\"Build a dashboard\"", "«Збери dashboard»"), L("A filterable multi-view panel", "Панель із фільтрами й кількома видами")],
+            [L("A formula in your head", "Формулу в голові"), L("\"Make a calculator\"", "«Зроби калькулятор»"), L("A live tool with inputs and outputs", "Живий інструмент із входами й виходами")],
+          ],
+        },
+        {
+          kind: "callout",
+          tone: "tip",
+          title: L("Browse and remix, don't start blank", "Гортай і ремікси, не починай з порожнього"),
+          md: L(
+            "The dedicated **artifacts space** in the sidebar holds your past creations plus curated examples from Anthropic. Opening one and saying \"make it mine\" is often faster than describing a tool from scratch.",
+            "Окремий **artifacts space** на бічній панелі містить твої минулі творіння плюс підбірку прикладів від Anthropic. Відкрити приклад і сказати «зроби своїм» часто швидше, ніж описувати інструмент з нуля.",
+          ),
+        },
+      ],
+    },
+    {
+      id: "t4",
+      title: L("Editing, versioning & sharing", "Редагування, версії та поширення"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "Iterate by just asking Claude to change the artifact; for **Markdown** you can also **edit in place** — highlight text, click *Edit with Claude*, and type the change exactly where it lives. Every change is a **version**: a selector lets you browse history and jump back, and editing an earlier chat message branches a whole new line of artifacts. If a runnable artifact throws an error, the **Try fixing with Claude** button feeds the error back for a fix.",
+            "Ітеруй, просто просячи Claude змінити artifact; для **Markdown** можна також **редагувати на місці** — виділи текст, натисни *Edit with Claude* і впиши зміну саме там, де вона має бути. Кожна зміна — це **версія**: селектор дає гортати історію й вертатись назад, а редагування ранішого повідомлення гілкує цілу нову лінію artifacts. Якщо запускний artifact кидає помилку, кнопка **Try fixing with Claude** повертає помилку на виправлення.",
+          ),
+        },
+        {
+          kind: "table",
+          head: [L("Action", "Дія"), L("Who", "Хто"), L("What it does", "Що робить")],
+          rows: [
+            [L("Publish", "Publish"), L("Free · Pro · Max", "Free · Pro · Max"), L("Public link — anyone with it can view & interact", "Публічне посилання — будь-хто з ним переглядає й взаємодіє")],
+            [L("Share", "Share"), L("Team · Enterprise", "Team · Enterprise"), L("Org-only — viewers must be signed into your org", "Лише для org — глядачі мають бути в твоїй org")],
+            [L("Remix", "Remix"), L("Any Claude user", "Будь-який користувач Claude"), L("Makes their own copy; your original is untouched", "Робить власну копію; твій оригінал недоторканий")],
+          ],
+        },
+        {
+          kind: "callout",
+          tone: "security",
+          title: L("A published link is public until you unpublish it", "Published-посилання публічне, доки не знімеш публікацію"),
+          md: L(
+            "The link points to the **specific version** you shared and stays live for anyone who has it until you un-publish. Don't bake secrets, tokens or private data into something you publish.",
+            "Посилання вказує на **конкретну версію**, якою ти поділився, і лишається активним для всіх, хто його має, доки не знімеш публікацію. Не зашивай секрети, токени чи приватні дані в те, що публікуєш.",
+          ),
+        },
+      ],
+    },
+  ],
+  keyPoints: [
+    L("An artifact is significant, self-contained output in its own window — editable, versioned, shareable.", "Artifact — це значний самодостатній вивід у власному вікні — редаговний, з версіями, готовий ділитись."),
+    L("Six core types; HTML and React are runnable mini-apps, not just text.", "Шість основних типів; HTML і React — запускні mini-apps, а не лише текст."),
+    L("Runnable artifacts double as a data-analysis surface — charts, dashboards, calculators.", "Запускні artifacts водночас є поверхнею для аналізу даних — charts, dashboards, калькулятори."),
+    L("Every change is a version you can revisit; editing an earlier message branches new artifacts.", "Кожна зміна — це версія, до якої можна повернутись; редагування ранішого повідомлення гілкує нові artifacts."),
+    L("Publish (Free/Pro/Max, public) vs Share (Team/Enterprise, org-only); others can remix a copy.", "Publish (Free/Pro/Max, публічно) vs Share (Team/Enterprise, лише org); інші можуть зробити remix-копію."),
+  ],
+  pitfalls: [
+    { title: L("Forcing everything into an artifact", "Запихати все в artifact"), body: L("Short answers and quick back-and-forth belong in the chat. Artifacts are for things you'll keep.", "Короткі відповіді й швидкий діалог — у чаті. Artifacts — для того, що збережеш.") },
+    { title: L("Publishing private data", "Публікація приватних даних"), body: L("A published link is public to anyone who has it. Strip secrets before you publish.", "Published-посилання публічне для всіх, хто його має. Прибери секрети перед публікацією.") },
+    { title: L("Expecting an edit to update Claude's memory", "Очікувати, що правка змінить пам'ять Claude"), body: L("Your in-place edits don't change Claude's memory of the original content — re-state changes if a later turn must build on them.", "Твої правки на місці не змінюють пам'ять Claude про оригінал — повтори зміни, якщо наступний хід має на них спиратись.") },
+  ],
+  interview: [
+    { q: L("When does Claude create an artifact instead of answering inline?", "Коли Claude створює artifact замість відповіді в чаті?"), a: L("When content is significant and self-contained (≈15+ lines), stands on its own, and is something you'll edit, reuse or return to — documents, code, HTML/React apps, SVG, diagrams.", "Коли контент значний і самодостатній (≈15+ рядків), тримається сам і його редагуватимеш, перевикористаєш чи повернешся — документи, код, HTML/React-застосунки, SVG, діаграми."), level: "middle" },
+    { q: L("Publish vs Share — what's the difference?", "Publish vs Share — у чому різниця?"), a: L("Publish (Free/Pro/Max) creates a public link anyone can view and interact with; Share (Team/Enterprise) keeps it inside the org. Either way, other users remix their own copy rather than editing yours.", "Publish (Free/Pro/Max) робить публічне посилання для перегляду й взаємодії; Share (Team/Enterprise) лишає його в org. У будь-якому разі інші роблять власну remix-копію, а не редагують твою."), level: "middle" },
+  ],
+  seeAlso: ["m9", "m4", "m12", "m22"],
+  sources: [
+    { title: "What are artifacts and how do I use them? — Claude Help Center", url: "https://support.claude.com/en/articles/9487310-what-are-artifacts-and-how-do-i-use-them" },
+    { title: "Publish and share artifacts — Claude Help Center", url: "https://support.claude.com/en/articles/9547008-publish-and-share-artifacts" },
+    { title: "Turn ideas into interactive AI-powered apps — Anthropic", url: "https://claude.com/blog/build-artifacts" },
+    { title: "Use artifacts to visualize and create AI apps — Claude Help Center", url: "https://support.claude.com/en/articles/11649427-use-artifacts-to-visualize-and-create-ai-apps-without-ever-writing-a-line-of-code" },
+  ],
+};
+
+/* ======================================================================
+   M9 · Live Artifacts — fully authored (embedded tiny live demo)
+   ====================================================================== */
+const m9: Module = {
+  id: "m9",
+  section: "s2",
+  order: 9,
+  level: "senior",
+  title: L("Live Artifacts", "Live Artifacts"),
+  tagline: L(
+    "Give an artifact memory and a connection to the world and it stops being a one-shot output — it becomes a small app you return to.",
+    "Дай artifact пам'ять і зв'язок зі світом — і він перестає бути одноразовим виводом, стаючи маленьким застосунком, до якого вертаєшся.",
+  ),
+  readMins: 10,
+  mentalModel: L(
+    "A static artifact is a printout; a live artifact is a running program — it remembers state, calls the model from inside itself, and reaches your tools.",
+    "Статичний artifact — це роздруківка; live artifact — програма, що працює: пам'ятає стан, викликає модель зсередини себе й дістає твої інструменти.",
+  ),
+  topics: [
+    {
+      id: "t1",
+      title: L("Stateful artifacts: persistent storage", "Stateful artifacts: persistent storage"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "Three upgrades turn an ordinary artifact \"live\": **persistent storage** (it remembers), a **Claude API inside** (it thinks), and **MCP connectors** (it reaches your tools). Start with memory. **Persistent storage** lets an artifact keep data **across sessions**, so you can build journals, trackers and leaderboards that are still there tomorrow.\n\nStorage comes in two flavours: **personal** (each user's data is private to them) and **shared** (everyone using the artifact sees the same data — think a team leaderboard). It's available on **Pro, Max, Team and Enterprise**, and only works on **published** artifacts — during building and testing, storage calls quietly no-op until you publish.",
+            "Три апгрейди роблять звичайний artifact «live»: **persistent storage** (пам'ятає), **Claude API всередині** (думає) і **MCP connectors** (дістає твої інструменти). Почнемо з пам'яті. **Persistent storage** дозволяє artifact зберігати дані **між сесіями**, тож можна будувати журнали, трекери й leaderboards, що будуть на місці й завтра.\n\nStorage буває двох видів: **personal** (дані кожного користувача приватні) і **shared** (усі, хто користується artifact, бачать ті самі дані — як командний leaderboard). Доступно на **Pro, Max, Team і Enterprise** і працює лише на **published**-artifacts — під час побудови й тестування виклики storage тихо нічого не роблять, доки не опублікуєш.",
+          ),
+        },
+        { kind: "figure", fig: "live-artifact-flow", caption: L("A live artifact runs on Anthropic's infrastructure and gains three powers: storage, the Claude API, and MCP connectors. Each user gets their own instance.", "Live artifact працює на інфраструктурі Anthropic і отримує три сили: storage, Claude API і MCP connectors. Кожен користувач має власний екземпляр.") },
+        {
+          kind: "callout",
+          tone: "senior",
+          title: L("\"Live Artifacts\" is a nickname, not the official name", "«Live Artifacts» — це прізвисько, а не офіційна назва"),
+          md: L(
+            "Anthropic doesn't ship a product called \"Live Artifacts.\" The official names are **AI-powered artifacts**, **persistent storage**, and **MCP integration** — three capabilities you can combine. We use \"live\" as a convenient umbrella for *stateful + connected* artifacts; just know the real terms when you read the docs.",
+            "Anthropic не випускає продукт під назвою «Live Artifacts». Офіційні назви — **AI-powered artifacts**, **persistent storage** і **MCP integration** — три можливості, які комбінуються. Ми вживаємо «live» як зручну парасольку для *stateful + connected* artifacts; просто знай справжні терміни, коли читаєш docs.",
+          ),
+        },
+        {
+          kind: "callout",
+          tone: "security",
+          title: L("Shared storage is visible to other users", "Shared storage видно іншим користувачам"),
+          md: L(
+            "With shared storage, what one person enters, everyone sees — you'll get a confirmation dialog the first time. The creator decides which data is personal vs shared, so think before entering anything sensitive. Unpublishing an artifact **permanently deletes** all its storage.",
+            "У shared storage те, що вводить одна людина, бачать усі — першого разу буде діалог підтвердження. Творець вирішує, які дані personal, а які shared, тож подумай перед введенням чутливого. Зняття публікації **назавжди видаляє** весь його storage.",
+          ),
+        },
+      ],
+    },
+    {
+      id: "t2",
+      title: L("Connected: Claude API + MCP", "Connected: Claude API + MCP"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "The second upgrade puts **Claude itself inside the artifact**. You literally just *ask Claude to use Claude* — \"make this chatbot reply with compliments\" — and the running app can call the model through a text-based API. The magic is the plumbing it removes: the app **runs on Anthropic's infrastructure**, each visitor **authenticates with their own Claude account** and gets their **own instance**, and there are **no API keys** to manage.\n\nThe third upgrade is **MCP**: an artifact can read from and write to external tools — Asana, Google Calendar, Slack, or any custom MCP server you've connected. The first time an artifact needs a tool, you approve access; the choice persists. Both AI and MCP make the artifact *act*, not just display.",
+            "Другий апгрейд кладе **самого Claude всередину artifact**. Ти буквально просто *просиш Claude використати Claude* — «хай цей chatbot відповідає компліментами» — і застосунок, що працює, може викликати модель через текстовий API. Магія — в усуненій сантехніці: застосунок **працює на інфраструктурі Anthropic**, кожен відвідувач **автентифікується власним акаунтом Claude** й отримує **власний екземпляр**, і **жодних API keys** не треба.\n\nТретій апгрейд — **MCP**: artifact може читати й писати у зовнішні інструменти — Asana, Google Calendar, Slack чи будь-який custom MCP-сервер, який ти підключив. Першого разу, коли artifact потребує інструмент, ти даєш доступ; вибір зберігається. І AI, і MCP роблять так, що artifact *діє*, а не лише показує.",
+          ),
+        },
+        {
+          kind: "code",
+          lang: "text",
+          code: "Build a flashcard app that lets the user pick any topic,\nthen uses Claude to generate the cards on the fly.\nSave the user's decks so they're there next time.",
+          note: L(
+            "One prompt, all three powers: Claude API (generate cards) + persistent storage (save decks) + a real interactive app — no keys, no deployment.",
+            "Один prompt, усі три сили: Claude API (генерує картки) + persistent storage (зберігає колоди) + справжній інтерактивний застосунок — без ключів, без деплою.",
+          ),
+        },
+        {
+          kind: "callout",
+          tone: "tip",
+          title: L("Who pays? Each user, on their own plan", "Хто платить? Кожен користувач, зі свого плану"),
+          md: L(
+            "When you share an AI-powered artifact, others use it for free to you — their calls count against **their** Claude subscription, not yours. While *you* build and test, the usage is on your plan. AI-powered artifacts work on every plan incl. Free; storage and MCP need Pro or above.",
+            "Коли ти ділишся AI-powered artifact, інші користуються ним безкоштовно для тебе — їхні виклики йдуть з **їхньої** підписки Claude, не з твоєї. Поки *ти* будуєш і тестуєш, витрати на твоєму плані. AI-powered artifacts працюють на кожному плані, включно з Free; storage і MCP потребують Pro чи вище.",
+          ),
+        },
+      ],
+    },
+    {
+      id: "t3",
+      title: L("Building a mini-tool you return to", "Створення mini-tool, до якого вертаєшся"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "The shift is from a **single-use** answer to a **returnable tool**. A good candidate has two things: **state worth keeping** (entries, scores, settings) and a **clear loop** you'll repeat (log, review, generate). Habit trackers, team leaderboards, study tutors, a one-page PRD maker — all small, all sticky.\n\nThe demo below is exactly that: a tiny log that **really persists to your browser** (reload the page — your entries survive) plus a **simulated** Claude call. Two of the three live powers, hands-on.",
+            "Зсув — від **одноразової** відповіді до **інструмента, до якого вертаєшся**. Хороший кандидат має дві речі: **стан, який варто зберігати** (записи, бали, налаштування) і **чіткий цикл**, який повторюватимеш (записати, переглянути, згенерувати). Habit-трекери, командні leaderboards, study-тьютори, one-page PRD maker — усі маленькі, усі чіпкі.\n\nДемо нижче — саме це: крихітний лог, що **справді зберігається у твоєму браузері** (онови сторінку — записи лишаються) плюс **simulated** виклик Claude. Дві з трьох live-сил, на практиці.",
+          ),
+        },
+        { kind: "sim", sim: "live-artifact-demo" },
+      ],
+    },
+    {
+      id: "t4",
+      title: L("Limits, safety & cost", "Обмеження, безпека та вартість"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "Live artifacts are **superb for prototyping and sharing**, but they have edges. Know the storage limits, the per-capability plan gates, and when to graduate a winning prototype to real infrastructure.",
+            "Live artifacts **чудові для прототипування й поширення**, але мають межі. Знай ліміти storage, обмеження планів по кожній можливості та коли переводити вдалий прототип на справжню інфраструктуру.",
+          ),
+        },
+        {
+          kind: "table",
+          head: [L("Capability", "Можливість"), L("Plans", "Плани"), L("Key limits", "Ключові межі")],
+          rows: [
+            [L("Claude API inside", "Claude API всередині"), L("Free · Pro · Max · Team · Enterprise", "Free · Pro · Max · Team · Enterprise"), L("No API keys; usage on each user's own plan", "Без API keys; витрати на плані кожного користувача")],
+            [L("Persistent storage", "Persistent storage"), L("Pro · Max · Team · Enterprise", "Pro · Max · Team · Enterprise"), L("20 MB / artifact · text only · published-only", "20 MB / artifact · лише текст · лише published")],
+            [L("MCP / connectors", "MCP / connectors"), L("Pro · Max · Team · Enterprise", "Pro · Max · Team · Enterprise"), L("Per-user auth; web & desktop", "Автентифікація на користувача; web і desktop")],
+          ],
+          caption: L("Plan gates differ by capability: the Claude API is on every plan; storage and MCP start at Pro.", "Обмеження планів різні: Claude API на кожному плані; storage і MCP — від Pro."),
+        },
+        {
+          kind: "callout",
+          tone: "senior",
+          title: L("Prototype here, then graduate", "Прототипуй тут, потім переходь далі"),
+          md: L(
+            "Artifacts are best for testing and demos. When a tool earns a real audience, you'll hit limits (text-only storage, no interleaved scripts). At that point, copy Claude's code into your editor and rebuild on proper infrastructure — Claude Code is the natural next step.",
+            "Artifacts найкращі для тестів і демо. Коли інструмент здобуває реальну аудиторію, ти впрешся в межі (лише текстовий storage, немає interleaved scripts). Тоді копіюй код Claude у свій редактор і перебудуй на нормальній інфраструктурі — Claude Code тут природний наступний крок.",
+          ),
+        },
+      ],
+    },
+  ],
+  keyPoints: [
+    L("Three upgrades make an artifact \"live\": persistent storage, a Claude API inside, and MCP connectors.", "Три апгрейди роблять artifact «live»: persistent storage, Claude API всередині та MCP connectors."),
+    L("Storage is per-user (personal) or shared, published-only, 20 MB, text-only.", "Storage — personal або shared, лише published, 20 MB, лише текст."),
+    L("AI-powered artifacts need no API keys; each user's usage hits their own plan.", "AI-powered artifacts не потребують API keys; витрати кожного — на його плані."),
+    L("MCP lets an artifact read/write Asana, Calendar, Slack and custom servers, with per-user auth.", "MCP дає artifact читати/писати Asana, Calendar, Slack і custom-сервери, з автентифікацією на користувача."),
+    L("Great for prototypes; graduate to real infra (Claude Code) when a tool outgrows the limits.", "Чудові для прототипів; переходь на справжню інфраструктуру (Claude Code), коли інструмент переростає межі."),
+  ],
+  pitfalls: [
+    { title: L("Testing storage before publishing", "Тестування storage до публікації"), body: L("Storage only works on published artifacts; during development the calls silently no-op. Publish to test persistence.", "Storage працює лише на published-artifacts; під час розробки виклики тихо нічого не роблять. Опублікуй, щоб перевірити персистентність.") },
+    { title: L("Putting secrets in shared storage", "Секрети в shared storage"), body: L("Shared storage is visible to every user of the artifact. Keep anything sensitive in personal storage — or out entirely.", "Shared storage видно кожному користувачу artifact. Тримай чутливе в personal storage — або взагалі поза ним.") },
+    { title: L("Treating a prototype as production", "Прототип як production"), body: L("No API-key management, text-only storage, no interleaved scripts. For a real product, rebuild on proper infrastructure.", "Немає керування API-ключами, лише текстовий storage, немає interleaved scripts. Для реального продукту перебудуй на нормальній інфраструктурі.") },
+  ],
+  interview: [
+    { q: L("What makes an artifact \"live\" vs static?", "Що робить artifact «live» на відміну від статичного?"), a: L("State and connection. Persistent storage gives it memory across sessions; the embedded Claude API lets it think; MCP lets it read/write external tools. A static artifact is a one-shot render with none of these.", "Стан і зв'язок. Persistent storage дає пам'ять між сесіями; вбудований Claude API дає мислити; MCP дає читати/писати зовнішні інструменти. Статичний artifact — одноразовий рендер без цього всього."), level: "senior" },
+    { q: L("Who pays for the AI calls in a shared AI-powered artifact?", "Хто платить за AI-виклики в shared AI-powered artifact?"), a: L("Each user, on their own Claude subscription — no API keys and no cost to the creator. While you build and test, it's on your plan.", "Кожен користувач, зі своєї підписки Claude — без API keys і без витрат для творця. Поки ти будуєш і тестуєш — на твоєму плані."), level: "senior" },
+    { q: L("What are the storage limits, and when do they bite?", "Які ліміти storage і коли вони даються взнаки?"), a: L("20 MB per artifact, text-only (no images/binaries), and only on published artifacts; unpublishing deletes the data. They bite when a prototype gains real users — that's the signal to move to real infrastructure.", "20 MB на artifact, лише текст (без зображень/бінарних), і лише на published; зняття публікації видаляє дані. Даються взнаки, коли прототип здобуває реальних користувачів — це сигнал переходити на справжню інфраструктуру."), level: "senior" },
+  ],
+  seeAlso: ["m8", "m11", "m12", "m25"],
+  sources: [
+    { title: "What are artifacts and how do I use them? — Claude Help Center", url: "https://support.claude.com/en/articles/9487310-what-are-artifacts-and-how-do-i-use-them" },
+    { title: "Prototype AI-Powered Apps with Claude artifacts — Anthropic", url: "https://claude.com/resources/tutorials/prototype-ai-powered-apps-with-claude-artifacts" },
+    { title: "Turn ideas into interactive AI-powered apps — Anthropic", url: "https://claude.com/blog/build-artifacts" },
+    { title: "Get started with custom connectors using remote MCP — Claude Help Center", url: "https://support.claude.com/en/articles/11175166-get-started-with-custom-connectors-using-remote-mcp" },
+  ],
+};
+
+/* ======================================================================
    Planned modules (topics carry over from CURRICULUM.md; bodies fill in)
    ====================================================================== */
 const planned: Module[] = [
@@ -722,29 +1053,7 @@ const planned: Module[] = [
       ["Finding past chats", "Пошук минулих чатів"],
     ], ["m7", "m2"]),
 
-  // Section II  (m6 Prompting mastery + m7 Projects are fully authored below)
-  mod("m8", "s2", 8, "middle",
-    L("Artifacts", "Artifacts"),
-    L("Mini-apps, inline visualizations and data analytics in a side panel.", "Mini-apps, візуалізації та аналітика в бічній панелі."),
-    L("Artifacts are runnable outputs you can see and use, not just text.", "Artifacts — це робочі результати, які видно й можна використати, не лише текст."),
-    8,
-    [
-      ["What artifacts are", "Що таке artifacts"],
-      ["Types: documents, code, mini-apps, diagrams", "Типи: документи, код, mini-apps, діаграми"],
-      ["Inline visualizations & analytics", "Візуалізації та аналітика"],
-      ["Editing, versioning & sharing", "Редагування, версії та поширення"],
-    ], ["m9", "m4"]),
-  mod("m9", "s2", 9, "senior",
-    L("Live Artifacts", "Live Artifacts"),
-    L("Stateful, connected artifacts: persistent storage, API calls, MCP.", "Stateful, підключені artifacts: persistent storage, API calls, MCP."),
-    L("A Live Artifact is a small app that remembers state and talks to the world.", "Live Artifact — це маленький застосунок, що памʼятає стан і спілкується зі світом."),
-    8,
-    [
-      ["Stateful artifacts (persistent storage)", "Stateful artifacts (persistent storage)"],
-      ["Connected: API calls + MCP", "Підключені: API calls + MCP"],
-      ["Building a mini-tool you return to", "Створення mini-tool, до якого вертаєшся"],
-      ["Limits, safety & cost", "Обмеження, безпека та вартість"],
-    ], ["m8", "m11"]),
+  // Section II  (m6 Prompting · m7 Projects · m8 Artifacts · m9 Live Artifacts are fully authored above)
   mod("m10", "s2", 10, "senior",
     L("Context & token management", "Управління context і токенами"),
     L("The context window, what fills it, and the cost levers.", "Context window, що його заповнює, і важелі вартості."),
@@ -959,7 +1268,7 @@ const planned: Module[] = [
 ];
 
 /* ---- assembled, ordered, and indexed ------------------------------------ */
-export const MODULES: Module[] = [...planned, m6, m7, m15].sort((a, b) => a.order - b.order);
+export const MODULES: Module[] = [...planned, m6, m7, m8, m9, m15].sort((a, b) => a.order - b.order);
 
 export function sectionById(id: string): Section | undefined {
   return SECTIONS.find((s) => s.id === id);
