@@ -370,3 +370,24 @@ Footer: **"Vasyl Krupka · Senior Fullstack Engineer"** + 🇺🇦. Dark is prim
   the result; reuse the sim/quiz framework; reduced-motion fallback; bilingual). Recommended to run S2 in
   a **fresh session** (clean context; bootstrap by reading this file + `CURRICULUM.md` §M6/M7 + the S1
   patterns in `src/components/*` and `src/data/concepts.ts`). Land S1 on `main` first so S2 branches cleanly.
+- **2026-06-23 · S2 Prompting & workspace** — DONE. Web-verified every product fact first (Anthropic
+  prompt-engineering best-practices, Console prompting tools, Projects + RAG help-centre articles).
+  **M6 Prompting mastery** fully authored (5 topics: anatomy of a prompt · GCAO & templates · patterns
+  few-shot/CoT/self-critique · constraints/schemas/XML · anti-patterns & debugging) with key points,
+  pitfalls, 3 interview Q&A, sources. Built the **2nd signature interactive ★ Prompt Anatomy**
+  (`PromptAnatomySim` + `promptAnatomy.css`): toggle prompt parts (role·context·task[core]·examples·
+  format·constraints) → live assembled prompt + a *simulated* result that shifts across 4 tiers with
+  Specificity/Consistency/Tone meters; Bare/Full presets + reduced-motion-gated "Build up" autoplay;
+  bilingual. **M7 Projects** fully authored (5 topics: what a Project is · instructions · knowledge &
+  the context wall · skills/connectors in a project · project vs chat) + new `ProjectWorkspace` figure
+  (walled workspace: knowledge+instructions inside the context wall, skills/connectors compose in).
+  Registered both widgets in `registry.tsx`. **Correctness note / user-rule-8 challenge:** the curriculum
+  said "*per-project* skills & connectors" — verification showed that's inaccurate (skills are **global +
+  dynamic**, connectors are **account/org-level + per-chat**; only knowledge + instructions are
+  project-scoped). Authored topic 7.4 to teach that distinction instead. Also captured modern facts:
+  **adaptive thinking** (rarely hand-write "think step by step"), **prefill deprecated on 4.6+** (use XML
+  output tags), **don't over-prompt** (overtriggers). **Verified (sandbox copy):** `tsc --noEmit` clean ·
+  `vite build` OK (37 modules, JS ≈99 kB gzip) · data-integrity ALL PASS (28 modules · 123 topics · 3
+  authored; M6 sim + M7 figure resolve; bilingual coverage; ids/orders/seeAlso valid). Workspace holds
+  source only (built in scratch to avoid darwin/linux binary mismatch — user runs `npm install` locally).
+  **Next (S3): Ch.8 Artifacts; Ch.9 Live Artifacts (embed a tiny live demo).**
