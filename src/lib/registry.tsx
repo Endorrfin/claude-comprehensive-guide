@@ -16,6 +16,7 @@ import { ChatArtifactPanel } from "../components/figures/ChatArtifactPanel";
 import { LiveArtifactFlow } from "../components/figures/LiveArtifactFlow";
 import { ContextWindow } from "../components/figures/ContextWindow";
 import { FileFlow } from "../components/figures/FileFlow";
+import { ActingTiers } from "../components/figures/ActingTiers";
 
 /** Interactive widgets, referenced by key from concepts.ts blocks (kind: 'sim'). */
 export const SIMS: Record<string, React.FC> = {
@@ -36,6 +37,7 @@ export const FIGURES: Record<string, React.FC> = {
   "live-artifact-flow": LiveArtifactFlow,
   "context-window": ContextWindow,
   "file-flow": FileFlow,
+  "acting-tiers": ActingTiers,
   "mcp-architecture": McpArchitecture,
   "skill-anatomy": SkillAnatomy,
   "skill-build-pipeline": SkillBuildPipeline,

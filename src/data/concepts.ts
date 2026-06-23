@@ -602,6 +602,160 @@ const m17: Module = {
 };
 
 /* ======================================================================
+   M18 · Computer use — fully authored (figure: ActingTiers)
+   ====================================================================== */
+const m18: Module = {
+  id: "m18",
+  section: "s4",
+  order: 18,
+  level: "senior",
+  title: L("Computer use", "Computer use"),
+  tagline: L(
+    "When no connector or browser tool fits, Claude takes the slow, powerful path: it looks at your screen and clicks, types and navigates apps directly — asking permission for every app.",
+    "Коли немає connector чи browser-tool, Claude обирає повільний, але потужний шлях: дивиться на екран і клікає, друкує й керує застосунками напряму — питаючи дозвіл для кожного застосунку.",
+  ),
+  readMins: 9,
+  mentalModel: L(
+    "The tool of last resort: connector first, browser next, screen control only for what nothing else can reach — because driving the screen has no sandbox.",
+    "Інструмент останнього шансу: спершу connector, потім browser, а керування екраном — лише для того, що інакше не дістати — бо керування екраном не має sandbox.",
+  ),
+  topics: [
+    {
+      id: "t1",
+      title: L("When Claude drives your screen", "Коли Claude керує екраном"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "Sometimes the job has **no connector and no browser tool** — a native desktop app, a mobile simulator, a hardware control panel, an internal dashboard with no API. **Computer use** is Claude's answer: it takes screenshots to see your screen and then clicks, types and navigates the app directly, the way you would.\n\nIt is a **research preview on Pro and Max** (not Team/Enterprise), in Claude Desktop on macOS and Windows, and it is **off by default**. You turn it on in **Settings → General** (under *Desktop app*); on macOS you also grant **Accessibility** and **Screen Recording**. Your desktop must stay awake and the app open for it to work.",
+            "Іноді в задачі **немає ні connector, ні browser-tool** — нативний десктоп-застосунок, мобільний симулятор, панель керування залізом, внутрішній dashboard без API. **Computer use** — відповідь Claude: він робить скриншоти, щоб бачити екран, і далі клікає, друкує й керує застосунком напряму, як ти.\n\nЦе **research preview на Pro і Max** (не Team/Enterprise), у Claude Desktop на macOS і Windows, і **вимкнено за замовчуванням**. Вмикається в **Settings → General** (розділ *Desktop app*); на macOS ще треба надати **Accessibility** і **Screen Recording**. Десктоп має лишатися увімкненим, а застосунок — відкритим.",
+          ),
+        },
+        {
+          kind: "callout",
+          tone: "senior",
+          title: L("Research preview — Pro/Max, opt-in", "Research preview — Pro/Max, лише за згодою"),
+          md: L(
+            "Because it's early and powerful, computer use ships off by default and is gated to Pro/Max on Desktop. Treat it as experimental: it makes mistakes on complex multi-step workflows and is slower than any dedicated tool.",
+            "Оскільки це ще рання й потужна можливість, computer use вимкнено за замовчуванням і доступно лише на Pro/Max у Desktop. Сприймай як експериментальне: воно помиляється на складних багатокрокових сценаріях і повільніше за будь-який спеціальний tool.",
+          ),
+        },
+      ],
+    },
+    {
+      id: "t2",
+      title: L("The three tiers of acting", "Три рівні дій"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "Cowork always reaches for the **most precise tool first** and only falls through when nothing better fits. That's three tiers: **(1) a connector / MCP** if one exists (Gmail, Drive, Slack — seconds, and bounded by its OAuth scopes); **(2) the browser** via Claude in Chrome for web work with no connector; **(3) computer use** — driving the screen — for everything else. Pulling Slack through its connector takes seconds; navigating Slack through the screen takes much longer and breaks more easily.",
+            "Cowork завжди тягнеться до **найточнішого tool першим** і падає нижче, лише коли нічого кращого немає. Це три рівні: **(1) connector / MCP**, якщо є (Gmail, Drive, Slack — секунди, обмежено OAuth-scopes); **(2) browser** через Claude in Chrome для веб-роботи без connector; **(3) computer use** — керування екраном — для решти. Витягти Slack через connector — секунди; навігувати Slack через екран — значно довше й крихкіше.",
+          ),
+        },
+        { kind: "figure", fig: "acting-tiers", caption: L("Most precise first: a connector, then the browser, then screen control. Reach widens and precision drops downward; the sandbox ends below tier 2.", "Найточніше першим: connector, потім browser, потім керування екраном. Донизу зростає охоплення й падає точність; sandbox закінчується під рівнем 2.") },
+        {
+          kind: "callout",
+          tone: "tip",
+          title: L("Connect your busy tools", "Підключай часто вживані інструменти"),
+          md: L(
+            "If you find Claude driving an app through the screen often, add a connector for it. The connector path is faster, more reliable, and safer — screen control is the fallback, not the goal.",
+            "Якщо Claude часто керує застосунком через екран — додай для нього connector. Шлях через connector швидший, надійніший і безпечніший — керування екраном це запасний варіант, а не мета.",
+          ),
+        },
+      ],
+    },
+    {
+      id: "t3",
+      title: L("Granting apps & access tiers", "Надання застосунків і рівні доступу"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "The first time Claude needs an app, a prompt appears — **Allow for this session** or **Deny** (approvals last the session, or **30 minutes** in phone-dispatched sessions). Broad-reach apps like a terminal, Finder/File Explorer or System Settings show an **extra warning** so you know what you're granting.\n\nCrucially, the prompt also shows a **per-app access tier**, fixed by the app's category and not changeable. Don't confuse these two senses of \"tier\": the **three tiers of acting** above are *which mechanism* Claude uses; the **access tiers** below are *how much control* a granted app gets under computer use.",
+            "Коли Claude вперше потребує застосунок, зʼявляється запит — **Allow for this session** або **Deny** (дозвіл діє сесію, або **30 хвилин** у сесіях, запущених із телефону). Застосунки широкого впливу — термінал, Finder/File Explorer чи System Settings — показують **додаткове попередження**, щоб ти розумів, що надаєш.\n\nВажливо: запит також показує **per-app access tier**, зафіксований категорією застосунку й незмінний. Не плутай два значення слова «tier»: **три рівні дій** вище — це *який механізм* використовує Claude; **access tiers** нижче — це *скільки контролю* отримує наданий застосунок під computer use.",
+          ),
+        },
+        {
+          kind: "table",
+          head: [L("Access tier", "Access tier"), L("What Claude can do", "Що Claude може"), L("Applies to", "Застосовується до")],
+          rows: [
+            [L("View only", "View only"), L("See the app in screenshots — no clicks or typing", "Бачити застосунок у скриншотах — без кліків і друку"), L("Browsers, trading platforms", "Браузери, торгові платформи")],
+            [L("Click only", "Click only"), L("Click and scroll, but not type or use shortcuts", "Клік і скрол, але без друку й шорткатів"), L("Terminals, IDEs", "Термінали, IDE")],
+            [L("Full control", "Full control"), L("Click, type, drag and use keyboard shortcuts", "Клік, друк, drag і клавіатурні шорткати"), L("Everything else", "Усе інше")],
+          ],
+          caption: L("Tiers are fixed by app category — they steer Claude back to the dedicated tool (Chrome for the browser, the shell for a terminal).", "Рівні зафіксовані категорією — вони повертають Claude до спеціального tool (Chrome для браузера, shell для термінала)."),
+        },
+        {
+          kind: "callout",
+          tone: "tip",
+          title: L("Two settings worth knowing", "Два налаштування, які варто знати"),
+          md: L(
+            "**Denied apps** is a blocklist — listed apps are rejected without a prompt. **Unhide apps when Claude finishes** hides your other windows while Claude works so it touches only the approved app, then restores them.",
+            "**Denied apps** — це blocklist: застосунки зі списку відхиляються без запиту. **Unhide apps when Claude finishes** ховає інші вікна, поки Claude працює, щоб він чіпав лише дозволений застосунок, а потім повертає їх.",
+          ),
+        },
+      ],
+    },
+    {
+      id: "t4",
+      title: L("Link & financial safety", "Безпека посилань і фінансів"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "Computer use has **no sandbox** between Claude and your apps — unlike code, which runs in the VM. Claude sees whatever is on screen via screenshots, so **close sensitive apps and files first**. Some categories — investment/trading platforms, cryptocurrency — are **blocked by default**, and Claude is trained to avoid moving money, entering sensitive data, or scraping faces. These guardrails are **not absolute**: don't rely on them instead of blocking apps.\n\nWatch the **cross-app link trap**: clicking a link inside an allowed app can open it in another app (e.g. a browser) even if you never granted that app — Claude can be prevented from *seeing* that window, but the link still opens. And remember: **you remain responsible** for every action Claude takes on your behalf.",
+            "Computer use **не має sandbox** між Claude і застосунками — на відміну від коду, що йде у VM. Claude бачить усе на екрані через скриншоти, тож **спершу закрий чутливі застосунки й файли**. Деякі категорії — інвестиційні/торгові платформи, криптовалюта — **заблоковані за замовчуванням**, і Claude навчений уникати переказів грошей, введення чутливих даних і збору облич. Ці запобіжники **не абсолютні**: не покладайся на них замість блокування застосунків.\n\nСтережися **пастки міжзастосункових посилань**: клік по посиланню в дозволеному застосунку може відкрити його в іншому (напр. браузері), навіть якщо ти його не надавав — Claude можна не дати *бачити* те вікно, але посилання все одно відкриється. І памʼятай: **ти відповідаєш** за кожну дію, яку Claude робить від твого імені.",
+          ),
+        },
+        {
+          kind: "table",
+          head: [L("Risk", "Ризик"), L("Built-in guard", "Вбудований захист"), L("Your move", "Твоя дія")],
+          rows: [
+            [L("Sensitive data on screen", "Чутливі дані на екрані"), L("Trained to avoid entering it", "Навчений не вводити"), L("Close the app/file before starting", "Закрий застосунок/файл до старту")],
+            [L("Money / trading", "Гроші / торгівля"), L("Trading & crypto apps blocked by default", "Trading і crypto заблоковані за замовчуванням"), L("Never grant banking/finance apps", "Не надавай банківські/фінансові застосунки")],
+            [L("Prompt injection from screen", "Prompt injection з екрана"), L("Action review scans for it; you can stop anytime", "Action review сканує; можна зупинити будь-коли"), L("Supervise; use specific prompts", "Наглядай; пиши конкретні prompt")],
+            [L("Cross-app link opening", "Відкриття посилань між застосунками"), L("Chrome window can be hidden from Claude", "Вікно Chrome можна сховати від Claude"), L("Expect links to open; avoid risky apps", "Очікуй, що посилання відкриються; уникай ризикових застосунків")],
+          ],
+        },
+        {
+          kind: "callout",
+          tone: "security",
+          title: L("The red lines", "Червоні лінії"),
+          md: L(
+            "Don't use computer use for healthcare, finance, legal contracts, or apps holding other people's personal data. Block sensitive apps, start with low-stakes research/organising tasks, and watch the screen — especially early.",
+            "Не використовуй computer use для healthcare, фінансів, юридичних договорів чи застосунків із чужими персональними даними. Блокуй чутливі застосунки, починай із низькоризикових задач (дослідження/впорядкування) і стеж за екраном — особливо спочатку.",
+          ),
+        },
+      ],
+    },
+  ],
+  keyPoints: [
+    L("Computer use is the tool of last resort: connector → browser → screen, most precise first.", "Computer use — інструмент останнього шансу: connector → browser → екран, найточніше першим."),
+    L("It's a Pro/Max research preview on macOS/Windows Desktop, off by default (needs Accessibility + Screen Recording on macOS).", "Це research preview на Pro/Max у Desktop macOS/Windows, вимкнено за замовчуванням (на macOS треба Accessibility + Screen Recording)."),
+    L("Every app needs explicit per-app permission; sensitive apps (trading/crypto) are blocked by default.", "Кожен застосунок потребує явного дозволу; чутливі (trading/crypto) заблоковані за замовчуванням."),
+    L("Access tiers are fixed by category: browsers View-only, terminals/IDEs Click-only, everything else Full control.", "Access tiers зафіксовані категорією: браузери View-only, термінали/IDE Click-only, решта Full control."),
+    L("No sandbox — Claude sees your screen via screenshots and acts directly; close or block sensitive apps.", "Без sandbox — Claude бачить екран через скриншоти й діє напряму; закривай або блокуй чутливі застосунки."),
+  ],
+  pitfalls: [
+    { title: L("Using it when a connector exists", "Використання, коли є connector"), body: L("Screen control is slower and more error-prone — connect the tool instead and let Claude use the precise path.", "Керування екраном повільніше й помилковіше — краще підключи connector і дай Claude точний шлях.") },
+    { title: L("Granting broad-reach apps blindly", "Сліпе надання застосунків широкого впливу"), body: L("Terminals, Finder and System Settings carry an extra warning for a reason — read it before allowing.", "Термінали, Finder і System Settings мають додаткове попередження не дарма — прочитай перед дозволом.") },
+    { title: L("Trusting the guardrails as a substitute", "Довіра до запобіжників як до заміни"), body: L("Trained avoidance isn't absolute — block sensitive apps and supervise rather than relying on training alone.", "Навчене уникання не абсолютне — блокуй чутливі застосунки й наглядай, а не покладайся лише на тренування.") },
+  ],
+  interview: [
+    { q: L("Why is computer use the \"last resort\"?", "Чому computer use — «останній шанс»?"), a: L("It's the broadest and slowest path and has no sandbox, so Claude uses the most precise tool first — a connector, then the browser — and reserves screen control for what nothing else can reach (native apps, simulators, hardware).", "Це найширший і найповільніший шлях без sandbox, тож Claude використовує найточніший tool першим — connector, потім browser — і лишає керування екраном для того, що інакше не дістати (нативні застосунки, симулятори, залізо)."), level: "senior" },
+    { q: L("What are the per-app access tiers, and why do they exist?", "Які є per-app access tiers і навіщо вони?"), a: L("View only (browsers, trading platforms — screenshots only), Click only (terminals/IDEs — click+scroll, no typing), Full control (everything else). Fixed by category, they steer Claude back to the dedicated tool and cap the blast radius of screen control.", "View only (браузери, торгові платформи — лише скриншоти), Click only (термінали/IDE — клік+скрол, без друку), Full control (решта). Зафіксовані категорією, вони повертають Claude до спеціального tool і обмежують радіус ураження."), level: "senior" },
+    { q: L("What's risky about a scheduled task that uses computer use unattended?", "Чим ризикована запланована задача з computer use без нагляду?"), a: L("No sandbox + nobody watching + screenshots of whatever's on screen + cross-app link opening + prompt injection from screen content. Keep computer use out of unattended schedules, block sensitive apps, and supervise it live.", "Без sandbox + без нагляду + скриншоти всього на екрані + відкриття посилань між застосунками + prompt injection з екрана. Тримай computer use поза автономними розкладами, блокуй чутливі застосунки й наглядай наживо."), level: "senior" },
+  ],
+  seeAlso: ["m15", "m17", "m20", "m25"],
+  sources: [
+    { title: "Let Claude use your computer in Cowork — Help Center", url: "https://support.claude.com/en/articles/14128542-let-claude-use-your-computer-in-cowork" },
+    { title: "Desktop application (computer use & access tiers) — Claude Code Docs", url: "https://code.claude.com/docs/en/desktop" },
+    { title: "Use Claude Cowork safely — Help Center", url: "https://support.claude.com/en/articles/13364135-use-claude-cowork-safely" },
+  ],
+};
+
+/* ======================================================================
    M6 · Prompting mastery — fully authored (★ Prompt Anatomy)
    ====================================================================== */
 const m6: Module = {
@@ -2446,17 +2600,6 @@ const planned: Module[] = [
   // Section III  (m11 · m12 · m13 · m14 are fully authored above)
 
   // Section IV (m15 · m16 · m17 are fully authored above)
-  mod("m18", "s4", 18, "senior",
-    L("Computer use", "Computer use"),
-    L("When Claude drives your screen; the three tiers of acting.", "Коли Claude керує екраном; три рівні дій."),
-    L("Three tiers of acting on the world: connector → browser → screen.", "Три рівні дій у світі: connector → browser → екран."),
-    7,
-    [
-      ["When Claude drives your screen", "Коли Claude керує екраном"],
-      ["The 3 tiers: connector → browser → computer", "3 рівні: connector → browser → computer"],
-      ["Granting apps & tiers", "Надання застосунків і рівнів"],
-      ["Link & financial safety", "Безпека посилань і фінансів"],
-    ], ["m15", "m20", "m25"]),
   mod("m19", "s4", 19, "senior",
     L("Cowork projects, connectors, plugins & mobile", "Cowork projects, connectors, plugins і mobile"),
     L("Persistent context, connectors and plugins — startable from your phone.", "Персистентний context, connectors і plugins — запуск навіть із телефону."),
@@ -2575,7 +2718,7 @@ const planned: Module[] = [
 ];
 
 /* ---- assembled, ordered, and indexed ------------------------------------ */
-export const MODULES: Module[] = [...planned, m6, m7, m8, m9, m10, m11, m12, m13, m14, m15, m16, m17].sort((a, b) => a.order - b.order);
+export const MODULES: Module[] = [...planned, m6, m7, m8, m9, m10, m11, m12, m13, m14, m15, m16, m17, m18].sort((a, b) => a.order - b.order);
 
 export function sectionById(id: string): Section | undefined {
   return SECTIONS.find((s) => s.id === id);
