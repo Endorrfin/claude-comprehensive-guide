@@ -1,0 +1,236 @@
+.tb {
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  background: var(--surface);
+  padding: 16px;
+  margin: 4px 0;
+}
+
+/* controls row */
+.tb-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 14px;
+}
+.tb-select {
+  background: var(--code-bg);
+  border: 1px solid var(--line2);
+  color: var(--tx);
+  border-radius: 8px;
+  padding: 7px 10px;
+  font-size: 12.5px;
+  font-family: var(--font-body);
+}
+.tb-spacer {
+  flex: 1;
+}
+.tb-seg-toggle {
+  display: inline-flex;
+  border: 1px solid var(--line2);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.tb-seg-toggle button {
+  background: var(--surface);
+  border: none;
+  color: var(--tx2);
+  padding: 7px 12px;
+  font-size: 12px;
+  font-family: var(--font-mono);
+  cursor: pointer;
+}
+.tb-seg-toggle button.on {
+  background: var(--s2);
+  color: var(--tx);
+}
+.tb-lever {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: var(--surface);
+  border: 1px solid var(--line2);
+  color: var(--tx2);
+  border-radius: 999px;
+  padding: 5px 12px;
+  font-size: 12px;
+  cursor: pointer;
+  font-family: var(--font-mono);
+}
+.tb-lever.on {
+  color: var(--tx);
+  background: var(--s2);
+  border-color: var(--sem-ok);
+}
+.tb-lever-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+/* the window bar */
+.tb-bar {
+  display: flex;
+  width: 100%;
+  height: 38px;
+  border-radius: var(--r-sm);
+  overflow: hidden;
+  border: 1px solid var(--line2);
+  background: var(--code-bg);
+}
+.tb-bar.over {
+  border-color: var(--sem-warn);
+  box-shadow: inset 0 0 0 1px var(--sem-warn);
+}
+.tb-seg {
+  height: 100%;
+  min-width: 2px;
+  transition: width 0.35s ease;
+}
+@media (prefers-reduced-motion: reduce) {
+  .tb-seg {
+    transition: none;
+  }
+}
+.tb-fillrow {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin: 7px 2px 0;
+  font-size: 12.5px;
+  color: var(--tx2);
+}
+.tb-fillrow .tb-over {
+  color: var(--sem-warn);
+  font-weight: 600;
+}
+.tb-winnote {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--tx3);
+}
+
+/* legend */
+.tb-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px 14px;
+  margin: 11px 2px 0;
+}
+.tb-leg {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11.5px;
+  color: var(--tx2);
+}
+.tb-leg-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  flex: 0 0 auto;
+}
+
+/* cost cards */
+.tb-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin: 14px 0;
+}
+@media (max-width: 560px) {
+  .tb-cards {
+    grid-template-columns: 1fr;
+  }
+}
+.tb-card {
+  background: var(--s2);
+  border-radius: var(--r-sm);
+  padding: 11px 13px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.tb-card-l {
+  font-size: 11.5px;
+  color: var(--tx3);
+}
+.tb-card-v {
+  font-family: var(--font-mono);
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--tx);
+}
+.tb-card-v.ok {
+  color: var(--sem-ok);
+}
+
+/* sliders */
+.tb-slider {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  margin-bottom: 9px;
+}
+.tb-slider label {
+  font-size: 12.5px;
+  color: var(--tx2);
+  width: 110px;
+  flex: 0 0 auto;
+}
+.tb-slider input[type="range"] {
+  flex: 1;
+  accent-color: var(--accent);
+}
+.tb-slider-out {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--tx);
+  min-width: 78px;
+  text-align: right;
+}
+
+/* block toggles */
+.tb-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin: 13px 0 4px;
+}
+.tb-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: var(--surface);
+  border: 1px solid var(--line2);
+  color: var(--tx2);
+  border-radius: 999px;
+  padding: 5px 12px;
+  font-size: 12px;
+  cursor: pointer;
+}
+.tb-chip.on {
+  color: var(--tx);
+  background: var(--s2);
+}
+.tb-chip.fixed {
+  cursor: default;
+  opacity: 0.9;
+}
+.tb-chip-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex: 0 0 auto;
+}
+
+/* insight */
+.tb-note {
+  margin-top: 12px;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--tx2);
+  border-top: 1px dashed var(--line);
+  padding-top: 10px;
+}

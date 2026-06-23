@@ -415,3 +415,26 @@ Footer: **"Vasyl Krupka · Senior Fullstack Engineer"** + 🇺🇦. Dark is prim
   from running `git status` couldn't be unlinked on the mounted FS, so it was renamed to
   `.git/_index.lock.removeme` — safe to delete on your Mac; git is unblocked.)*
   **Next (S4): Ch.10 Context/token mgmt + ★ Token Budget; Ch.11 Connectors & MCP + ★ MCP Flow.**
+- **2026-06-23 · S4a Context & token management (M10)** — DONE. Scoped to **M10 only** (one golden
+  module + one signature sim) per the user's "quality over speed" cadence; M11 (MCP Flow) deferred to
+  S4b. Design agreed first via an interactive **Token Budget mockup** (the visualize tool), then built.
+  Web-verified every version-sensitive fact against the **canonical API pricing doc**: token ≈ 4 chars /
+  0.75 words; **1M context now FLAT-rate (no surcharge)** on Opus 4.8/4.7/4.6 & Sonnet 4.6 (200K
+  standard, Haiku 4.5 = 200K); prices Opus $5/$25 · Sonnet $3/$15 · Haiku $1/$5 per MTok (output 5×);
+  prompt caching **cache-hit 0.1× (−90%)**, writes **1.25×** (5m) / **2×** (1h); **Batch −50%**, stacks
+  with caching (~5% of standard); **gem:** Opus 4.7+ use a new tokenizer that can use **~35% more
+  tokens** for the same text. **M10** fully authored (5 topics: the window & what fills it · Tokens 101 ·
+  truncation & "lost in the middle" · cost levers · curate-the-desk strategies) + key points, 3 pitfalls,
+  3 interview Q&A, 4 sources. Built the **3rd signature interactive ★ Token Budget** (`TokenBudgetSim` +
+  `tokenBudget.css`): toggle context blocks (system · knowledge · skills+tools · memory · conversation ·
+  attached file · answer reserve), sliders (turns, file), model select, **200K↔1M** window toggle, and
+  **caching/batch** levers → live stacked window bar + truncation warning + 3 cost cards (raw / after
+  levers / saved); deterministic, matches published pricing, bilingual, reduced-motion-gated bar
+  animation, ARIA. New `ContextWindow` figure (request anatomy + reserved output + "lost in the middle"
+  recall curve). Registered 1 sim + 1 figure; removed the m10 stub; spliced m10 into `MODULES`.
+  **Verified:** `tsc --noEmit` clean · `vite build` OK (**44 modules**, JS ≈122 kB gzip, CSS ≈6.35 kB
+  gzip, 231 ms) · data-integrity **ALL PASS** (28 modules · 123 topics · **6 authored**; m10 ★ in
+  SIGNATURE_SIMS; token-budget sim + context-window figure resolve; bilingual; shapes/ids/seeAlso valid).
+  *(Note: the working tree had briefly reverted to S2; a `git pull` restored S3 — PR #2
+  `s3-artifacts-live-artifacts` — so M8/M9 are committed and present. S4 built cleanly on top.)*
+  **Next (S4b): Ch.11 Connectors & MCP + ★ MCP Flow.**
