@@ -990,6 +990,187 @@ const m9: Module = {
 };
 
 /* ======================================================================
+   M10 · Context & token management — fully authored (★ Token Budget)
+   ====================================================================== */
+const m10: Module = {
+  id: "m10",
+  section: "s2",
+  order: 10,
+  level: "senior",
+  title: L("Context & token management", "Управління context і токенами"),
+  tagline: L(
+    "Everything Claude can see at once shares one finite budget — and so does the answer. Learn what fills it, what gets cut, and how to pay less for the same context.",
+    "Усе, що Claude бачить одночасно, ділить один скінченний бюджет — і відповідь теж. Дізнайся, що його заповнює, що обрізається і як платити менше за той самий контекст.",
+  ),
+  readMins: 12,
+  mentalModel: L(
+    "The context window is a finite desk. Everything Claude works with has to fit on it — including room to write the answer. Your job is to choose what's on the desk.",
+    "Context window — це скінченний стіл. Усе, з чим працює Claude, має на ньому вміститися — включно з місцем, щоб написати відповідь. Твоя задача — обирати, що лежить на столі.",
+  ),
+  topics: [
+    {
+      id: "t1",
+      title: L("The context window: what fills it", "Context window: що його заповнює"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "The **context window** is everything Claude can see in a single request — measured in **tokens**. One budget is shared by the **system prompt**, **project knowledge**, **skill & tool definitions**, **memory**, the **entire conversation so far**, any **attached files**, your **current message**, and — easy to forget — the **room the answer needs**. When the desk is full, something has to come off.\n\nThe size is fixed per model: **200K tokens** is standard, while **Opus 4.8 / 4.7 / 4.6** and **Sonnet 4.6** offer up to **1M tokens at standard pricing — no surcharge** (a 900K-token request bills at the same per-token rate as a 9K one). Play with the budget below: toggle blocks, grow the conversation, attach a big file, and watch it fill, truncate, and cost.",
+            "**Context window** — це все, що Claude бачить в одному запиті, виміряне в **токенах**. Один бюджет ділять **system prompt**, **project knowledge**, визначення **skills і tools**, **memory**, **уся розмова дотепер**, **вкладені файли**, твоє **поточне повідомлення** і — легко забути — **місце, потрібне для відповіді**. Коли стіл повний, щось мусить піти.\n\nРозмір фіксований для моделі: **200K токенів** — стандарт, а **Opus 4.8 / 4.7 / 4.6** і **Sonnet 4.6** дають до **1M токенів за стандартною ціною — без надбавки** (запит на 900K токенів коштує за токен стільки ж, скільки на 9K). Пограйся з бюджетом нижче: перемикай блоки, нарощуй розмову, додай великий файл — і дивись, як він заповнюється, обрізається й коштує.",
+          ),
+        },
+        { kind: "figure", fig: "context-window", caption: L("One request inside the fixed window: system, tools, knowledge, the growing conversation, your message, and reserved room for the answer. Recall is strongest at the start and end.", "Один запит у фіксованому вікні: system, tools, knowledge, зростаюча розмова, твоє повідомлення й резерв на відповідь. Recall найсильніший на початку та в кінці.") },
+        { kind: "sim", sim: "token-budget" },
+      ],
+    },
+    {
+      id: "t2",
+      title: L("Tokens 101", "Tokens 101"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "A **token** is a chunk of text the model processes — roughly **4 characters** or **0.75 words** in English. Both the tokens you send (**input**) and the tokens Claude writes (**output**) are counted and billed; output is the pricier side (**5× input** across the lineup). Code, non-English text, and rare words pack more tokens per character, so estimates are just that — estimates.",
+            "**Token** — це шматок тексту, який обробляє модель — приблизно **4 символи** або **0.75 слова** в англійській. Рахуються й оплачуються і токени, які ти надсилаєш (**input**), і ті, що Claude пише (**output**); output дорожчий (**5× input** по всій лінійці). Код, не-англійський текст і рідкісні слова містять більше токенів на символ, тож оцінки — це лише оцінки.",
+          ),
+        },
+        {
+          kind: "table",
+          head: [L("Content", "Контент"), L("Size", "Розмір"), L("≈ tokens", "≈ токенів")],
+          rows: [
+            [L("A short word", "Коротке слово"), L("~4 chars", "~4 символи"), L("1", "1")],
+            [L("This paragraph", "Цей абзац"), L("~80 words", "~80 слів"), L("~110", "~110")],
+            [L("Average web page", "Середня веб-сторінка"), L("10 kB", "10 kB"), L("~2,500", "~2,500")],
+            [L("Large doc page", "Велика сторінка документа"), L("100 kB", "100 kB"), L("~25,000", "~25,000")],
+            [L("Research-paper PDF", "PDF наукової статті"), L("500 kB", "500 kB"), L("~125,000", "~125,000")],
+          ],
+          caption: L("Rough rules of thumb (English). The API can count exactly for a given model.", "Грубі орієнтири (англійська). API може порахувати точно для конкретної моделі."),
+        },
+        {
+          kind: "callout",
+          tone: "senior",
+          title: L("Token counts are not model-agnostic", "Кількість токенів залежить від моделі"),
+          md: L(
+            "**Opus 4.7 and later use a new tokenizer** that can use **up to 35% more tokens** for the same fixed text than earlier models. So a prompt that fit comfortably before may cost more on a newer Opus — don't reuse old token estimates across model generations; count for the model you'll actually run.",
+            "**Opus 4.7 і новіші використовують новий tokenizer**, який може витрачати **до 35% більше токенів** на той самий текст, ніж старіші моделі. Тож prompt, що раніше вміщувався легко, на новішому Opus може коштувати більше — не переноси старі оцінки токенів між поколіннями моделей; рахуй для тієї моделі, яку реально запускаєш.",
+          ),
+        },
+      ],
+    },
+    {
+      id: "t3",
+      title: L("Truncation: protecting the signal", "Truncation: як зберегти сигнал"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "What happens when you exceed the window depends on where you are. On the **raw API**, an over-budget request is a **hard error** — it must fit. In long **chats** and **agent** loops, context management quietly **drops or summarises the oldest turns** to make room. Either way, content can silently leave the desk.\n\nThere's a subtler effect too: recall isn't uniform across the window. Models attend most reliably to the **start and end** and can lose detail **in the middle** of a very long context (\"lost in the middle\"). So a fact buried mid-way through a 500K-token dump is the easiest thing to miss.",
+            "Що станеться при перевищенні вікна, залежить від місця. На **сирому API** запит понад бюджет — це **жорстка помилка**: він мусить вміститися. У довгих **чатах** і **agent**-циклах керування контекстом тихо **відкидає чи підсумовує найстаріші ходи**, щоб звільнити місце. У будь-якому разі контент може непомітно зникнути зі столу.\n\nЄ й тонший ефект: recall нерівномірний по вікну. Моделі найнадійніше тримають **початок і кінець** і можуть втрачати деталі **в середині** дуже довгого контексту («lost in the middle»). Тож факт, закопаний посередині дампу на 500K токенів, — це найлегше, що можна пропустити.",
+          ),
+        },
+        {
+          kind: "callout",
+          tone: "tip",
+          title: L("Put the signal where it's seen", "Клади сигнал туди, де його видно"),
+          md: L(
+            "Lead with the key instruction and **repeat the ask near the end**. Reference long documents **by section** instead of pasting them whole. Summarise old turns and start a fresh chat when a thread gets long — a clean desk recalls better than a buried one.",
+            "Починай із ключової інструкції й **повтори запит ближче до кінця**. Посилайся на довгі документи **за розділами**, а не вставляй цілком. Підсумовуй старі ходи й починай новий чат, коли гілка задовга — чистий стіл згадує краще за завалений.",
+          ),
+        },
+      ],
+    },
+    {
+      id: "t4",
+      title: L("Cost levers: caching, batch, model choice", "Важелі вартості: caching, batch, вибір моделі"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "Three levers move the bill without changing your prompt. **Model choice:** Haiku 4.5 ($1/MTok in), Sonnet 4.6 ($3), Opus 4.8 ($5) — pick the smallest that does the job. **Prompt caching:** the stable prefix (system + knowledge + tool defs) is billed at **0.1× (−90%)** on a cache hit; the first write costs **1.25×** (5-min) or **2×** (1-hour). **Batch:** asynchronous jobs that can wait up to 24h get **−50%** on both input and output. The levers **stack** — a cached batch request can land near **5%** of standard cost.",
+            "Три важелі змінюють рахунок, не чіпаючи твій prompt. **Вибір моделі:** Haiku 4.5 ($1/MTok in), Sonnet 4.6 ($3), Opus 4.8 ($5) — обери найменшу, що впорається. **Prompt caching:** стабільний префікс (system + knowledge + tool defs) оплачується **0.1× (−90%)** при cache hit; перший запис коштує **1.25×** (5 хв) або **2×** (1 год). **Batch:** асинхронні задачі, що можуть чекати до 24 год, дають **−50%** на input і output. Важелі **складаються** — кешований batch-запит може коштувати близько **5%** від стандарту.",
+          ),
+        },
+        {
+          kind: "table",
+          head: [L("Lever", "Важіль"), L("Effect", "Ефект"), L("Best for", "Найкраще для")],
+          rows: [
+            [L("Model choice", "Вибір моделі"), L("Haiku $1 · Sonnet $3 · Opus $5 / MTok in (output 5×)", "Haiku $1 · Sonnet $3 · Opus $5 / MTok in (output 5×)"), L("Match capability to the task", "Підбір можливостей під задачу")],
+            [L("Prompt caching", "Prompt caching"), L("Cache hit **0.1×**; write 1.25× (5m) / 2× (1h)", "Cache hit **0.1×**; запис 1.25× (5хв) / 2× (1год)"), L("A big, stable prefix reused across calls", "Великий стабільний префікс, що повторюється")],
+            [L("Batch API", "Batch API"), L("**−50%** input & output, async ≤24h", "**−50%** input і output, async ≤24год"), L("Bulk, non-urgent jobs", "Масові, нетермінові задачі")],
+          ],
+          caption: L("Verified against the published API pricing (2026-06-23). Caching + batch stack.", "Звірено з опублікованими цінами API (2026-06-23). Caching + batch складаються."),
+        },
+        {
+          kind: "callout",
+          tone: "tip",
+          title: L("Cache the stable part, vary the rest after it", "Кешуй стабільне, змінне — після нього"),
+          md: L(
+            "Caching only pays off if the cached prefix is **identical** next time. Put unchanging context first (system, knowledge, tool defs), set the cache breakpoint, then add the volatile bits (the user's new question) **after** it — so each call reuses the cache instead of busting it.",
+            "Caching окупається, лише якщо кешований префікс **ідентичний** наступного разу. Став незмінний контекст першим (system, knowledge, tool defs), постав cache breakpoint, а змінне (нове питання користувача) додавай **після** нього — щоб кожен виклик перевикористовував кеш, а не ламав його.",
+          ),
+        },
+      ],
+    },
+    {
+      id: "t5",
+      title: L("Strategies: projects, skills, summaries", "Стратегії: projects, skills, summaries"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "Day to day, you manage the budget by **curating the desk**, not maximising it. Right-size the model. Cache the stable prefix. Batch non-urgent bulk. Use **Projects** to wall off reusable knowledge and instructions so you don't re-paste them. Lean on **Skills** — progressive disclosure loads a skill's detail only when it's relevant, instead of stuffing everything in up front. Summarise long threads and start fresh chats. The skill is choosing the *fewest, highest-signal* tokens that get the job done.",
+            "У щоденній роботі ти керуєш бюджетом, **курируючи стіл**, а не забиваючи його. Підбирай розмір моделі. Кешуй стабільний префікс. Збирай нетермінове в batch. Використовуй **Projects**, щоб відгородити перевикористовні knowledge й instructions і не вставляти їх щоразу. Спирайся на **Skills** — progressive disclosure підвантажує деталі скіла лише коли він доречний, замість запихати все наперед. Підсумовуй довгі гілки й починай нові чати. Майстерність — обрати *найменше число найсигнальніших* токенів, які виконають задачу.",
+          ),
+        },
+        {
+          kind: "compare",
+          a: L("Stuff everything in", "Запхати все"),
+          b: L("Curate the desk", "Курирувати стіл"),
+          rows: [
+            [L("Context", "Context"), L("Paste whole docs, keep every turn", "Вставляти цілі документи, тримати кожен хід"), L("Reference by section; summarise old turns", "Посилатись за розділами; підсумовувати старі ходи")],
+            [L("Cost", "Вартість"), L("Pay full price for tokens it ignores", "Платити повну ціну за токени, які ігноруються"), L("Cache the prefix; batch the bulk", "Кешувати префікс; batch для масового")],
+            [L("Recall", "Recall"), L("Signal lost in a huge middle", "Сигнал губиться у величезній середині"), L("Key facts kept short, at the edges", "Ключові факти короткі, по краях")],
+          ],
+        },
+        {
+          kind: "callout",
+          tone: "senior",
+          title: L("A finite desk — choose what's on it", "Скінченний стіл — обирай, що на ньому"),
+          md: L(
+            "More context is not better context. A focused 20K-token prompt often beats a sprawling 500K one — cheaper, faster, and easier for the model to attend to. Treat the window as a budget you spend deliberately.",
+            "Більше контексту — не кращий контекст. Сфокусований prompt на 20K токенів часто кращий за розлогий на 500K — дешевше, швидше й моделі легше втримати увагу. Стався до вікна як до бюджету, який витрачаєш свідомо.",
+          ),
+        },
+      ],
+    },
+  ],
+  keyPoints: [
+    L("The context window is one finite token budget shared by everything — including room for the answer.", "Context window — це один скінченний бюджет токенів, спільний для всього — включно з місцем на відповідь."),
+    L("200K is standard; Opus 4.8/4.7/4.6 & Sonnet 4.6 reach 1M at standard pricing (no surcharge).", "200K — стандарт; Opus 4.8/4.7/4.6 і Sonnet 4.6 дають 1M за стандартною ціною (без надбавки)."),
+    L("A token ≈ 4 chars / 0.75 words; output is billed at 5× input; Opus 4.7+ tokenize ~35% heavier.", "Token ≈ 4 символи / 0.75 слова; output оплачується 5× input; Opus 4.7+ токенізують ~на 35% важче."),
+    L("Overflow errors on the API and truncates oldest turns in chats; recall is weakest in the middle.", "Переповнення дає помилку на API і обрізає найстаріші ходи в чатах; recall найслабший у середині."),
+    L("Three stacking cost levers: model choice, prompt caching (−90% on the prefix), batch (−50%).", "Три важелі вартості, що складаються: вибір моделі, prompt caching (−90% на префікс), batch (−50%)."),
+  ],
+  pitfalls: [
+    { title: L("Confusing a big window with free context", "Плутати велике вікно з безкоштовним контекстом"), body: L("1M tokens still cost per token and still dilute recall. Size the context to the task, not to the window.", "1M токенів усе одно коштують за токен і розмивають recall. Підбирай контекст під задачу, а не під вікно.") },
+    { title: L("Busting the cache by reordering", "Ламати кеш перестановкою"), body: L("Caching only helps if the prefix is byte-identical next call. Keep volatile content after the cache breakpoint.", "Caching допомагає, лише якщо префікс байт-в-байт ідентичний наступного разу. Тримай змінне після cache breakpoint.") },
+    { title: L("Burying the instruction in the middle", "Ховати інструкцію в середині"), body: L("Mid-context detail is the easiest to miss. Lead with the ask and repeat it near the end.", "Деталь посеред контексту найлегше пропустити. Починай із запиту й повтори його ближче до кінця.") },
+  ],
+  interview: [
+    { q: L("What all competes for the context window?", "Що саме конкурує за context window?"), a: L("System prompt, project knowledge, skill/tool definitions, memory, the full conversation, attachments, the current message, and the reserved space for the output — one shared token budget.", "System prompt, project knowledge, визначення skills/tools, memory, уся розмова, вкладення, поточне повідомлення і зарезервоване місце під output — один спільний бюджет токенів."), level: "senior" },
+    { q: L("How do prompt caching and batch differ, and do they stack?", "Чим відрізняються prompt caching і batch, і чи складаються вони?"), a: L("Caching cuts the cost of a reused stable prefix to 10% (−90%) on a hit; batch gives −50% on async jobs that can wait up to 24h. They stack — a cached batch call can cost about 5% of standard.", "Caching зменшує вартість повторюваного стабільного префікса до 10% (−90%) при hit; batch дає −50% на async-задачі, що чекають до 24 год. Вони складаються — кешований batch-виклик може коштувати близько 5% стандарту."), level: "senior" },
+    { q: L("What is \"lost in the middle\" and how do you mitigate it?", "Що таке «lost in the middle» і як це пом'якшити?"), a: L("Models recall the start and end of a long context more reliably than the middle. Mitigate by leading with key instructions, repeating the ask near the end, referencing docs by section, and summarising rather than pasting everything.", "Моделі надійніше згадують початок і кінець довгого контексту, ніж середину. Пом'якшуй: починай із ключових інструкцій, повторюй запит у кінці, посилайся на документи за розділами і підсумовуй замість вставляти все."), level: "staff" },
+  ],
+  seeAlso: ["m7", "m11", "m12", "m6"],
+  sources: [
+    { title: "Pricing — Claude API Docs", url: "https://platform.claude.com/docs/en/about-claude/pricing" },
+    { title: "Prompt caching — Claude API Docs", url: "https://platform.claude.com/docs/en/build-with-claude/prompt-caching" },
+    { title: "Batch processing — Claude API Docs", url: "https://platform.claude.com/docs/en/build-with-claude/batch-processing" },
+    { title: "Context windows — Claude API Docs", url: "https://platform.claude.com/docs/en/build-with-claude/context-windows" },
+  ],
+};
+
+/* ======================================================================
    Planned modules (topics carry over from CURRICULUM.md; bodies fill in)
    ====================================================================== */
 const planned: Module[] = [
@@ -1053,19 +1234,7 @@ const planned: Module[] = [
       ["Finding past chats", "Пошук минулих чатів"],
     ], ["m7", "m2"]),
 
-  // Section II  (m6 Prompting · m7 Projects · m8 Artifacts · m9 Live Artifacts are fully authored above)
-  mod("m10", "s2", 10, "senior",
-    L("Context & token management", "Управління context і токенами"),
-    L("The context window, what fills it, and the cost levers.", "Context window, що його заповнює, і важелі вартості."),
-    L("A finite desk — choose what's on it.", "Скінченний стіл — обирай, що на ньому лежить."),
-    9,
-    [
-      ["The context window: what fills it", "Context window: що його заповнює"],
-      ["Tokens 101", "Tokens 101"],
-      ["Truncation: protecting the signal", "Truncation: як зберегти сигнал"],
-      ["Cost levers: caching, batch, model choice", "Важелі вартості: caching, batch, вибір моделі"],
-      ["Strategies: projects, skills, summaries", "Стратегії: projects, skills, summaries"],
-    ], ["m7", "m11", "m6"]),
+  // Section II  (m6 · m7 · m8 · m9 · m10 are fully authored above)
 
   // Section III
   mod("m11", "s3", 11, "senior",
@@ -1268,7 +1437,7 @@ const planned: Module[] = [
 ];
 
 /* ---- assembled, ordered, and indexed ------------------------------------ */
-export const MODULES: Module[] = [...planned, m6, m7, m8, m9, m15].sort((a, b) => a.order - b.order);
+export const MODULES: Module[] = [...planned, m6, m7, m8, m9, m10, m15].sort((a, b) => a.order - b.order);
 
 export function sectionById(id: string): Section | undefined {
   return SECTIONS.find((s) => s.id === id);
