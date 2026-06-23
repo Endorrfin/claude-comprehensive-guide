@@ -1,0 +1,17 @@
+import React from "react";
+import { createRoot } from "react-dom/client";
+import "./theme/tokens.css";
+import "./theme/global.css";
+import { LangProvider } from "./i18n/LangContext";
+import App from "./App";
+
+const el = document.getElementById("root");
+if (!el) throw new Error("#root not found");
+
+createRoot(el).render(
+  <React.StrictMode>
+    <LangProvider>
+      <App />
+    </LangProvider>
+  </React.StrictMode>,
+);

@@ -1,0 +1,26 @@
+# dependencies & build
+node_modules
+dist
+.vite
+
+# the two reference projects + posters (each has its own nested .git + heavy assets;
+# the live site ships only dist/, so these never reach Pages anyway)
+_examples/
+info.txt
+
+# misc
+*.local
+.DS_Store
+
+#Temp
+_arhive/
+
+# IDE
+.idea/
+.vscode/
+
+# dev/test artifacts (scratch build/SSR output dirs are all prefixed with _)
+scripts/ssr/
+scripts/_*
+preview-*.html
+demo/
