@@ -129,12 +129,12 @@ type Block =
 - Visuals: `[sim ★]` Prompt Anatomy builder · `[table]` pattern catalog · `[compare]` weak vs strong · `[mental-model]` GCAO
 
 **M7 · Projects**
-- 7.1 What a Project is — walled context + files + instructions
-- 7.2 Project instructions — the system prompt you own
-- 7.3 Project knowledge (files) & the context wall
-- 7.4 Per-project skills & connectors
+- 7.1 What a Project is — walled context + files + instructions (all plans; 5 on free)
+- 7.2 Project instructions — the system prompt you own (behaviour, not facts)
+- 7.3 Project knowledge (files) & the context wall — static, window-bound; RAG auto-expands ~10× on **paid** plans (no RAG on free)
+- 7.4 Skills & connectors in a project — **correction (verified 2026-06-23): NOT per-project.** Skills are **global + dynamic** (activate everywhere across Claude); connectors are **account/org-level + toggled per chat**; only **knowledge + instructions** are project-scoped. Topic teaches this distinction instead of the original "per-project" framing.
 - 7.5 Project vs plain chat — when to use which
-- Visuals: `[diagram]` project as a walled workspace · `[table]` project vs chat · `[callout]` knowledge limits · `[mental-model]` "a room with its own memory"
+- Visuals: `[figure]` project as a walled workspace (knowledge+instructions inside the wall; skills/connectors compose in) · `[table]` project vs chat · `[compare]` project knowledge vs skills · `[callout]` knowledge limits · `[mental-model]` "a room with its own memory"
 
 **M8 · Artifacts**
 - 8.1 What artifacts are — runnable outputs in a side panel

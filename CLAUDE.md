@@ -391,3 +391,27 @@ Footer: **"Vasyl Krupka · Senior Fullstack Engineer"** + 🇺🇦. Dark is prim
   authored; M6 sim + M7 figure resolve; bilingual coverage; ids/orders/seeAlso valid). Workspace holds
   source only (built in scratch to avoid darwin/linux binary mismatch — user runs `npm install` locally).
   **Next (S3): Ch.8 Artifacts; Ch.9 Live Artifacts (embed a tiny live demo).**
+- **2026-06-23 · S3 Artifacts & Live Artifacts** — DONE. Web-verified all product facts first
+  (Anthropic help-centre "What are artifacts", "Publish and share artifacts", the build-artifacts /
+  "AI-powered apps" blog, and the "Prototype AI-powered apps" tutorial). **M8 Artifacts** fully authored
+  (4 topics: what artifacts are · 6 core types · inline viz & analytics · editing/versioning/sharing) +
+  new `ChatArtifactPanel` figure (chat ↔ artifact window with toolbar) + compare/tables/callouts, key
+  points, pitfalls, 2 interview Q&A, sources. **M9 Live Artifacts** fully authored (4 topics: stateful /
+  persistent storage · connected Claude-API + MCP · a mini-tool you return to · limits/safety/cost) +
+  new `LiveArtifactFlow` figure (3 powers: storage · Claude API · MCP) + per-capability **availability
+  table** (API on all plans incl. Free; storage & MCP Pro+; 20 MB · text-only · published-only). Built
+  the **embedded "tiny live demo"** `LiveArtifactDemo` (+ `liveArtifactDemo.css`): a Daily-log mini-tool
+  with **real localStorage persistence** (survives reload) + a clearly-tagged **simulated** Claude
+  "Summarize" call + a capability strip (storage live · API simulated · MCP illustrative); SSR-guarded,
+  bilingual, reduced-motion friendly. Registered 1 sim + 2 figures in `registry.tsx`; removed the m8/m9
+  stubs; spliced both into `MODULES`. **Correctness note / user-rule-8 challenge:** "**Live Artifacts**"
+  is NOT an official Anthropic product name — the real terms are **AI-powered artifacts**, **persistent
+  storage** and **MCP integration**. Kept the module title (per curriculum) but added a `senior` callout
+  teaching the real naming. **Verified (mounted deps + linux native bindings via `NODE_PATH`):**
+  `tsc --noEmit` clean (strict · noUnusedLocals/Parameters) · `vite build` OK (**41 modules**, JS ≈113 kB
+  gzip, CSS ≈5.9 kB gzip, 134 ms) · data-integrity **ALL PASS** (28 modules · 123 topics · **5 authored**;
+  m8/m9 sim+figure refs resolve; bilingual coverage; table/compare shapes; ids/orders/seeAlso valid).
+  Workspace holds source only; `node_modules` untouched. *(Sandbox housekeeping: a stray `.git/index.lock`
+  from running `git status` couldn't be unlinked on the mounted FS, so it was renamed to
+  `.git/_index.lock.removeme` — safe to delete on your Mac; git is unblocked.)*
+  **Next (S4): Ch.10 Context/token mgmt + ★ Token Budget; Ch.11 Connectors & MCP + ★ MCP Flow.**
