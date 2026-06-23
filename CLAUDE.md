@@ -585,3 +585,33 @@ Footer: **"Vasyl Krupka · Senior Fullstack Engineer"** + 🇺🇦. Dark is prim
   bilingual coverage; ids/orders/seeAlso valid; SIGNATURE_SIMS intact). Workspace holds **source only** —
   `node_modules` untouched (linux bindings live in `/tmp`); no `dist/` or git lock left on the mounted FS.
   **Next (S6b): Ch.18 Computer use (+3-tiers); then Section V (M19 onward) / S7.**
+  *(Landed: committed as `feat(s6): author M16 + M17` on `s6-cowork-files-scheduled-tasks`, merged to `main` via PR #7.)*
+- **2026-06-23 · S6b Cowork core — Computer use (M18)** — DONE. Built straight on `main` (after S6a's PR #7
+  merge) to finish Section IV's Cowork-core trio. Web-verified every fact first against three authoritative
+  pages: **Let Claude use your computer in Cowork** (Help-Center, Apr 24 2026), the **Claude Code "Desktop
+  application" docs** (the canonical per-app access-tier table + "when computer use applies"), and **Use
+  Claude Cowork safely**. **M18 Computer use** fully authored (4 topics: when Claude drives your screen ·
+  the three tiers of acting · granting apps & access tiers · link & financial safety) with mental model,
+  5 key points, 3 pitfalls, 3 interview Q&A, 3 sources. New **`ActingTiers`** figure (a precise-first
+  funnel: connector → browser → computer use, widening = broader reach / less precision, with a dashed
+  "sandbox ends here" line and the per-app caps note). Registered the figure in `registry.tsx`; removed the
+  m18 stub; spliced m18 into `MODULES`.
+  **Correctness notes / user-rule-8 challenges:** (1) **Two different "tiers"** — the curriculum's 18.2
+  "3 tiers (connector→browser→computer)" and 18.3 "tiers (read/click/full)" are *distinct concepts*: the
+  former is *which mechanism* Claude reaches for (precise-first ordering), the latter is *how much control*
+  a granted app gets. Authored a prose distinction + separate figure (acting) and table (access) so they
+  aren't conflated. (2) **Official tier names** — verified the access tiers are **View only · Click only ·
+  Full control** (the "read/click/full" shorthand is informal); used the official names. View-only =
+  browsers + trading platforms, Click-only = terminals/IDEs, Full = everything else; **fixed by category**.
+  (3) **Availability** — computer use is a **research preview on Pro/Max only** (NOT Team/Enterprise),
+  Desktop macOS/Windows, **off by default** (Settings→General; macOS also needs Accessibility + Screen
+  Recording) — narrower than the rest of Cowork (which is all paid plans). (4) **No sandbox** (unlike the
+  code VM) + screenshots see everything + trading/crypto blocked by default + the **cross-app link trap**
+  (a link in an allowed app can open in another app you didn't grant) — all taught. **Verified (linux arm64
+  native bindings via `NODE_PATH`; data-integrity via `node --experimental-strip-types`; built into a fresh
+  `/tmp` outDir):** `tsc --noEmit` clean (strict · noUnusedLocals/Parameters) · `vite build` OK (**56
+  modules**, JS ≈189 kB gzip, CSS ≈7.58 kB gzip, 190 ms, relative `./assets`) · data-integrity **ALL PASS**
+  (28 modules · **13 authored**; Section IV M15–M18 all authored; m18 4 topics/11 blocks; acting-tiers
+  figure resolves; table widths == head, compare 3-tuples, callout tones valid; bilingual; ids/seeAlso
+  valid). Workspace holds **source only** — `node_modules` untouched; no `dist/` or git lock on the mounted FS.
+  **Next (S7): Section V — M19 Cowork projects/connectors/plugins/mobile; M20 Claude in Chrome; M21 Excel/PowerPoint.**
