@@ -345,12 +345,13 @@ Footer: **"Vasyl Krupka · Senior Fullstack Engineer"** + 🇺🇦. Dark is prim
 > Pattern (from the gold standard): **lock a golden standard first**, then batch. Each session ends with
 > typecheck + build + (after Pages is live) a push to confirm deploy. Bilingual = author EN then UA per chapter.
 
-> **Progress (2026-06-23): S0–S8 ✅ done** — 19 / 28 modules authored (M6–M24); Sections **II, III, IV & V
-> complete** (V = M20–M24). 6 of 7 signature sims built (Agent Loop, Prompt Anatomy, Token Budget, MCP
-> Flow, Progressive Disclosure, ★ Sub-agent Fan-out [S8]) + 2 light interactives (Schedule-Timeline M17,
-> Browser-Agent-Loop M20); **only ★ Tool Picker (M26) remains**, slated for S10. **Next: S9 — beginner
-> block (M1–M5);** then S10 mastery+polish (Section VI M25–M28 + Tool Picker, perf incl. the deferred
-> code-splitting/lazy-loading). Only Sections **I (M1–M5)** and **VI (M25–M28)** are still skeletons.
+> **Progress (2026-06-23): S0–S9 ✅ done** — 24 / 28 modules authored (M1–M24); Sections **I, II, III, IV & V
+> complete** (I = M1–M5, the beginner block, authored in S9). 6 of 7 signature sims built (Agent Loop, Prompt
+> Anatomy, Token Budget, MCP Flow, Progressive Disclosure, ★ Sub-agent Fan-out [S8]) + 2 light interactives
+> (Schedule-Timeline M17, Browser-Agent-Loop M20) + 6 new Section-I figures (claude-mental-model,
+> where-claude-lives, interface-map, prompt-flow, style-pipeline, memory-across-sessions); **only ★ Tool
+> Picker (M26) remains**, slated for S10. **Next: S10 — mastery + polish** (Section VI M25–M28 + Tool Picker,
+> perf incl. the deferred code-splitting/lazy-loading). Only Section **VI (M25–M28)** is still a skeleton.
 
 - **S0 · Planning** ✅ — agree stack/structure/scope; write this `CLAUDE.md`; task list.
   **Status: drafted, awaiting user approval before S1.**
@@ -738,3 +739,52 @@ Footer: **"Vasyl Krupka · Senior Fullstack Engineer"** + 🇺🇦. Dark is prim
   config exists; the lint gate is TypeScript strict (passed). Workspace holds **source only** — `node_modules`
   untouched; build + check artifacts live only in `/tmp` (nothing left on the mounted FS).
   **Next (S9): beginner block M1–M5** (reuses the components built across S1–S8).
+- **2026-06-23 · S9 Beginner block — Foundations & first steps (M1–M5)** — DONE; **all five modules in one
+  session** per the user's "same depth" instruction. Web-verified every version-sensitive fact first by
+  fanning out **4 parallel research agents** (M1 models/plans/apps · M2 interface/settings · M4
+  attachments/styles/voice · M5 memory/search) over the official Help Center, Privacy Center, docs and
+  release notes. **Section I is now complete (M1–M5).** Authored to golden depth: **M1 What is Claude** (5
+  topics: assistant+context+tools · the model family · where Claude lives · plans & access · can/can't),
+  **M2 Interface & settings tour** (5: chat layout · model/effort/thinking · settings · privacy & billing ·
+  organizing/Incognito), **M3 Talking to Claude** (5: what a prompt is · context · being specific ·
+  iterating · beginner mistakes), **M4 Attachments, styles & voice** (4: files/images · styles · voice ·
+  output formats), **M5 Memory & chat search** (4: what Memory stores · global vs project · controls ·
+  import/search). Built **6 new SVG figures** (claude-mental-model, where-claude-lives, interface-map,
+  prompt-flow, style-pipeline, memory-across-sessions) and registered them; no new sim (beginner block
+  reuses components and cross-links the existing sims — Prompt Anatomy M6, Agent Loop M15 — via seeAlso).
+  **Correctness notes / user-rule-8 challenges & version drift caught:** (1) **Chat uploads are 500 MB/file,
+  up to 20 files/chat** (images ≤ 8000×8000 px) — the "30 MB" figure in §12 is correct only for **Cowork
+  deliverables / Project files**, a different context; M4 teaches the 500 MB chat-upload limit and notes the
+  30 MB project-file cap. (2) **Writing styles are migrating into Skills** — Concise/Explanatory/Formal
+  presets are being retired, "Learning" becomes a Skill, custom styles auto-migrate (disabled by default,
+  re-enable under Customize → Skills), and the styles menu will disappear; M4 teaches styles **with a
+  prominent "moving to Skills" `warn` callout** + cross-link to M12 rather than presenting the menu as
+  permanent. (3) **No official claude.ai keyboard-shortcut reference exists** — only the Mac quick-entry
+  (double-tap Option) + Caps-Lock dictation and the composer "/" and "+" menus are documented; the curriculum's
+  planned "Keyboard shortcuts" topic was **honestly reframed** (M2 t5) as "there isn't a big official sheet"
+  rather than fabricating a table. (4) **Memory timeline** — Memory has existed since **Sept 2025** (paid),
+  reaching **Free on 2026-03-02**; M5 says "all plans incl. Free (Free since March 2026)" without implying
+  the feature itself is that new. **Memory is two spaces** (global + a separate, walled per-project memory) —
+  taught explicitly. **Chat search is paid-only** and distinct from Memory (on-demand RAG retrieval vs
+  always-on summary). (5) **Fable 5 / Mythos 5** exist on the developer platform (launched 2026-06-09) but
+  are **API-only, never in the consumer chat picker, and currently suspended** (US-gov export directive,
+  2026-06-12) — so the beginner "model family" stays the three consumer chat models (Opus 4.8 · Sonnet 4.6 ·
+  Haiku 4.5); a `senior` callout notes "Anthropic also ships more models on its developer platform" without
+  pinning the volatile preview models. (6) **Opus 4.8 reliable knowledge cutoff = ~January 2026** (now
+  officially published) — taught in the knowledge-cutoff callout. (7) Personalization field is **"Instructions
+  for Claude"** (no confirmed "What should Claude call you"); **Incognito** is the real feature name; there is
+  **no "folders"** feature (organization = Projects + star). **Verified** (linux arm64 bindings
+  `@rolldown/binding-linux-arm64-gnu@1.0.3` + `lightningcss-linux-arm64-gnu@1.32.0` installed in `/tmp` and
+  reached via `NODE_PATH`; data-integrity via `node --experimental-strip-types`; built into a fresh `/tmp`
+  outDir to dodge the sandbox unlink/`emptyOutDir` limit): `tsc --noEmit` clean (strict ·
+  noUnusedLocals/Parameters) · `vite build` OK (**72 modules**, JS ≈900 kB / 270 kB gzip, CSS ≈44 kB /
+  8.06 kB gzip, 248 ms, relative `./assets`) · data-integrity **ALL PASS** (28 modules · **24 authored**;
+  Section I M1–M5 all authored with 5/5/5/4/4 topics; **9 sim + 23 figure keys**, every ref resolves; the 6
+  new figures registered; **2060 bilingual values** non-empty; table widths == head, compare 3-tuples,
+  callout tones valid; ids/orders/seeAlso valid; **SIGNATURE_SIMS intact**). No ESLint config exists; the
+  lint gate is TypeScript strict (passed). Workspace holds **source only** — `node_modules` untouched; build
+  + check artifacts live only in `/tmp` (nothing left on the mounted FS). *(Sandbox housekeeping: renamed the
+  stale `.git/index.lock` → `.git/_index.lock.removeme` since the mounted FS blocks unlink — **safe to delete
+  on your Mac**.)*
+  **Next (S10): Section VI — M25 Security; M26 Choosing the right tool + ★ Tool Picker (last signature sim);
+  M27 Ecosystem map; M28 Mental models + glossary; plus perf (code-splitting/lazy-loading) & bilingual QA.**

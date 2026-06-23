@@ -25,6 +25,12 @@ import { LiveArtifactFlow } from "../components/figures/LiveArtifactFlow";
 import { ContextWindow } from "../components/figures/ContextWindow";
 import { FileFlow } from "../components/figures/FileFlow";
 import { ActingTiers } from "../components/figures/ActingTiers";
+import { ClaudeMentalModel } from "../components/figures/ClaudeMentalModel";
+import { WhereClaudeLives } from "../components/figures/WhereClaudeLives";
+import { InterfaceMap } from "../components/figures/InterfaceMap";
+import { PromptFlow } from "../components/figures/PromptFlow";
+import { StylePipeline } from "../components/figures/StylePipeline";
+import { MemoryAcrossSessions } from "../components/figures/MemoryAcrossSessions";
 
 /** Interactive widgets, referenced by key from concepts.ts blocks (kind: 'sim'). */
 export const SIMS: Record<string, React.FC> = {
@@ -41,6 +47,12 @@ export const SIMS: Record<string, React.FC> = {
 
 /** Static diagrams, referenced by key from concepts.ts blocks (kind: 'figure'). */
 export const FIGURES: Record<string, React.FC> = {
+  "claude-mental-model": ClaudeMentalModel,
+  "where-claude-lives": WhereClaudeLives,
+  "interface-map": InterfaceMap,
+  "prompt-flow": PromptFlow,
+  "style-pipeline": StylePipeline,
+  "memory-across-sessions": MemoryAcrossSessions,
   "cowork-architecture": CoworkArchitecture,
   "project-workspace": ProjectWorkspace,
   "chat-artifact-panel": ChatArtifactPanel,
