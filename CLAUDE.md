@@ -345,12 +345,12 @@ Footer: **"Vasyl Krupka · Senior Fullstack Engineer"** + 🇺🇦. Dark is prim
 > Pattern (from the gold standard): **lock a golden standard first**, then batch. Each session ends with
 > typecheck + build + (after Pages is live) a push to confirm deploy. Bilingual = author EN then UA per chapter.
 
-> **Progress (2026-06-23): S0–S7 ✅ done** — 16 / 28 modules authored (M6–M21); Sections **II, III & IV
-> complete**, Section **V** started (M20, M21 done; M22–M24 pending). 6 of 7 signature sims built (Agent
-> Loop, Prompt Anatomy, Token Budget, MCP Flow, Progressive Disclosure; ★ Sub-agent Fan-out still to come
-> in S8) + 2 light interactives (Schedule-Timeline M17, Browser-Agent-Loop M20). **Next: S8 — M22 Claude
-> Code essentials, M23 Sub-agents/teams + ★ Sub-agent Fan-out, M24 hooks/slash/patterns.** Beginner block
-> (M1–M5) still slated for S9.
+> **Progress (2026-06-23): S0–S8 ✅ done** — 19 / 28 modules authored (M6–M24); Sections **II, III, IV & V
+> complete** (V = M20–M24). 6 of 7 signature sims built (Agent Loop, Prompt Anatomy, Token Budget, MCP
+> Flow, Progressive Disclosure, ★ Sub-agent Fan-out [S8]) + 2 light interactives (Schedule-Timeline M17,
+> Browser-Agent-Loop M20); **only ★ Tool Picker (M26) remains**, slated for S10. **Next: S9 — beginner
+> block (M1–M5);** then S10 mastery+polish (Section VI M25–M28 + Tool Picker, perf incl. the deferred
+> code-splitting/lazy-loading). Only Sections **I (M1–M5)** and **VI (M25–M28)** are still skeletons.
 
 - **S0 · Planning** ✅ — agree stack/structure/scope; write this `CLAUDE.md`; task list.
   **Status: drafted, awaiting user approval before S1.**
@@ -367,9 +367,9 @@ Footer: **"Vasyl Krupka · Senior Fullstack Engineer"** + 🇺🇦. Dark is prim
 - **S5 · Skills & plugins** ✅ — Ch.12 Skills + **Progressive Disclosure**; Ch.13 Building skills; Ch.14 Plugins/marketplaces.
 - **S6 · Cowork core** ✅ — Ch.16 Files/outputs; Ch.17 Scheduled tasks (+timeline); Ch.18 Computer use (+3-tiers). *(M15 was the S1 golden.)*
 - **S7 · Cowork advanced + tools** ✅ — Ch.19 Cowork projects/connectors/plugins/mobile; Ch.20 Claude in Chrome (+ light Browser-Agent-Loop); Ch.21 Excel/PowerPoint.
-- **S8 · Claude Code & agentic** — Ch.22 Code essentials; Ch.23 Sub-agents/teams/worktrees + **Sub-agent Fan-out**; Ch.24 hooks/slash/advanced patterns.
+- **S8 · Claude Code & agentic** ✅ — Ch.22 Code essentials; Ch.23 Sub-agents/teams/worktrees + **Sub-agent Fan-out**; Ch.24 hooks/slash/advanced patterns.
 - **S9 · Beginner block** — Ch.1–5 (what is Claude, interface, prompting basics, attachments/styles, memory/search) — reuses components built above.
-- **S10 · Mastery + polish** — Ch.25 Security; Ch.26 Choosing the right tool + **Tool Picker**; Ch.27 Ecosystem map polish; Ch.28 Mental models + glossary; global search, flashcards, mobile/a11y/perf, **bilingual QA**. *(web-search to confirm latest facts.)*
+- **S10 · Mastery + polish** — Ch.25 Security; Ch.26 Choosing the right tool + **Tool Picker**; Ch.27 Ecosystem map polish; Ch.28 Mental models + glossary; global search, flashcards, mobile/a11y/**perf incl. code-splitting / lazy-loading** *(decided 2026-06-23 with user: keep the single Vite bundle through S8/S9; introduce route-/sim-level lazy-loading here as a polish step — the bundle is ~805 kB / 243 kB gzip after S8 and will keep growing)*, **bilingual QA**. *(web-search to confirm latest facts.)*
 - **S11–S12 · Buffer** — extra "maximal" interactives, full UA pass, final QA; optional PDF/LinkedIn pack.
 
 ## 14. Status / progress log
@@ -692,3 +692,49 @@ Footer: **"Vasyl Krupka · Senior Fullstack Engineer"** + 🇺🇦. Dark is prim
   ESLint config exists; the lint gate is TypeScript strict (passed). Workspace holds **source only** —
   `node_modules` untouched. **Next (S8): M22 Claude Code essentials; M23 Sub-agents/teams/worktrees +
   ★ Sub-agent Fan-out; M24 hooks/slash commands/advanced patterns.**
+- **2026-06-23 · S8 Claude Code & agentic (M22–M24)** — DONE; **all three modules in one session** per the
+  user's choice. Web-verified facts first: fanned out **3 parallel research agents** (one per module) over
+  the official Claude Code docs, then did my own grounding fetches of the **hooks reference**, **sub-agents
+  doc**, and searches confirming the agent-teams launch, the C-compiler post and Dynamic Workflows.
+  **M22 Claude Code essentials** (5 topics: two ways in + environments · models/effort/permissions ·
+  CLAUDE.md the project brain · plan mode + verification · MCP in Code) + new **`CodeArchitecture`** figure,
+  a permission-mode table, settings.json + `claude mcp add` code, and a meta callout (this guide *is* built
+  from a CLAUDE.md). **M23 Sub-agents, agent teams & worktrees** (4 topics) + the **7th & final signature
+  interactive ★ Sub-agent Fan-out** (`SubAgentFanoutSim` + `subAgentFanout.css`): Solo-vs-Fan-out toggle ×
+  2–4 tasks → step through goal→split→spawn→parallel→return→merge with three live meters (wall-clock · main
+  context · token cost) that teach the trade-off (fan-out buys time + a clean window, costs more tokens,
+  only on **independent** work); + new **`AgentScales`** figure (sub-agents → background agents → agent
+  teams). **M24 Hooks, slash commands & patterns** (4 topics) + new **`HookLifecycle`** figure, a hook-event
+  table, settings.json hooks + custom slash-command code, and a patterns table. Registered **1 sim + 3
+  figures** in `registry.tsx`; removed the m22/m23/m24 stubs; spliced all three into `MODULES`.
+  **Correctness notes / user-rule-8 challenges & version facts:** (1) **Rejected hallucinated/over-specific
+  agent claims** — a “Fable 5” Code model, a Managed-Agents “dreaming” feature, “31 hook events”, and
+  fake-precision numbers (0.4%/17% classifier rates, exact patch versions). Models for Code stay the §12
+  three (Opus 4.8 · Sonnet 4.6 · Haiku 4.5). **Grounded the real hook-event set** against the official hooks
+  reference: SessionStart · UserPromptSubmit · PreToolUse (can block) · PostToolUse/PostToolUseFailure ·
+  PermissionRequest · SubagentStart/Stop · Stop/StopFailure · PreCompact/PostCompact · SessionEnd (+ newer
+  team/worktree events: TaskCreated/Completed, WorktreeCreate/Remove, TeammateIdle). (2) **Agent teams =
+  Feb 5 2026 with Opus 4.6** confirmed (matches §12); verified the **parallel-Claudes C compiler** (16 Opus
+  4.6 agents → a ~100k-line C compiler **written in Rust** that builds Linux 6.9 on x86/ARM/RISC-V, ~2,000
+  sessions, ~$20k, coordinated via Git + a Docker container per agent + a lock-file task queue). (3) **Taught
+  the verified three-scale framing** the curriculum lacked: sub-agents (one session) → **background agents**
+  (`/agent-view`, many parallel sessions, no talking) → agent teams (`/agent-teams`, sessions that message +
+  git-coordinate). (4) **Dynamic Workflows** (June 2 2026, research preview) confirmed: Claude writes its own
+  JS **harness**, up to ~1,000 subagents, do→adversarial-review→apply loop; targets agentic laziness /
+  self-preferential bias / goal drift. (5) **Custom commands ↔ Skills merged** (consistent with S5b);
+  **output styles** change persona via system prompt (Explanatory/Learning + custom), not the model; kept
+  **Claude Agent SDK** (renamed from Claude Code SDK) + headless `-p`. **Verified** (linux arm64 bindings
+  `@rolldown/binding-linux-arm64-gnu@1.0.3` + `lightningcss-linux-arm64-gnu@1.32.0` in `/tmp` via `NODE_PATH`;
+  data-integrity via `node --experimental-strip-types`; built into a fresh `/tmp` outDir to dodge the sandbox
+  unlink/`emptyOutDir` limit): `tsc --noEmit` clean (strict · noUnusedLocals/Parameters) · `vite build` OK
+  (**66 modules**, JS ≈805 kB / 243 kB gzip, CSS ≈44 kB / 8.06 kB gzip, 234 ms, relative `./assets`) ·
+  data-integrity **ALL PASS for authored content** (28 modules · **19 authored**; **9 sim + 17 figure keys**,
+  every ref resolves; m23 ★ in SIGNATURE_SIMS with the `sub-agent-fanout` block; **1708 bilingual values**
+  non-empty; table widths == head, compare 3-tuples, callout tones valid; ids/orders/seeAlso valid). The only
+  check “failures” are the **9 still-stub modules** (M1–M5, M25–M28) with no sources yet — expected.
+  **Lazy-loading decision (user, 2026-06-23):** keep the single Vite bundle through S8/S9; introduce
+  route-/sim-level **code-splitting (lazy-loading) at S10** as a polish step — the bundle is now ≈805 kB
+  (243 kB gzip) and tripped Vite's >500 kB note, so it's recorded in §13 S10 so it isn't forgotten. No ESLint
+  config exists; the lint gate is TypeScript strict (passed). Workspace holds **source only** — `node_modules`
+  untouched; build + check artifacts live only in `/tmp` (nothing left on the mounted FS).
+  **Next (S9): beginner block M1–M5** (reuses the components built across S1–S8).

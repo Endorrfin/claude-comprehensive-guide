@@ -3096,41 +3096,7 @@ const planned: Module[] = [
 
   // Section IV (m15–m19 are fully authored above)
 
-  // Section V (m20 · m21 are fully authored above)
-  mod("m22", "s5", 22, "senior",
-    L("Claude Code essentials", "Claude Code: основи"),
-    L("Environments, models, effort, permissions, CLAUDE.md, plan mode.", "Середовища, моделі, effort, дозволи, CLAUDE.md, plan mode."),
-    L("The same agent in your terminal and IDE, governed by CLAUDE.md.", "Той самий agent у терміналі та IDE, керований CLAUDE.md."),
-    9,
-    [
-      ["Two ways to use; environments", "Два способи; середовища"],
-      ["Models, effort & permissions", "Моделі, effort і дозволи"],
-      ["CLAUDE.md — the project brain", "CLAUDE.md — мозок проєкту"],
-      ["Plan mode & verification", "Plan mode і верифікація"],
-      ["MCP in Code", "MCP у Code"],
-    ], ["m15", "m23", "m24"]),
-  mod("m23", "s5", 23, "staff",
-    L("Sub-agents, agent teams & worktrees", "Sub-agents, agent teams і worktrees"),
-    L("Parallelization and orchestration of many agents.", "Паралелізація та оркестрація багатьох агентів."),
-    L("Fan out into parallel agents with their own context; merge back.", "Розгалужуйся в паралельні агенти з власним context; зливай назад."),
-    9,
-    [
-      ["Sub-agents: own context, isolation", "Sub-agents: власний context, ізоляція"],
-      ["Agent teams (git-coordinated)", "Agent teams (координація через git)"],
-      ["Git worktrees & parallelization", "Git worktrees і паралелізація"],
-      ["Skills vs sub-agents", "Skills vs sub-agents"],
-    ], ["m22", "m24", "m12"]),
-  mod("m24", "s5", 24, "staff",
-    L("Hooks, slash commands & advanced agentic patterns", "Hooks, slash commands і просунуті agentic-патерни"),
-    L("Auto-research, multi-agent consensus, pipelines and harnesses.", "Auto-research, multi-agent consensus, pipelines і harnesses."),
-    L("Gates, shortcuts and orchestration around the loop.", "Ворота, скорочення й оркестрація навколо циклу."),
-    9,
-    [
-      ["Hooks: gates around tool calls & events", "Hooks: ворота навколо tool calls і подій"],
-      ["Slash commands & output styles", "Slash commands і output styles"],
-      ["Auto-research, consensus, pipelines", "Auto-research, consensus, pipelines"],
-      ["Harnesses & orchestration", "Harnesses і оркестрація"],
-    ], ["m23", "m22"]),
+  // Section V (m20 · m21 are fully authored above; m22 · m23 · m24 authored below)
 
   // Section VI
   mod("m25", "s6", 25, "senior",
@@ -3179,8 +3145,510 @@ const planned: Module[] = [
     ], ["m27"]),
 ];
 
+/* ======================================================================
+   M22 · Claude Code essentials — fully authored (S8)
+   ====================================================================== */
+const m22: Module = {
+  id: "m22",
+  section: "s5",
+  order: 22,
+  level: "senior",
+  title: L("Claude Code essentials", "Claude Code: основи"),
+  tagline: L(
+    "The same coding agent in your terminal, IDE and CI — running the agent loop over your real repo, with CLAUDE.md for its brain and permissions for its leash.",
+    "Той самий кодувальний agent у терміналі, IDE і CI — виконує agent loop над твоїм справжнім репозиторієм, із CLAUDE.md за мозок і permissions за повідець.",
+  ),
+  readMins: 9,
+  mentalModel: L(
+    "Cowork’s engineer sibling: one agent, three doorways (terminal · IDE · CI) working your actual files and shell — not a sandbox — so CLAUDE.md steers it and permissions contain it.",
+    "Інженерний родич Cowork: один agent, троє дверей (terminal · IDE · CI), що працює з твоїми реальними файлами й shell — не в пісочниці — тож CLAUDE.md ним керує, а permissions його стримують.",
+  ),
+  topics: [
+    {
+      id: "t1",
+      title: L("Two ways in, and where it runs", "Два входи і де воно працює"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "**Claude Code** is the same agent as Cowork, built for engineers and living where you code. It has two front doors — the **terminal** (`claude` inside any repo) and **IDE extensions** (VS Code and JetBrains, with inline diffs and a quick-launch shortcut) — plus two more ways to run: **headless** (`claude -p` for a one-shot prompt) for scripts, and **CI** via the official GitHub Actions (`anthropics/claude-code-action`) to triage issues and open PRs. The crucial difference from Cowork: Code runs in **your real shell with your real permissions** — it edits files, runs `npm test`, and commits. That power is exactly why the permission system matters.",
+            "**Claude Code** — це той самий agent, що й Cowork, але для інженерів і там, де ти кодиш. Має двоє парадних дверей — **terminal** (`claude` у будь-якому репозиторії) та **IDE-розширення** (VS Code і JetBrains, з inline-diff і швидким запуском) — плюс ще два способи запуску: **headless** (`claude -p` для одноразового prompt) для скриптів і **CI** через офіційний GitHub Actions (`anthropics/claude-code-action`) для тріажу issues й відкриття PR. Ключова відмінність від Cowork: Code працює у **твоєму справжньому shell із твоїми справжніми правами** — редагує файли, запускає `npm test`, робить commit. Саме через цю силу й важлива система permissions.",
+          ),
+        },
+        { kind: "figure", fig: "code-architecture", caption: L("One agent reached through three surfaces, working your real repo and shell, steered by four levers: CLAUDE.md, permissions, model+effort and tools.", "Один agent через три поверхні, що працює з твоїм реальним репо й shell, керований чотирма важелями: CLAUDE.md, permissions, model+effort і tools.") },
+        {
+          kind: "table",
+          head: [L("Surface", "Поверхня"), L("How you start", "Як запустити"), L("Best for", "Найкраще для")],
+          rows: [
+            [L("Terminal", "Terminal"), L("claude, in a repo", "claude, у репо"), L("Interactive coding, day to day", "Інтерактивне кодування щодня")],
+            [L("IDE extension", "IDE-розширення"), L("VS Code / JetBrains plugin", "Плагін VS Code / JetBrains"), L("Inline diffs, editor context", "Inline-diff, контекст редактора")],
+            [L("Headless", "Headless"), L("claude -p for one prompt", "claude -p на один prompt"), L("Scripts, pre-commit, pipelines", "Скрипти, pre-commit, пайплайни")],
+            [L("CI", "CI"), L("GitHub Actions", "GitHub Actions"), L("Issue triage, automated PRs", "Тріаж issues, автоматичні PR")],
+          ],
+        },
+      ],
+    },
+    {
+      id: "t2",
+      title: L("Models, effort & permissions", "Моделі, effort і permissions"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "Three levers shape each session. **Model**: switch with `/model` — **Sonnet 4.6** is the balanced default for everyday coding, **Opus 4.8** for the hardest reasoning and big refactors, **Haiku 4.5** for fast, cheap, high-volume work. **Effort / thinking** is **adaptive** — Claude decides how hard to think; you can nudge harder problems with words like “think” or “ultrathink”, but don’t sprinkle them everywhere. **Permissions** are the leash: risky actions are gated unless you’ve allowed them.",
+            "Три важелі формують кожну сесію. **Model**: перемикай через `/model` — **Sonnet 4.6** збалансований дефолт на щодень, **Opus 4.8** для найскладнішого мислення й великих рефакторів, **Haiku 4.5** для швидкої, дешевої, обʼємної роботи. **Effort / thinking** — **адаптивний**: Claude сам вирішує, наскільки думати; складніше можна підштовхнути словами на кшталт «think» чи «ultrathink», але не всюди. **Permissions** — повідець: ризиковані дії під воротами, поки ти їх не дозволив.",
+          ),
+        },
+        {
+          kind: "table",
+          head: [L("Permission mode", "Режим permission"), L("What it does", "Що робить"), L("Use when", "Коли")],
+          rows: [
+            [L("Default (ask)", "Default (ask)"), L("Prompts on first use of each tool", "Питає при першому використанні кожного tool"), L("Normal, interactive work", "Звичайна інтерактивна робота")],
+            [L("Accept edits", "Accept edits"), L("Auto-approves file edits in the working dir", "Авто-схвалює правки файлів у робочій теці"), L("Fast iteration, low-risk edits", "Швидкі ітерації, низький ризик")],
+            [L("Plan mode", "Plan mode"), L("Read-only: research and propose, no changes", "Лише читання: дослідити й запропонувати, без змін"), L("Unfamiliar or risky changes", "Незнайомі чи ризиковані зміни")],
+            [L("Auto Mode", "Auto Mode"), L("Auto-approves with a safety classifier watching", "Авто-схвалює, поки стежить safety-класифікатор"), L("Fewer prompts (research preview)", "Менше запитів (research preview)")],
+            [L("Bypass", "Bypass"), L("Skips prompts except hard blocks", "Пропускає запити, крім жорстких блоків"), L("Sandboxes / CI you fully trust", "Пісочниці / CI, яким повністю довіряєш")],
+          ],
+        },
+        {
+          kind: "code",
+          lang: "json",
+          code: "// .claude/settings.json — rules run deny -> ask -> allow, first match wins\n{\n  \"permissions\": {\n    \"allow\": [\"Bash(npm run test:*)\", \"Edit(src/**)\"],\n    \"ask\":   [\"Bash(git push:*)\"],\n    \"deny\":  [\"Read(./.env)\", \"Bash(rm:*)\"]\n  }\n}",
+          note: L("Tool-scoped rules; a deny always wins over an allow.", "Правила привʼязані до tool; deny завжди перемагає allow."),
+        },
+        {
+          kind: "callout",
+          tone: "senior",
+          title: L("Auto Mode reduces prompts, not risk", "Auto Mode зменшує запити, не ризик"),
+          md: L(
+            "**Auto Mode** is a research preview: a Sonnet-based **safety classifier** inspects each action and auto-approves the routine ones, so you’re interrupted far less. It is a *permission* convenience, not an intelligence upgrade — it still runs real commands in your shell, and it can be wrong. On unfamiliar or production repos, prefer **plan mode** and review the diff. Treat `bypass` as “I own this sandbox”, never as “Claude is safe now”.",
+            "**Auto Mode** — research preview: **safety-класифікатор** на базі Sonnet перевіряє кожну дію й авто-схвалює рутинні, тож тебе перебивають значно рідше. Це зручність permission, а не апгрейд інтелекту — він усе одно виконує справжні команди у твоєму shell і може помилятись. На незнайомих чи продакшн-репо обирай **plan mode** і дивись diff. Сприймай `bypass` як «це моя пісочниця», ніколи як «тепер Claude безпечний».",
+          ),
+        },
+      ],
+    },
+    {
+      id: "t3",
+      title: L("CLAUDE.md — the project brain", "CLAUDE.md — мозок проєкту"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "`CLAUDE.md` is a Markdown file Claude reads at the **start of every session** — your standing instructions, not a knowledge dump. The **project** `CLAUDE.md` (committed to the repo) carries conventions, key commands, architecture notes and do/don’t rules so the whole team shares one brain; your personal **`~/.claude/CLAUDE.md`** applies across all your projects; an enterprise **managed** policy can sit above both. `CLAUDE.local.md` is **deprecated** — pull extra files in with **`@path` imports** instead. In a monorepo, files above the working dir load at launch and subfolder files load on demand. `/init` scaffolds one, `/memory` edits it, and starting a message with `#` appends a memory mid-session.",
+            "`CLAUDE.md` — Markdown-файл, який Claude читає на **початку кожної сесії** — твої постійні інструкції, а не звалище фактів. **Проєктний** `CLAUDE.md` (у репозиторії) несе конвенції, ключові команди, нотатки про архітектуру й правила do/don’t, щоб уся команда мала спільний мозок; твій особистий **`~/.claude/CLAUDE.md`** діє в усіх проєктах; корпоративна **managed**-політика може стояти над обома. `CLAUDE.local.md` **застарів** — підтягуй додаткові файли через **`@path`-імпорти**. У monorepo файли над робочою текою вантажаться на старті, а файли підтек — на вимогу. `/init` створює його, `/memory` редагує, а повідомлення, що починається з `#`, додає memory посеред сесії.",
+          ),
+        },
+        {
+          kind: "code",
+          lang: "markdown",
+          code: "# CLAUDE.md  (project root, committed)\n\n## Commands\n- build: npm run build      - test: npm test\n\n## Conventions\n- TypeScript strict; ESLint must pass before commit.\n- Never edit generated files in /dist.\n\n@docs/architecture.md   <- pull in extra context on demand",
+          note: L("Behaviour and pointers — keep stale facts out; every line costs context each session.", "Поведінка й вказівники — без застарілих фактів; кожен рядок коштує context щосесії."),
+        },
+        {
+          kind: "callout",
+          tone: "tip",
+          title: L("You’re looking at one right now", "Ти просто зараз дивишся на один"),
+          md: L(
+            "This guide is built by Claude from a `CLAUDE.md` in its own repo — the **source of truth** holding the mission, stack decisions, the content model, and a per-session progress log. That is exactly the pattern: a living project brain Claude re-reads every session so it stays consistent across many sittings.",
+            "Цей гайд Claude будує з `CLAUDE.md` у власному репозиторії — **джерела істини** з місією, рішеннями по стеку, моделлю контенту й логом прогресу по сесіях. Це і є патерн: живий мозок проєкту, який Claude перечитує щосесії, щоб лишатися послідовним протягом багатьох підходів.",
+          ),
+        },
+      ],
+    },
+    {
+      id: "t4",
+      title: L("Plan mode & verification", "Plan mode і верифікація"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "By default Claude edits and runs as it goes. **Plan mode** flips it **read-only**: Claude explores the codebase and proposes a plan **without changing anything**, and you approve before a single edit. Cycle into it with **Shift+Tab**. Reach for it on unfamiliar code, big refactors, or anything risky — a cheap way to catch a wrong approach before it writes 30 files. Plan mode pairs with **verification**: don’t accept “it compiled”. Have Claude run the tests and typecheck, **read the diff**, or spin up a sub-agent to review the change (M23). The agent loop is fast; your job is to gate it at the right moments.",
+            "За замовчуванням Claude редагує й запускає на ходу. **Plan mode** робить його **read-only**: Claude досліджує код і пропонує план, **нічого не змінюючи**, а ти схвалюєш до першої правки. Увійти — **Shift+Tab**. Бери його на незнайомому коді, великих рефакторах чи будь-чому ризикованому — дешевий спосіб упіймати хибний підхід, перш ніж він напише 30 файлів. Plan mode працює в парі з **верифікацією**: не приймай «воно скомпілювалось». Хай Claude прожене тести й typecheck, **прочитає diff** або підніме sub-agent для рев’ю зміни (M23). Agent loop швидкий; твоя робота — ставити ворота в потрібні моменти.",
+          ),
+        },
+        {
+          kind: "compare",
+          a: L("Plan mode", "Plan mode"),
+          b: L("Accept-edits / Auto", "Accept-edits / Auto"),
+          rows: [
+            [L("Control", "Контроль"), L("Read-only until you approve a plan", "Лише читання, поки не схвалиш план"), L("Edits as it goes", "Редагує на ходу")],
+            [L("Best for", "Найкраще для"), L("Unfamiliar, risky, large changes", "Незнайомі, ризиковані, великі зміни"), L("Trusted, low-risk iteration", "Довірені ітерації, низький ризик")],
+            [L("Trade-off", "Компроміс"), L("Slower, but bad approaches caught early", "Повільніше, але хибний підхід ловиш рано"), L("Faster, but mistakes land in files", "Швидше, але помилки лягають у файли")],
+          ],
+        },
+      ],
+    },
+    {
+      id: "t5",
+      title: L("MCP in Code", "MCP у Code"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "Code speaks **MCP** just like the Claude apps (M11). Add a server with `claude mcp add <name> --scope local|project|user`: a **project**-scoped server lives in a committed `.mcp.json` so your whole team gets it, **user** scope is personal across projects, **local** is just you in this repo. Transports are **stdio** (a local process) or **HTTP/SSE** (remote). MCP tools appear as **`mcp__<server>__<tool>`** and obey the same permission rules; a server’s prompts become slash commands (`/mcp__server__prompt`) and its resources are referenced with `@server:…`. `/mcp` shows status and handles OAuth.",
+            "Code говорить **MCP** так само, як застосунки Claude (M11). Додай сервер через `claude mcp add <name> --scope local|project|user`: сервер зі scope **project** живе у закоміченому `.mcp.json`, тож його отримує вся команда, **user** — особистий у всіх проєктах, **local** — лише ти в цьому репо. Транспорти — **stdio** (локальний процес) або **HTTP/SSE** (віддалено). MCP-tools зʼявляються як **`mcp__<server>__<tool>`** і підкоряються тим самим permission-правилам; prompts сервера стають slash-командами (`/mcp__server__prompt`), а його resources згадуються через `@server:…`. `/mcp` показує статус і веде OAuth.",
+          ),
+        },
+        {
+          kind: "code",
+          lang: "bash",
+          code: "# add a project server (committed to .mcp.json, shared with the team)\nclaude mcp add github --scope project\n\n# a personal server across all your repos\nclaude mcp add linear --scope user\n\n# inspect status / run OAuth\n/mcp",
+          note: L("Project scope shares the server via git; user scope is yours everywhere.", "Project-scope ділить сервер через git; user-scope — твій усюди."),
+        },
+      ],
+    },
+  ],
+  keyPoints: [
+    L("Same agent, three surfaces (terminal · IDE · CI/headless); it runs in your real shell with your permissions — not a sandbox like Cowork.", "Той самий agent, три поверхні (terminal · IDE · CI/headless); працює у твоєму справжньому shell із твоїми правами — не в пісочниці, як Cowork."),
+    L("Pick the model for the job: Sonnet 4.6 is the balanced default, Opus 4.8 for the hardest reasoning, Haiku 4.5 for speed; thinking effort is adaptive.", "Обирай модель під задачу: Sonnet 4.6 — збалансований дефолт, Opus 4.8 — найскладніше мислення, Haiku 4.5 — швидкість; effort мислення адаптивний."),
+    L("Permissions are allow/ask/deny rules plus modes (default, accept-edits, plan, bypass); rules run deny -> ask -> allow, first match wins; Auto Mode reduces prompts, not risk.", "Permissions — правила allow/ask/deny плюс режими (default, accept-edits, plan, bypass); правила йдуть deny -> ask -> allow, перший збіг виграє; Auto Mode зменшує запити, не ризик."),
+    L("CLAUDE.md is the project brain: committed project file + personal ~/.claude + managed; @imports replace the deprecated CLAUDE.local.md; keep it behaviour, not stale facts.", "CLAUDE.md — мозок проєкту: закомічений проєктний файл + особистий ~/.claude + managed; @imports замінюють застарілий CLAUDE.local.md; тримай поведінку, не застарілі факти."),
+    L("Plan mode keeps Claude read-only until you approve a plan; always verify (tests, diff, sub-agent review). MCP works in Code via claude mcp add and mcp__server__tool.", "Plan mode тримає Claude read-only, поки не схвалиш план; завжди верифікуй (тести, diff, рев’ю sub-agent). MCP працює в Code через claude mcp add і mcp__server__tool."),
+  ],
+  pitfalls: [
+    { title: L("Treating bypass / Auto as safe autonomy", "Сприймати bypass / Auto як безпечну автономність"), body: L("They reduce prompts, not consequences — Claude runs real commands in your real shell. Use plan mode and review diffs on anything you don’t fully trust.", "Вони зменшують запити, не наслідки — Claude виконує справжні команди у твоєму справжньому shell. Використовуй plan mode і дивись diff на всьому, чому не довіряєш повністю.") },
+    { title: L("A bloated CLAUDE.md", "Роздутий CLAUDE.md"), body: L("Dumping facts, secrets or long docs that go stale — it’s instructions, and every line is re-read (and re-paid in context) each session. Keep it lean; use @imports for the rest.", "Звалище фактів, секретів чи довгих доків, що застарівають — це інструкції, і кожен рядок перечитується (і знову оплачується в context) щосесії. Тримай стисло; решту — через @imports.") },
+    { title: L("Skipping verification", "Пропускати верифікацію"), body: L("Accepting edits without running tests or reading the diff. “It compiled” is not “it’s correct” — gate the loop with tests, a diff read, or a review sub-agent.", "Приймати правки без тестів чи читання diff. «Воно скомпілювалось» — це не «воно правильне» — став ворота: тести, читання diff або sub-agent для рев’ю.") },
+  ],
+  interview: [
+    { q: L("When should you reach for plan mode instead of just letting Claude edit?", "Коли брати plan mode замість того, щоб дати Claude редагувати?"), a: L("On unfamiliar code, large refactors, or anything risky. Plan mode keeps Claude read-only — it researches and proposes a plan you approve before any edit — so you catch a wrong approach before it touches 30 files. For small, well-understood changes in a repo you trust, accept-edits is faster. The deciding question is blast radius, not difficulty.", "На незнайомому коді, великих рефакторах чи будь-чому ризикованому. Plan mode тримає Claude read-only — він досліджує й пропонує план, який ти схвалюєш до правок — тож ловиш хибний підхід, перш ніж він торкнеться 30 файлів. Для малих зрозумілих змін у довіреному репо accept-edits швидший. Вирішальне питання — радіус ураження, не складність."), level: "senior" },
+    { q: L("How do project and user CLAUDE.md interact, and what belongs in each?", "Як взаємодіють проєктний і користувацький CLAUDE.md і що в кожному?"), a: L("Project CLAUDE.md is committed and shared — repo conventions, key commands, architecture, do/don’t. User ~/.claude/CLAUDE.md is personal across all your projects — your preferences. A managed/enterprise policy can sit above both. Use @imports to pull in extra files; CLAUDE.local.md is deprecated. Keep all of it behaviour and pointers, not stale facts — every line costs context each session.", "Проєктний CLAUDE.md закомічений і спільний — конвенції репо, ключові команди, архітектура, do/don’t. Користувацький ~/.claude/CLAUDE.md особистий у всіх проєктах — твої вподобання. Managed/enterprise-політика може стояти над обома. Використовуй @imports для додаткових файлів; CLAUDE.local.md застарів. Тримай усе як поведінку й вказівники, не застарілі факти — кожен рядок коштує context щосесії."), level: "senior" },
+    { q: L("What’s the real difference between Cowork and Claude Code?", "Яка справжня різниця між Cowork і Claude Code?"), a: L("Same agent, different surface and guardrails. Cowork is for non-engineers, runs code in an isolated VM, and works the folders you grant. Claude Code is for engineers, runs in your real shell and repo with your real permissions, and is governed by CLAUDE.md plus a permission ruleset. Code is more powerful and more dangerous — which is why permissions and plan mode matter.", "Той самий agent, інша поверхня й запобіжники. Cowork для не-інженерів, виконує код в ізольованій VM і працює з теками, які ти надав. Claude Code для інженерів, працює у твоєму справжньому shell і репо з твоїми правами, керований CLAUDE.md плюс набором permission-правил. Code потужніший і небезпечніший — тому й важливі permissions та plan mode."), level: "senior" },
+  ],
+  seeAlso: ["m15", "m23", "m11", "m25", "m26"],
+  sources: [
+    { title: "Claude Code overview — Claude Code Docs", url: "https://code.claude.com/docs/en/overview" },
+    { title: "Configure permissions — Claude Code Docs", url: "https://code.claude.com/docs/en/permissions" },
+    { title: "Manage Claude’s memory (CLAUDE.md) — Claude Code Docs", url: "https://code.claude.com/docs/en/memory" },
+    { title: "Connect to MCP servers — Claude Code Docs", url: "https://code.claude.com/docs/en/mcp" },
+    { title: "Claude Code GitHub Actions — Claude Code Docs", url: "https://code.claude.com/docs/en/github-actions" },
+  ],
+};
+
+/* ======================================================================
+   M23 · Sub-agents, agent teams & worktrees — fully authored (★ Sub-agent Fan-out, S8)
+   ====================================================================== */
+const m23: Module = {
+  id: "m23",
+  section: "s5",
+  order: 23,
+  level: "staff",
+  title: L("Sub-agents, agent teams & worktrees", "Sub-agents, agent teams і worktrees"),
+  tagline: L(
+    "Fan out into agents with their own context, then merge what comes back — from a single summary-returning sub-agent to a git-coordinated team building in parallel.",
+    "Розгалужуйся в агентів із власним context і зливай те, що повертається — від одного sub-agent, що віддає summary, до git-координованої команди, яка будує паралельно.",
+  ),
+  readMins: 10,
+  mentalModel: L(
+    "One Claude can become many: a sub-agent does a noisy side-quest in its own window and hands back a summary; scale that up and you get parallel sessions, then a git-coordinated team. Fan out, merge back.",
+    "Один Claude може стати багатьма: sub-agent робить галасливий побічний квест у власному вікні й повертає summary; масштабуй це — і маєш паралельні сесії, далі git-координовану команду. Розгалузити, злити назад.",
+  ),
+  topics: [
+    {
+      id: "t1",
+      title: L("Sub-agents: own context, isolation, parallelism", "Sub-agents: власний context, ізоляція, паралелізм"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "A **sub-agent** is a fresh Claude you hand a side-quest to. It runs in its **own context window** with its own system prompt, tool access and permissions, does the noisy work — reading dozens of files, long searches — and returns **only a summary**. The raw material never lands in your main conversation. That buys three things at once: a **clean main context** (exploration stays out of your window), **enforced constraints** (give a “researcher” read-only tools), and **parallelism** — spawn several on independent tasks and they run together. Define reusable ones as Markdown in `.claude/agents/`.",
+            "**Sub-agent** — це свіжий Claude, якому ти даєш побічний квест. Він працює у **власному context window** зі своїм system prompt, доступом до tools і правами, робить галасливу роботу — читає десятки файлів, довгі пошуки — і повертає **лише summary**. Сирий матеріал так і не потрапляє в головну розмову. Це дає три речі заразом: **чистий головний context** (дослідження поза твоїм вікном), **примусові обмеження** (дай «досліднику» лише read-only tools) і **паралелізм** — запусти кількох на незалежних задачах, і вони йдуть разом. Багаторазові описуй як Markdown у `.claude/agents/`.",
+          ),
+        },
+        { kind: "sim", sim: "sub-agent-fanout" },
+        {
+          kind: "code",
+          lang: "markdown",
+          code: "# .claude/agents/security-reviewer.md\n---\nname: security-reviewer\ndescription: Reviews diffs for security issues. Use after writing auth or input-handling code.\ntools: Read, Grep, Glob          # omit to inherit all; here, read-only by design\nmodel: sonnet                    # or: opus | haiku | inherit\n---\nYou are a security reviewer. Inspect the change for injection, authz gaps and\nsecret leaks. Return findings as a short, prioritized list — nothing else.",
+          note: L("Frontmatter (name · description · tools · model) decides when Claude delegates and what the sub-agent may touch.", "Frontmatter (name · description · tools · model) вирішує, коли Claude делегує і чого sub-agent може торкатись."),
+        },
+        {
+          kind: "callout",
+          tone: "senior",
+          title: L("Fan-out trades tokens for time — only on independent work", "Fan-out міняє токени на час — лише на незалежній роботі"),
+          md: L(
+            "Parallel sub-agents finish in about the time of the **slowest** task instead of the **sum** — a big wall-clock win. But each sub-agent re-pays its own context overhead, so you spend **more tokens** (more money). And the win only exists when tasks are **independent**: a dependent chain (B needs A’s output) gets the cost with none of the speed-up. Reach for fan-out when work splits cleanly; keep it sequential when it doesn’t.",
+            "Паралельні sub-agents завершуються приблизно за час **найповільнішої** задачі, а не за **суму** — велика перемога по wall-clock. Але кожен sub-agent наново платить за свій context, тож витрачаєш **більше токенів** (більше грошей). І виграш є лише коли задачі **незалежні**: ланцюг із залежністю (B потребує результат A) дає вартість без прискорення. Бери fan-out, коли робота чисто ділиться; лишай послідовним, коли ні.",
+          ),
+        },
+      ],
+    },
+    {
+      id: "t2",
+      title: L("Three scales: sub-agents → background → teams", "Три масштаби: sub-agents → background → teams"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "“More than one Claude” comes in three scales. **Sub-agents** live inside **one session** (above). **Background agents** are many **independent sessions** running in parallel that you watch from one place — they don’t talk to each other. **Agent teams** are sessions that **do** talk: a **lead** decomposes the job into a shared **task list**, teammates **claim** tasks, each works in its own context (often its own git worktree), they **message** each other, and a finished task **auto-unblocks** the ones that depend on it. Agent teams are **git-coordinated** and launched **Feb 5, 2026 with Opus 4.6** — still experimental, behind a flag.",
+            "«Більш ніж один Claude» буває у трьох масштабах. **Sub-agents** живуть усередині **однієї сесії** (вище). **Background agents** — це багато **незалежних сесій** паралельно, за якими ти стежиш з одного місця — вони не спілкуються між собою. **Agent teams** — сесії, що **таки** спілкуються: **lead** розбиває задачу на спільний **task list**, тіммейти **беруть** задачі, кожен працює у власному context (часто у власному git worktree), вони **обмінюються повідомленнями**, а завершена задача **авторозблоковує** залежні. Agent teams **git-координовані** й вийшли **5 лютого 2026 з Opus 4.6** — досі експериментальні, за прапорцем.",
+          ),
+        },
+        { kind: "figure", fig: "agent-scales", caption: L("From isolated sub-agents in one session, to many parallel sessions watched from one place, to a team whose sessions message each other and coordinate over git.", "Від ізольованих sub-agents в одній сесії, до багатьох паралельних сесій з одного місця, до команди, чиї сесії листуються й координуються через git.") },
+        {
+          kind: "table",
+          head: [L("Scale", "Масштаб"), L("What it is", "Що це"), L("Coordination", "Координація")],
+          rows: [
+            [L("Sub-agents", "Sub-agents"), L("Workers inside one session", "Воркери всередині однієї сесії"), L("Parent spawns, waits, merges summaries", "Батько спавнить, чекає, зливає summaries")],
+            [L("Background agents", "Background agents"), L("Many independent sessions in parallel", "Багато незалежних сесій паралельно"), L("Watched from one place; no talking", "Спостереження з одного місця; без спілкування")],
+            [L("Agent teams", "Agent teams"), L("Sessions that message each other", "Сесії, що листуються"), L("Shared task list + git worktrees; auto-unblock", "Спільний task list + git worktrees; авторозблок")],
+          ],
+        },
+        {
+          kind: "callout",
+          tone: "senior",
+          title: L("Proof of scale: a C compiler by a team of Claudes", "Доказ масштабу: C-компілятор від команди Claude"),
+          md: L(
+            "To stress-test agent teams, Anthropic had a team of **16 Opus 4.6 agents** write a roughly **100,000-line C compiler** (in Rust) that builds the **Linux 6.9** kernel on x86, ARM and RISC-V — coordinating over about **2,000 sessions** via Git, a **lock-file task queue**, and a **Docker container per agent**, mostly hands-off after setup. The lesson isn’t “fire 16 agents at everything” — it’s that with the right coordination substrate (git + tasks + isolation), parallel agents can sustain a genuinely large project.",
+            "Щоб навантажити agent teams, Anthropic доручила команді з **16 агентів Opus 4.6** написати приблизно **100 000-рядковий C-компілятор** (на Rust), що збирає ядро **Linux 6.9** на x86, ARM і RISC-V — координуючись близько **2000 сесій** через Git, **lock-file чергу задач** і **Docker-контейнер на агента**, здебільшого без рук після налаштування. Урок не «кидай 16 агентів на все» — а що з правильним підґрунтям координації (git + задачі + ізоляція) паралельні агенти витягують справді великий проєкт.",
+          ),
+        },
+      ],
+    },
+    {
+      id: "t3",
+      title: L("Git worktrees & parallelization", "Git worktrees і паралелізація"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "How do parallel agents avoid trashing each other’s files? **Git worktrees.** `git worktree add` gives each agent its own working directory **and branch**, backed by the same repository history — so edits never collide on disk. Claude Code can place sub-agent or teammate work in worktrees automatically (the `isolation: worktree` option; by default under `.claude/worktrees/`), and merge the branches at the end.",
+            "Як паралельні агенти не псують файли одне одного? **Git worktrees.** `git worktree add` дає кожному агенту власну робочу теку **й гілку** на спільній історії репозиторію — тож правки не стикаються на диску. Claude Code вміє автоматично класти роботу sub-agent чи тіммейта у worktrees (опція `isolation: worktree`; за замовчуванням у `.claude/worktrees/`) і зливати гілки в кінці.",
+          ),
+        },
+        {
+          kind: "code",
+          lang: "bash",
+          code: "# give each agent its own branch + directory on the same repo\ngit worktree add ../feature-auth feature-auth\ngit worktree add ../feature-api  feature-api\n# ...agents work in parallel, then you merge the branches and test the RESULT",
+          note: L("Same .git history, separate working dirs — no file collisions while they run.", "Спільна історія .git, окремі робочі теки — без зіткнень файлів під час роботи."),
+        },
+        {
+          kind: "callout",
+          tone: "senior",
+          title: L("Worktrees solve file collisions — not logic or runtime ones", "Worktrees розвʼязують зіткнення файлів — не логіки чи runtime"),
+          md: L(
+            "This is the staff-level trap. Worktrees stop two agents from overwriting the **same file**, but two branches can each merge **cleanly** and still produce **broken code** (a semantic conflict — both changed the same function’s assumptions). And agents still share **runtime** state: ports, databases, caches, env. So: decompose by **domain** (not by overlapping files), **merge early and often**, run agents in isolated environments where it matters, and **run the full test suite on the merged result** — a green per-branch build proves nothing about the whole.",
+            "Це пастка рівня staff. Worktrees не дають двом агентам перезаписати **той самий файл**, але дві гілки можуть кожна злитися **чисто** й усе одно дати **зламаний код** (семантичний конфлікт — обидва змінили припущення тієї самої функції). І агенти все ще ділять **runtime**: порти, бази, кеші, env. Тож: розбивай за **доменом** (а не за перетином файлів), **зливай рано й часто**, запускай агентів в ізольованих середовищах, де це важливо, і **ганяй увесь набір тестів на злитому результаті** — зелена збірка по гілці нічого не доводить про ціле.",
+          ),
+        },
+      ],
+    },
+    {
+      id: "t4",
+      title: L("Skills vs sub-agents — when which", "Skills vs sub-agents — що коли"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "Both extend Claude, but in opposite ways. A **Skill** loads packaged expertise into the **same** context and is **auto-invoked** when its description matches — passive, cheap, portable across surfaces, ideal for “do this specific thing well” (fill a PDF, follow our PR checklist). A **sub-agent** runs in a **separate** context you **explicitly delegate** to — active, isolatable, parallelizable, costlier, ideal for “go do a big, noisy job and report back”. They compose: a sub-agent can use skills inside its own window.",
+            "Обидва розширюють Claude, але протилежно. **Skill** вантажить запаковану експертизу в **той самий** context і **авто-викликається**, коли збігається опис — пасивний, дешевий, портативний між поверхнями, ідеальний для «зроби цю конкретну річ добре» (заповнити PDF, пройти наш PR-чеклист). **Sub-agent** працює в **окремому** context, якому ти **явно делегуєш** — активний, ізольовний, паралелізовний, дорожчий, ідеальний для «піди зроби велику галасливу роботу й відзвітуй». Вони поєднуються: sub-agent може користуватись skills у власному вікні.",
+          ),
+        },
+        {
+          kind: "compare",
+          a: L("Skill", "Skill"),
+          b: L("Sub-agent", "Sub-agent"),
+          rows: [
+            [L("Context", "Context"), L("Same window as the conversation", "Те саме вікно, що й розмова"), L("Its own separate window", "Власне окреме вікно")],
+            [L("Invocation", "Виклик"), L("Auto, when the description matches", "Авто, коли збігається опис"), L("Explicit delegation", "Явне делегування")],
+            [L("Parallel?", "Паралельно?"), L("No — runs inline", "Ні — виконується inline"), L("Yes — many at once", "Так — багато водночас")],
+            [L("Cost", "Вартість"), L("Cheap, no extra context", "Дешево, без зайвого context"), L("Higher, its own context", "Вище, власний context")],
+            [L("Best for", "Найкраще для"), L("Reusable “do X well”", "Багаторазове «зроби X добре»"), L("Big, noisy, isolatable jobs", "Великі, галасливі, ізольовні задачі")],
+          ],
+        },
+      ],
+    },
+  ],
+  keyPoints: [
+    L("A sub-agent runs in its own context window and returns only a summary — preserving your main context, enforcing tool limits, and enabling parallel work.", "Sub-agent працює у власному context window і повертає лише summary — береже головний context, примушує ліміти tools і вмикає паралельну роботу."),
+    L("Fan-out trades tokens for time: N parallel sub-agents finish in about the slowest task’s time but cost N separate contexts — and only when the tasks are independent.", "Fan-out міняє токени на час: N паралельних sub-agents завершуються за час найповільнішої задачі, але коштують N окремих context — і лише коли задачі незалежні."),
+    L("Three scales: sub-agents (one session) → background agents (many parallel sessions, no talking) → agent teams (sessions that message and git-coordinate).", "Три масштаби: sub-agents (одна сесія) → background agents (багато паралельних сесій, без спілкування) → agent teams (сесії, що листуються й git-координуються)."),
+    L("Agent teams (git-coordinated; launched Feb 5 2026 with Opus 4.6, experimental) use a shared task list + worktrees; dependencies auto-unblock as tasks complete.", "Agent teams (git-координовані; вийшли 5 лютого 2026 з Opus 4.6, експериментальні) мають спільний task list + worktrees; залежності авторозблоковуються в міру завершення."),
+    L("Worktrees solve file collisions, not semantic or runtime ones — decompose by domain and test the merged result. Skill = same context, auto-invoked; sub-agent = separate context, explicit delegation.", "Worktrees розвʼязують зіткнення файлів, не семантичні чи runtime — розбивай за доменом і тестуй злите. Skill = той самий context, авто-виклик; sub-agent = окремий context, явне делегування."),
+  ],
+  pitfalls: [
+    { title: L("“Parallelize everything”", "«Паралелити все»"), body: L("Fan-out multiplies token cost and gives zero speed-up on dependent task chains. Reserve it for genuinely independent work; keep dependent steps sequential.", "Fan-out множить вартість у токенах і не дає прискорення на ланцюгах із залежностями. Лиши його для справді незалежної роботи; залежні кроки тримай послідовними.") },
+    { title: L("Trusting a clean merge", "Довіряти чистому merge"), body: L("Worktrees prevent file clashes, but two branches can merge into broken logic, and runtime state (ports, DB, cache) is shared. Test the merged whole, not just each branch.", "Worktrees не дають зіткнень файлів, але дві гілки можуть злитися в зламану логіку, а runtime (порти, БД, кеш) — спільний. Тестуй злите ціле, а не лише кожну гілку.") },
+    { title: L("Skill where a sub-agent fits (or vice versa)", "Skill там, де треба sub-agent (і навпаки)"), body: L("A recurring, in-context “do X well” is a Skill; a noisy, isolatable, parallel job is a sub-agent. Picking the wrong one wastes context or money.", "Повторюване «зроби X добре» в межах context — це Skill; галаслива, ізольовна, паралельна задача — sub-agent. Хибний вибір марнує context або гроші.") },
+  ],
+  interview: [
+    { q: L("Why does a sub-agent “save context” if it still does the work?", "Чому sub-agent «економить context», якщо все одно робить роботу?"), a: L("Because the work and all its raw material live in the sub-agent’s own window; only a compact summary returns to the parent, so your main context stays small and on-task. The cost moves elsewhere — each sub-agent re-pays its own base context, so you spend more tokens. That’s the trade: money for a clean window and parallelism.", "Бо робота і весь сирий матеріал живуть у власному вікні sub-agent; до батька повертається лише стислий summary, тож головний context лишається малим і по суті. Вартість зміщується — кожен sub-agent наново платить за свій базовий context, тож токенів більше. Це і є компроміс: гроші за чисте вікно й паралелізм."), level: "staff" },
+    { q: L("When do agent teams beat plain sub-agents?", "Коли agent teams кращі за звичайні sub-agents?"), a: L("When the job is large, long-running, and splits into interdependent pieces that benefit from coordination. Teammates share a task list, message each other, work on separate git worktrees, and finished tasks auto-unblock their dependents. Sub-agents can’t talk or coordinate beyond what the parent passes in and merges — they’re for bounded, independent side-quests.", "Коли задача велика, тривала й ділиться на взаємозалежні частини, яким корисна координація. Тіммейти ділять task list, листуються, працюють на окремих git worktrees, а завершені задачі авторозблоковують залежні. Sub-agents не можуть спілкуватись чи координуватись поза тим, що передає й зливає батько — вони для обмежених незалежних квестів."), level: "staff" },
+    { q: L("A worktree merge is clean — are you safe to ship?", "Merge worktree чистий — можна релізити?"), a: L("No. Worktrees only prevent file-level collisions. Two agents can edit the same function’s assumptions on separate branches and merge into logically broken code, and they share runtime state — ports, databases, caches. Decompose by domain, merge early, and run the full test suite on the merged result; a green per-branch build proves nothing about the whole.", "Ні. Worktrees запобігають лише зіткненням на рівні файлів. Два агенти можуть змінити припущення тієї самої функції на різних гілках і злитися в логічно зламаний код, а ще ділять runtime — порти, бази, кеші. Розбивай за доменом, зливай рано й ганяй увесь набір тестів на злитому результаті; зелена збірка по гілці нічого не доводить про ціле."), level: "staff" },
+  ],
+  seeAlso: ["m22", "m24", "m12", "m10"],
+  sources: [
+    { title: "Create custom subagents — Claude Code Docs", url: "https://code.claude.com/docs/en/sub-agents" },
+    { title: "Orchestrate teams of Claude Code sessions (agent teams) — Claude Code Docs", url: "https://code.claude.com/docs/en/agent-teams" },
+    { title: "Run parallel sessions with git worktrees — Claude Code Docs", url: "https://code.claude.com/docs/en/worktrees" },
+    { title: "Claude Opus 4.6 (agent teams launch) — Anthropic", url: "https://www.anthropic.com/news/claude-opus-4-6" },
+    { title: "Building a C compiler with a team of parallel Claudes — Anthropic Engineering", url: "https://www.anthropic.com/engineering/building-c-compiler" },
+  ],
+};
+
+/* ======================================================================
+   M24 · Hooks, slash commands & advanced agentic patterns — fully authored (S8)
+   ====================================================================== */
+const m24: Module = {
+  id: "m24",
+  section: "s5",
+  order: 24,
+  level: "staff",
+  title: L("Hooks, slash commands & advanced agentic patterns", "Hooks, slash commands і просунуті agentic-патерни"),
+  tagline: L(
+    "Hooks are deterministic gates around the loop; slash commands are shortcuts into it; patterns and harnesses are how you orchestrate it at scale.",
+    "Hooks — детерміновані ворота навколо циклу; slash commands — скорочення в нього; патерни й harnesses — як ти оркеструєш його в масштабі.",
+  ),
+  readMins: 10,
+  mentalModel: L(
+    "The agent loop is probabilistic; hooks make chosen moments guaranteed, commands make them fast, and a harness is the program that runs the whole loop for you.",
+    "Agent loop імовірнісний; hooks роблять обрані моменти гарантованими, commands — швидкими, а harness — це програма, що крутить увесь цикл за тебе.",
+  ),
+  topics: [
+    {
+      id: "t1",
+      title: L("Hooks: deterministic gates around the loop", "Hooks: детерміновані ворота навколо циклу"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "The model is probabilistic; sometimes you need a **guarantee**. A **hook** is a shell command (or HTTP endpoint, MCP tool, or even a mini-agent) that Claude Code runs **automatically** at a fixed point in its lifecycle — so the behaviour happens **every time**, not just when the model remembers. The pivotal event is **PreToolUse**: your hook sees the tool and its input and can **block** the call by returning a deny decision — refuse `rm -rf`, refuse reading `.env`. The others **observe** or **inject**: **PostToolUse** to auto-format/lint/test after every edit, **SessionStart** to load project rules, **Stop**/**SubagentStop** to notify or log.",
+            "Модель імовірнісна; іноді потрібна **гарантія**. **Hook** — це shell-команда (або HTTP-endpoint, MCP-tool чи навіть міні-агент), яку Claude Code запускає **автоматично** у фіксованій точці життєвого циклу — тож поведінка настає **щоразу**, а не коли модель згадає. Ключова подія — **PreToolUse**: твій hook бачить tool і його вхід і може **заблокувати** виклик, повернувши deny-рішення — відмовити `rm -rf`, відмовити читанню `.env`. Інші **спостерігають** чи **інжектять**: **PostToolUse** — авто-format/lint/test після кожної правки, **SessionStart** — завантажити правила проєкту, **Stop**/**SubagentStop** — сповістити чи залогувати.",
+          ),
+        },
+        { kind: "figure", fig: "hook-lifecycle", caption: L("Hooks hang off lifecycle events. PreToolUse can block a call; PostToolUse, SessionStart and Stop observe or inject — and they run deterministically, not when the model remembers.", "Hooks висять на подіях циклу. PreToolUse може блокувати виклик; PostToolUse, SessionStart і Stop спостерігають чи інжектять — і працюють детерміновано, а не коли модель згадає.") },
+        {
+          kind: "table",
+          head: [L("Event", "Подія"), L("Fires", "Спрацьовує"), L("Typical hook", "Типовий hook")],
+          rows: [
+            [L("SessionStart", "SessionStart"), L("Session begins or resumes", "Сесія починається/відновлюється"), L("Inject rules, set up env", "Інжект правил, налаштування env")],
+            [L("UserPromptSubmit", "UserPromptSubmit"), L("You send a prompt", "Ти надсилаєш prompt"), L("Add context, validate input", "Додати context, валідувати вхід")],
+            [L("PreToolUse", "PreToolUse"), L("Before a tool runs — can block", "Перед запуском tool — може блокувати"), L("Refuse rm -rf, protect secrets", "Відмовити rm -rf, берегти секрети")],
+            [L("PostToolUse", "PostToolUse"), L("After a tool succeeds", "Після успіху tool"), L("Format, lint, run tests", "Format, lint, тести")],
+            [L("SubagentStop", "SubagentStop"), L("A sub-agent finishes", "Sub-agent завершує"), L("Collect results, log", "Зібрати результати, лог")],
+            [L("Stop / SessionEnd", "Stop / SessionEnd"), L("Turn ends / session ends", "Хід завершено / сесія завершена"), L("Notify, audit, clean up", "Сповістити, аудит, прибирання")],
+          ],
+        },
+        {
+          kind: "code",
+          lang: "json",
+          code: "// .claude/settings.json — block destructive Bash, format after edits\n{\n  \"hooks\": {\n    \"PreToolUse\": [{ \"matcher\": \"Bash\",\n      \"hooks\": [{ \"type\": \"command\", \"command\": \".claude/hooks/block-rm.sh\" }] }],\n    \"PostToolUse\": [{ \"matcher\": \"Edit|Write\",\n      \"hooks\": [{ \"type\": \"command\", \"command\": \".claude/hooks/format.sh\" }] }]\n  }\n}",
+          note: L("A command hook reads the event JSON on stdin; to block, it returns a permissionDecision of “deny”. Handler types: command · http · mcp_tool · prompt · agent.", "Command-hook читає JSON події зі stdin; щоб заблокувати, повертає permissionDecision «deny». Типи: command · http · mcp_tool · prompt · agent."),
+        },
+        {
+          kind: "callout",
+          tone: "security",
+          title: L("A hook is code execution — trust it like one", "Hook — це виконання коду — і довіра відповідна"),
+          md: L(
+            "Hooks run as **shell commands with your full user permissions**, the moment they’re registered. A malicious hook in a repo you cloned is arbitrary code on your machine — **review hooks before enabling**, especially from plugins or shared settings. Enterprises can restrict to managed, vetted hooks. The flip side is the feature’s strength: because a hook always runs, it’s the right tool for a hard guarantee (block this, always test that) — not a place for judgement that needs the model.",
+            "Hooks виконуються як **shell-команди з твоїми повними правами користувача** з моменту реєстрації. Зловмисний hook у склонованому репо — це довільний код на твоїй машині — **переглядай hooks перед увімкненням**, надто з плагінів чи спільних налаштувань. Підприємства можуть обмежитись керованими, перевіреними hooks. Зворотний бік — і сила фічі: оскільки hook завжди виконується, це правильний інструмент для жорсткої гарантії (заблокуй це, завжди тестуй те) — а не місце для суджень, що потребують моделі.",
+          ),
+        },
+      ],
+    },
+    {
+      id: "t2",
+      title: L("Slash commands & output styles", "Slash commands і output styles"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "**Slash commands** are shortcuts into the loop. Built-ins include `/model`, `/init`, `/memory`, `/permissions`, `/mcp`, `/agents`, `/hooks`, `/clear`. You add your own as Markdown — and crucially **custom commands and Skills have merged**: a `.claude/commands/deploy.md` and a `.claude/skills/deploy/SKILL.md` both create `/deploy`. Commands take `$ARGUMENTS`, can run `!`-prefixed bash and pull in `@`-files, and use frontmatter (`allowed-tools`, `argument-hint`). **Output styles** swap the agent’s persona through its system prompt — built-ins like **Explanatory** and **Learning**, plus custom ones in `.claude/output-styles/`; they change tone and behaviour, **not** the model or its cost.",
+            "**Slash commands** — скорочення в цикл. Вбудовані: `/model`, `/init`, `/memory`, `/permissions`, `/mcp`, `/agents`, `/hooks`, `/clear`. Свої додаєш як Markdown — і важливо: **custom commands і Skills злилися**: `.claude/commands/deploy.md` і `.claude/skills/deploy/SKILL.md` обидва створюють `/deploy`. Команди беруть `$ARGUMENTS`, можуть запускати bash із префіксом `!` і підтягувати `@`-файли, мають frontmatter (`allowed-tools`, `argument-hint`). **Output styles** міняють персону агента через system prompt — вбудовані як **Explanatory** і **Learning**, плюс власні у `.claude/output-styles/`; вони змінюють тон і поведінку, **а не** модель чи її вартість.",
+          ),
+        },
+        {
+          kind: "code",
+          lang: "markdown",
+          code: "# .claude/commands/review.md   ->   invoke as:  /review src/auth\n---\ndescription: Review the given path for bugs and security issues\nargument-hint: <path>\nallowed-tools: Read, Grep, Bash(git diff:*)\n---\nReview $ARGUMENTS. Here is the current diff:\n!git diff\nFocus on correctness and security; return a prioritized list.",
+          note: L("$ARGUMENTS injects the path; ! runs bash; @ inlines a file. The same file placed as a skill makes the same /review command.", "$ARGUMENTS вставляє шлях; ! запускає bash; @ вставляє файл. Той самий файл як skill дає ту саму команду /review."),
+        },
+      ],
+    },
+    {
+      id: "t3",
+      title: L("Patterns: fan-out, pipeline, consensus, research", "Патерни: fan-out, pipeline, consensus, research"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "The same primitives — sub-agents, hooks, commands — compose into repeatable **patterns**. The art is matching the pattern to the shape of the problem: independent work fans out, sequential work pipelines, judgement-heavy work debates, and open questions get researched in parallel.",
+            "Ті самі примітиви — sub-agents, hooks, commands — складаються у повторювані **патерни**. Мистецтво — підібрати патерн до форми задачі: незалежна робота розгалужується, послідовна йде конвеєром, оцінкова — дебатує, а відкриті питання досліджуються паралельно.",
+          ),
+        },
+        {
+          kind: "table",
+          head: [L("Pattern", "Патерн"), L("For", "Для"), L("Built from", "З чого")],
+          rows: [
+            [L("Fan-out / scatter-gather", "Fan-out / scatter-gather"), L("Independent subtasks at once", "Незалежні підзадачі водночас"), L("Parallel sub-agents, then merge", "Паралельні sub-agents, потім злиття")],
+            [L("Pipeline", "Pipeline"), L("Sequential stages", "Послідовні етапи"), L("lint, fix, test, commit — hook-gated", "lint, fix, test, commit — через hooks")],
+            [L("Consensus / debate", "Consensus / debate"), L("Hard judgement calls", "Складні оцінкові рішення"), L("N personas or models, plus a judge", "N персон чи моделей, плюс суддя")],
+            [L("Auto-research", "Auto-research"), L("Open questions", "Відкриті питання"), L("Parallel research agents, synthesized", "Паралельні дослідники, синтез")],
+          ],
+        },
+        {
+          kind: "callout",
+          tone: "tip",
+          title: L("You’ve already met these", "Ти вже їх бачив"),
+          md: L(
+            "The **fan-out** pattern is exactly M23’s Sub-agent Fan-out sim. **Auto-research** is how a deep-research skill works — split a question into sub-questions, research them in parallel, then synthesize and cross-check. **Consensus** counters a single model’s blind spots by making it argue with itself (or another model) before a judge decides.",
+            "Патерн **fan-out** — це і є сим Sub-agent Fan-out із M23. **Auto-research** — так працює deep-research skill: поділи питання на під-питання, дослідь паралельно, потім синтезуй і перехрести. **Consensus** долає сліпі плями однієї моделі, змушуючи її сперечатися із собою (чи з іншою моделлю) перед рішенням судді.",
+          ),
+        },
+      ],
+    },
+    {
+      id: "t4",
+      title: L("Harnesses & orchestration", "Harnesses і оркестрація"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "A **harness** is the software **around** the model — the loop that splits work, spawns agents, hands out tools, verifies output, picks which model does which step, and decides when the job is done. Claude Code ships one harness tuned for coding; **Dynamic Workflows** (research preview, June 2 2026) let Claude **write its own** harness on the fly — a JavaScript orchestration script that can run **up to ~1,000 sub-agents** with a do-work → adversarial-review → apply loop, built to fight **agentic laziness**, **self-preferential bias** (a model trusting its own output) and **goal drift** on huge tasks. For programmatic control you drop to the **Claude Agent SDK** (the renamed Claude Code SDK) and **headless mode** (`claude -p`) to embed the agent in scripts, CI and your own products.",
+            "**Harness** — це програма **навколо** моделі — цикл, що ділить роботу, спавнить агентів, роздає tools, перевіряє вивід, обирає, яка модель робить який крок, і вирішує, коли роботу завершено. Claude Code постачає один harness, налаштований під код; **Dynamic Workflows** (research preview, 2 червня 2026) дають Claude **писати власний** harness на льоту — JavaScript-скрипт оркестрації, що може запускати **до ~1000 sub-agents** із циклом зробити → змагальне рев’ю → застосувати, створений долати **agentic laziness**, **self-preferential bias** (модель довіряє власному виводу) і **goal drift** на величезних задачах. Для програмного контролю спускаєшся до **Claude Agent SDK** (перейменований Claude Code SDK) і **headless** (`claude -p`), щоб вбудувати агента у скрипти, CI і власні продукти.",
+          ),
+        },
+        {
+          kind: "callout",
+          tone: "senior",
+          title: L("Determinism vs autonomy — pick per task", "Детермінізм vs автономність — обирай під задачу"),
+          md: L(
+            "Hooks and pipelines make behaviour **guaranteed and auditable**; harnesses and dynamic workflows make it **scalable but non-deterministic** — Claude writes a different harness each run. For anything with an exact-output contract (a release, a migration), wrap generated orchestration in **tests and review gates**. Use dynamic workflows for exploration and breadth; use hooks for the lines you never want crossed.",
+            "Hooks і pipelines роблять поведінку **гарантованою й аудитованою**; harnesses і dynamic workflows — **масштабованою, але недетермінованою**: Claude пише інший harness щоразу. Для будь-чого з контрактом точного виводу (реліз, міграція) обгортай згенеровану оркестрацію **тестами й воротами рев’ю**. Бери dynamic workflows для дослідження й широти; hooks — для меж, які ніколи не можна переходити.",
+          ),
+        },
+      ],
+    },
+  ],
+  keyPoints: [
+    L("Hooks are deterministic actions on lifecycle events; PreToolUse can block a tool call, PostToolUse/SessionStart/Stop observe or inject — guaranteed behaviour, not “if the model remembers”.", "Hooks — детерміновані дії на подіях циклу; PreToolUse може блокувати виклик tool, PostToolUse/SessionStart/Stop спостерігають чи інжектять — гарантована поведінка, а не «якщо модель згадає»."),
+    L("Configure hooks in settings.json (event → matcher → handler); handler types are command, http, mcp_tool, prompt, agent; a command hook returns a “deny” decision to block.", "Налаштовуй hooks у settings.json (подія → matcher → handler); типи: command, http, mcp_tool, prompt, agent; command-hook повертає рішення «deny», щоб заблокувати."),
+    L("Slash commands are shortcuts; custom commands and Skills have merged (.claude/commands/x.md or skills/x/SKILL.md both make /x); output styles change persona via the system prompt, not the model.", "Slash commands — скорочення; custom commands і Skills злилися (.claude/commands/x.md чи skills/x/SKILL.md обидва дають /x); output styles міняють персону через system prompt, не модель."),
+    L("Patterns compose sub-agents + hooks + commands: fan-out, pipeline, consensus/debate, auto-research — match the pattern to the problem’s shape.", "Патерни складають sub-agents + hooks + commands: fan-out, pipeline, consensus/debate, auto-research — підбирай патерн під форму задачі."),
+    L("A harness is the orchestration around the model; Dynamic Workflows (June 2026, research preview) let Claude write its own JS harness (up to ~1,000 sub-agents); the Claude Agent SDK + headless -p give programmatic control.", "Harness — це оркестрація навколо моделі; Dynamic Workflows (червень 2026, research preview) дають Claude писати власний JS-harness (до ~1000 sub-agents); Claude Agent SDK + headless -p дають програмний контроль."),
+  ],
+  pitfalls: [
+    { title: L("Using a hook where a prompt belongs (or vice versa)", "Hook там, де треба prompt (і навпаки)"), body: L("Hooks are for guarantees — block, format, test. Don’t encode model judgement in a hook; and don’t rely on the model to “always” lint — that’s a hook’s job.", "Hooks — для гарантій: заблокувати, відформатувати, протестувати. Не закладай у hook судження моделі; і не покладайся на модель, що вона «завжди» лінтить — це робота hook.") },
+    { title: L("Untrusted hooks and commands", "Недовірені hooks і commands"), body: L("A hook or command file in a cloned repo runs with your permissions — arbitrary code execution. Review before enabling; orgs can lock to managed hooks.", "Файл hook чи command у склонованому репо виконується з твоїми правами — довільне виконання коду. Переглянь перед увімкненням; організації можуть обмежитись керованими hooks.") },
+    { title: L("Treating harnesses as deterministic", "Вважати harnesses детермінованими"), body: L("Dynamic workflows write a new harness each run. For exact-output work, gate generated orchestration with tests; don’t assume two runs produce the same plan.", "Dynamic workflows пишуть новий harness щоразу. Для роботи з точним виводом став ворота-тести на згенеровану оркестрацію; не вважай, що два запуски дадуть той самий план.") },
+  ],
+  interview: [
+    { q: L("Hook or CLAUDE.md instruction — when do you use each?", "Hook чи інструкція в CLAUDE.md — коли що?"), a: L("CLAUDE.md asks the model to behave a certain way — probabilistic, and it can be ignored under load. A hook makes it happen — deterministic, every time. Use CLAUDE.md for guidance and preferences; use a PreToolUse/PostToolUse hook for hard guarantees: block dangerous commands, always format and test. If “sometimes” isn’t acceptable, it’s a hook.", "CLAUDE.md просить модель поводитись певним чином — імовірнісно, і під навантаженням може ігноруватись. Hook робить це — детерміновано, щоразу. Бери CLAUDE.md для настанов і вподобань; PreToolUse/PostToolUse-hook — для жорстких гарантій: блокувати небезпечні команди, завжди форматувати й тестувати. Якщо «іноді» неприйнятно — це hook."), level: "staff" },
+    { q: L("How would you make sure Claude can never run a destructive command?", "Як гарантувати, що Claude ніколи не виконає руйнівну команду?"), a: L("Belt and suspenders, both deterministic: a deny permission rule (e.g. Bash(rm:*)) plus a PreToolUse hook matching Bash that inspects the command and returns a “deny” decision. Neither relies on the model choosing well, and the hook can encode arbitrary logic the rule can’t.", "Подвійний запобіжник, обидва детерміновані: deny-правило permission (напр. Bash(rm:*)) плюс PreToolUse-hook на Bash, що перевіряє команду й повертає рішення «deny». Жоден не покладається на вдалий вибір моделі, а hook може закодувати довільну логіку, яку правило не може."), level: "staff" },
+    { q: L("What do Dynamic Workflows solve over plain sub-agent fan-out?", "Що Dynamic Workflows розвʼязують поверх звичайного fan-out?"), a: L("At large scale a fixed harness plus manual fan-out hits agentic laziness, self-preferential verification, and goal drift. Dynamic workflows let Claude generate a task-specific harness — a JS orchestrator that can coordinate up to ~1,000 sub-agents with built-in adversarial review and an apply loop — trading determinism for scale. You gate the output with tests when correctness is contractual.", "На великому масштабі фіксований harness плюс ручний fan-out натикається на agentic laziness, самопреференційну перевірку й goal drift. Dynamic workflows дають Claude згенерувати harness під задачу — JS-оркестратор, що координує до ~1000 sub-agents із вбудованим змагальним рев’ю й циклом застосування — міняючи детермінізм на масштаб. Вивід ставиш під ворота-тести, коли коректність контрактна."), level: "staff" },
+  ],
+  seeAlso: ["m23", "m22", "m25", "m13"],
+  sources: [
+    { title: "Hooks reference — Claude Code Docs", url: "https://code.claude.com/docs/en/hooks" },
+    { title: "Automate actions with hooks — Claude Code Docs", url: "https://code.claude.com/docs/en/hooks-guide" },
+    { title: "Slash commands — Claude Code Docs", url: "https://code.claude.com/docs/en/slash-commands" },
+    { title: "Output styles — Claude Code Docs", url: "https://code.claude.com/docs/en/output-styles" },
+    { title: "A harness for every task: dynamic workflows in Claude Code — Claude", url: "https://claude.com/blog/a-harness-for-every-task-dynamic-workflows-in-claude-code" },
+  ],
+};
+
 /* ---- assembled, ordered, and indexed ------------------------------------ */
-export const MODULES: Module[] = [...planned, m6, m7, m8, m9, m10, m11, m12, m13, m14, m15, m16, m17, m18, m19, m20, m21].sort((a, b) => a.order - b.order);
+export const MODULES: Module[] = [...planned, m6, m7, m8, m9, m10, m11, m12, m13, m14, m15, m16, m17, m18, m19, m20, m21, m22, m23, m24].sort((a, b) => a.order - b.order);
 
 export function sectionById(id: string): Section | undefined {
   return SECTIONS.find((s) => s.id === id);
