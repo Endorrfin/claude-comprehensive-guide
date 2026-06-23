@@ -78,12 +78,13 @@ type Block =
 
 ## D. The modules
 
-> **Build status (updated 2026-06-23, through S6).** Authored ✅ = M6, M7, M8, M9, M10, M11, M12, M13,
-> M14, M15, M16, M17, M18 (**13 / 28**). Sections **II & III complete**; Section **IV** done through M18
-> (**M19 pending**). Sections I, V, VI are navigable skeletons (planned topics only). This file is the
-> **seed plan**; where verification refined a topic, the authored content + the correction note live in
-> `concepts.ts` and `CLAUDE.md` §14 (e.g. M17 "cron-style timing" → preset cadences + the awake rule;
-> M18's two distinct "tiers" — *acting* connector→browser→screen vs *access* View/Click/Full).
+> **Build status (updated 2026-06-23, through S7).** Authored ✅ = M6–M21 (**16 / 28**). Sections **II, III
+> & IV complete**; Section **V** started (M20, M21 done; **M22–M24 pending**). Sections I, VI are navigable
+> skeletons (planned topics only). This file is the **seed plan**; where verification refined a topic, the
+> authored content + the correction note live in `concepts.ts` and `CLAUDE.md` §14 (e.g. M19 connectors &
+> plugins are **account-level, not project-scoped**; M21 "shared context" = the separate **Work across
+> Microsoft 365 apps** feature, and the Office agents are **GA on all paid plans**; M20 Chrome on Pro =
+> Haiku-only, with protected actions always gated).
 
 ### Section I · Foundations & first steps  `[beginner]`  — the on-ramp (skippable for pros)
 
@@ -229,7 +230,7 @@ type Block =
 - 18.4 Link & financial safety
 - Visuals: `[diagram]` 3 tiers of acting on the world (light animation) · `[table]` tier capabilities · `[callout security]` boundaries
 
-**M19 · Cowork projects, connectors, plugins & mobile**
+**M19 · Cowork projects, connectors, plugins & mobile**  ✅ authored (S7) — figures: cowork-project · dispatch-flow
 - 19.1 Cowork projects — persistent context for recurring work
 - 19.2 Connectors in Cowork
 - 19.3 Plugins & role workflows
@@ -238,14 +239,14 @@ type Block =
 
 ### Section V · Claude in your tools & code  `[middle → staff]`
 
-**M20 · Claude in Chrome**
+**M20 · Claude in Chrome**  ✅ authored (S7) — incl. light Browser-Agent-Loop interactive
 - 20.1 What the browser agent does
 - 20.2 Navigate / click / fill forms / extract
 - 20.3 Recording workflows
 - 20.4 Scheduled web tasks; safety
 - Visuals: `[diagram]` browser-agent loop · `[table]` capabilities · `[callout]` safety/permissions
 
-**M21 · Claude for Excel & PowerPoint**
+**M21 · Claude for Excel & PowerPoint**  ✅ authored (S7) — figure: excel-citations
 - 21.1 Excel agent — multi-tab, cell-level citations
 - 21.2 Safe edits & formula dependencies
 - 21.3 Pivot tables & formatting via language

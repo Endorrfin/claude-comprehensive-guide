@@ -6,7 +6,11 @@ import { TokenBudgetSim } from "../components/sims/TokenBudgetSim";
 import { McpFlowSim } from "../components/sims/McpFlowSim";
 import { ProgressiveDisclosureSim } from "../components/sims/ProgressiveDisclosureSim";
 import { ScheduleTimelineSim } from "../components/sims/ScheduleTimelineSim";
+import { BrowserAgentLoopSim } from "../components/sims/BrowserAgentLoopSim";
 import { CoworkArchitecture } from "../components/figures/CoworkArchitecture";
+import { CoworkProject } from "../components/figures/CoworkProject";
+import { DispatchFlow } from "../components/figures/DispatchFlow";
+import { ExcelCitations } from "../components/figures/ExcelCitations";
 import { McpArchitecture } from "../components/figures/McpArchitecture";
 import { SkillAnatomy } from "../components/figures/SkillAnatomy";
 import { SkillBuildPipeline } from "../components/figures/SkillBuildPipeline";
@@ -27,6 +31,7 @@ export const SIMS: Record<string, React.FC> = {
   "mcp-flow": McpFlowSim,
   "progressive-disclosure": ProgressiveDisclosureSim,
   "schedule-timeline": ScheduleTimelineSim,
+  "browser-agent-loop": BrowserAgentLoopSim,
 };
 
 /** Static diagrams, referenced by key from concepts.ts blocks (kind: 'figure'). */
@@ -38,6 +43,9 @@ export const FIGURES: Record<string, React.FC> = {
   "context-window": ContextWindow,
   "file-flow": FileFlow,
   "acting-tiers": ActingTiers,
+  "cowork-project": CoworkProject,
+  "dispatch-flow": DispatchFlow,
+  "excel-citations": ExcelCitations,
   "mcp-architecture": McpArchitecture,
   "skill-anatomy": SkillAnatomy,
   "skill-build-pipeline": SkillBuildPipeline,
