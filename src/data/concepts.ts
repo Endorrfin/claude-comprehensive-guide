@@ -3030,65 +3030,7 @@ const m14: Module = {
    Planned modules (topics carry over from CURRICULUM.md; bodies fill in)
    ====================================================================== */
 const planned: Module[] = [
-  // Section I
-  mod("m1", "s1", 1, "beginner",
-    L("What is Claude", "Що таке Claude"),
-    L("Models, plans, apps, and what Claude can and can't do.", "Моделі, плани, застосунки і що Claude вміє та чого ні."),
-    L("An assistant that reasons over a context window and can use tools.", "Асистент, що міркує в межах context window і вміє користуватись інструментами."),
-    6,
-    [
-      ["The mental model: assistant + context + tools", "Ментальна модель: асистент + context + інструменти"],
-      ["The model family: Opus, Sonnet, Haiku", "Сімейство моделей: Opus, Sonnet, Haiku"],
-      ["Where Claude lives: web, desktop, mobile, Code, Chrome", "Де живе Claude: web, desktop, mobile, Code, Chrome"],
-      ["Plans & access", "Плани та доступ"],
-      ["What Claude can and can't do", "Що Claude вміє і чого не вміє"],
-    ], ["m2", "m3", "m27"]),
-  mod("m2", "s1", 2, "beginner",
-    L("Interface & settings tour", "Інтерфейс і огляд налаштувань"),
-    L("Know where every lever is before you pull it.", "Знай, де кожен важіль, перш ніж його тягнути."),
-    L("A short tour so nothing in the UI is a mystery.", "Короткий тур, щоб у UI не лишилось загадок."),
-    7,
-    [
-      ["Chat layout & the message box", "Розкладка чату й поле вводу"],
-      ["Settings: profile, appearance, voices", "Налаштування: профіль, вигляд, voices"],
-      ["Privacy, data controls & billing", "Приватність, дані та білінг"],
-      ["Organizing chats & incognito", "Організація чатів та incognito"],
-      ["Keyboard shortcuts", "Гарячі клавіші"],
-    ], ["m1", "m3"]),
-  mod("m3", "s1", 3, "beginner",
-    L("Talking to Claude — prompting basics", "Спілкування з Claude — основи prompting"),
-    L("How requests become results.", "Як запити перетворюються на результат."),
-    L("Everything Claude knows in a chat lives in its context — say what matters.", "Усе, що Claude знає в чаті, лежить у context — кажи головне."),
-    7,
-    [
-      ["What a prompt is and how Claude reads it", "Що таке prompt і як Claude його читає"],
-      ["Context: what Claude knows in a chat", "Context: що Claude знає в чаті"],
-      ["Being specific: task, format, constraints", "Конкретика: задача, формат, обмеження"],
-      ["Iterating & follow-ups", "Ітерації та уточнення"],
-      ["Common beginner mistakes", "Типові помилки новачків"],
-    ], ["m6", "m1"]),
-  mod("m4", "s1", 4, "beginner",
-    L("Attachments, writing styles & voice", "Вкладення, writing styles і голос"),
-    L("Bring your material in; shape the voice out.", "Принось свій матеріал; форматуй голос на виході."),
-    L("Inputs in (files, images, voice), style out.", "Входи (файли, зображення, голос), стиль на виході."),
-    6,
-    [
-      ["Attaching files & images", "Додавання файлів і зображень"],
-      ["Writing styles: preset & custom", "Writing styles: готові та власні"],
-      ["Voice input & talking to Claude", "Голосовий ввід і розмова з Claude"],
-      ["Output formats", "Формати виводу"],
-    ], ["m3", "m8"]),
-  mod("m5", "s1", 5, "beginner",
-    L("Memory & chat search", "Memory і пошук чатів"),
-    L("What Memory stores, how to control it, and finding past chats.", "Що зберігає Memory, як ним керувати і як знайти старі чати."),
-    L("Memory is durable context that survives across chats.", "Memory — це тривкий context, що живе між чатами."),
-    6,
-    [
-      ["What Memory is & what it stores", "Що таке Memory і що він зберігає"],
-      ["Controlling memory: view, edit, forget", "Керування memory: перегляд, редагування, forget"],
-      ["Importing memories", "Імпорт memories"],
-      ["Finding past chats", "Пошук минулих чатів"],
-    ], ["m7", "m2"]),
+  // Section I  (m1 · m2 · m3 · m4 · m5 are fully authored below)
 
   // Section II  (m6 · m7 · m8 · m9 · m10 are fully authored above)
 
@@ -3647,8 +3589,673 @@ const m24: Module = {
   ],
 };
 
+/* ======================================================================
+   SECTION I · Foundations & first steps (beginner on-ramp) — authored S9.
+   Web-verified 2026-06-23: model lineup & plans, surfaces, the interface,
+   attachments (chat uploads 500 MB/file · 20/chat), styles→Skills migration,
+   voice mode, Memory (all plans incl. Free since 2026-03) & chat search (paid).
+   ====================================================================== */
+const m1: Module = {
+  id: "m1",
+  section: "s1",
+  order: 1,
+  level: "beginner",
+  title: L("What is Claude", "Що таке Claude"),
+  tagline: L(
+    "An AI assistant you talk to in plain language — it reasons over what's in front of it and, when given tools, gets real work done.",
+    "AI-асистент, з яким говориш звичайною мовою — він міркує над тим, що перед ним, а з інструментами виконує реальну роботу.",
+  ),
+  readMins: 7,
+  mentalModel: L(
+    "Claude reads everything in its context window, reasons, and (when you allow it) uses tools to act — assistant + context + tools.",
+    "Claude читає все у своєму context window, міркує і (коли дозволяєш) користується інструментами, щоб діяти — асистент + context + інструменти.",
+  ),
+  topics: [
+    {
+      id: "t1",
+      title: L("The mental model: assistant + context + tools", "Ментальна модель: асистент + context + інструменти"),
+      blocks: [
+        { kind: "prose", md: L(
+          "**Claude** is an AI assistant made by Anthropic. You talk to it in plain language and it writes, explains, analyzes and reasons with you. The one picture to keep: Claude reads everything currently in its **context window** — your message, attached files, the conversation so far, your instructions and memory — reasons over it, and replies. Give it **tools** (web search, file access, connectors) and it can also *act*: look things up, read and write files, drive other apps. Everything else in this guide builds on those three pieces.",
+          "**Claude** — це AI-асистент від Anthropic. Ти говориш із ним звичайною мовою, а він пише, пояснює, аналізує й міркує разом з тобою. Головна картина: Claude читає все, що зараз у його **context window** — твоє повідомлення, прикріплені файли, попередню розмову, твої інструкції та memory — міркує над цим і відповідає. Дай йому **інструменти** (web search, доступ до файлів, connectors) — і він зможе ще й *діяти*: шукати, читати й писати файли, керувати застосунками. Усе інше в цьому гайді будується на цих трьох частинах.",
+        ) },
+        { kind: "figure", fig: "claude-mental-model", caption: L("Claude reasons over its context window and, with tools, acts on the world — then answers.", "Claude міркує над своїм context window і, маючи інструменти, діє у світі — а тоді відповідає.") },
+        { kind: "callout", tone: "tip", title: L("It only knows what's in the window", "Він знає лише те, що у вікні"), md: L(
+          "Claude has no hidden access to your computer, accounts or the live internet. If it should know something, put it in the chat — attach the file, paste the text, or connect a tool.",
+          "У Claude немає прихованого доступу до твого компʼютера, акаунтів чи живого інтернету. Якщо він має щось знати — поклади це в чат: прикріпи файл, встав текст або під'єднай інструмент.",
+        ) },
+      ],
+    },
+    {
+      id: "t2",
+      title: L("The model family: Opus, Sonnet, Haiku", "Сімейство моделей: Opus, Sonnet, Haiku"),
+      blocks: [
+        { kind: "prose", md: L(
+          "\"Claude\" is a **family** of models that trade speed for depth. Three are selectable in the apps: **Haiku** (fastest, lightest), **Sonnet** (the balanced default), and **Opus** (the most capable, for hard reasoning and long agentic work). They work the same way; you just pick the one that fits the job. Today the flagship is **Opus 4.8**, the balanced model is **Sonnet 4.6**, and the fast one is **Haiku 4.5**.",
+          "\"Claude\" — це **сімейство** моделей, що балансують швидкість і глибину. У застосунках доступні три: **Haiku** (найшвидша, найлегша), **Sonnet** (збалансована за замовчуванням) і **Opus** (найпотужніша, для складних міркувань і довгих agentic-задач). Працюють вони однаково; ти просто обираєш потрібну. Сьогодні флагман — **Opus 4.8**, збалансована — **Sonnet 4.6**, швидка — **Haiku 4.5**.",
+        ) },
+        { kind: "table",
+          head: [L("Model", "Модель"), L("Best for", "Найкраще для"), L("Context window", "Context window"), L("Cost / speed", "Вартість / швидкість")],
+          rows: [
+            [L("Opus 4.8", "Opus 4.8"), L("Hard reasoning, long agentic tasks, coding", "Складні міркування, довгі agentic-задачі, код"), L("1M tokens", "1M токенів"), L("Most capable · slowest · priciest", "Найпотужніша · найповільніша · найдорожча")],
+            [L("Sonnet 4.6", "Sonnet 4.6"), L("The everyday default — speed + smarts", "Щоденний дефолт — швидкість + розум"), L("1M tokens", "1M токенів"), L("Balanced", "Збалансована")],
+            [L("Haiku 4.5", "Haiku 4.5"), L("Quick answers, summaries, high volume", "Швидкі відповіді, підсумки, великі обсяги"), L("200K tokens", "200K токенів"), L("Fastest · cheapest", "Найшвидша · найдешевша")],
+          ],
+          caption: L("In the apps you just pick a model; the cost/limits are handled by your plan (M10 covers tokens & cost). Verified Jun 2026.", "У застосунках ти просто обираєш модель; вартість/ліміти залежать від плану (M10 — про токени й вартість). Перевірено: червень 2026."),
+        },
+        { kind: "callout", tone: "senior", title: L("Knowledge cutoff", "Межа знань (knowledge cutoff)"), md: L(
+          "Each model is trained up to a date and has no built-in knowledge after it (Opus 4.8 is reliable through about **January 2026**). For anything more recent, Claude must **web-search**. Anthropic also ships more models on its developer platform — the three above are what you select in the chat apps.",
+          "Кожна модель навчена до певної дати й не має вбудованих знань після неї (Opus 4.8 надійна приблизно до **січня 2026**). Для свіжішого Claude мусить робити **web-search**. Anthropic випускає й інші моделі на платформі для розробників — але в чат-застосунках ти обираєш саме ці три.",
+        ) },
+      ],
+    },
+    {
+      id: "t3",
+      title: L("Where Claude lives", "Де живе Claude"),
+      blocks: [
+        { kind: "prose", md: L(
+          "You reach Claude in many places, all powered by the same models. The **apps** — web (claude.ai), **desktop** (macOS/Windows) and **mobile** (iOS/Android) — are the chat experience. Beyond chat, the same Claude shows up as an **agent** inside your tools: **Cowork** (a desktop agent that works your files), **Claude Code** (coding in the terminal/IDE), **Claude in Chrome** (a browser agent), and **Claude for Excel & PowerPoint** (Microsoft 365 add-ins). This guide covers them all — start with the apps.",
+          "Дістатися Claude можна в багатьох місцях, і всі вони працюють на тих самих моделях. **Застосунки** — web (claude.ai), **desktop** (macOS/Windows) і **mobile** (iOS/Android) — це чат. Поза чатом той самий Claude зʼявляється як **agent** у твоїх інструментах: **Cowork** (desktop-агент, що працює з файлами), **Claude Code** (код у терміналі/IDE), **Claude in Chrome** (агент у браузері) та **Claude for Excel & PowerPoint** (add-ins для Microsoft 365). Гайд охоплює все — почни із застосунків.",
+        ) },
+        { kind: "figure", fig: "where-claude-lives", caption: L("One family of models powers the chat apps and the agentic surfaces in your tools.", "Одне сімейство моделей живить чат-застосунки й agentic-поверхні у твоїх інструментах.") },
+        { kind: "callout", tone: "tip", title: L("One account, many surfaces", "Один акаунт, багато поверхонь"), md: L(
+          "Your plan and settings follow you across web, desktop and mobile. The agentic surfaces (Cowork, Code, Chrome, Office) are mostly on **paid** plans — the next topic.",
+          "Твій план і налаштування переходять разом із тобою між web, desktop і mobile. Agentic-поверхні (Cowork, Code, Chrome, Office) переважно на **платних** планах — про це далі.",
+        ) },
+      ],
+    },
+    {
+      id: "t4",
+      title: L("Plans & access", "Плани та доступ"),
+      blocks: [
+        { kind: "prose", md: L(
+          "Claude has a free tier plus paid plans that raise your usage limits and unlock models and features. **Free** gives you the apps with Haiku and Sonnet, web search and Memory. **Pro** adds Opus, much higher limits, and the agentic surfaces (Cowork, Claude Code). **Max** multiplies limits further (two tiers). **Team** and **Enterprise** add seats, admin controls and collaboration. Everything in this beginner block works on **Free**.",
+          "У Claude є безкоштовний рівень і платні плани, що піднімають ліміти та відкривають моделі й функції. **Free** дає застосунки з Haiku і Sonnet, web search і Memory. **Pro** додає Opus, значно вищі ліміти та agentic-поверхні (Cowork, Claude Code). **Max** множить ліміти ще більше (два рівні). **Team** і **Enterprise** додають місця, адмін-контролі та співпрацю. Усе в цьому блоці для новачків працює на **Free**.",
+        ) },
+        { kind: "table",
+          head: [L("Plan", "План"), L("Roughly", "Приблизно"), L("What you get", "Що отримуєш")],
+          rows: [
+            [L("Free", "Free"), L("$0", "$0"), L("Apps with Haiku + Sonnet, web search, Memory, 5 projects", "Застосунки з Haiku + Sonnet, web search, Memory, 5 projects")],
+            [L("Pro", "Pro"), L("~$20 / mo", "~$20 / міс"), L("Adds Opus, ~5× usage, Projects, Cowork, Claude Code", "Додає Opus, ~5× ліміту, Projects, Cowork, Claude Code")],
+            [L("Max", "Max"), L("~$100 or ~$200 / mo", "~$100 або ~$200 / міс"), L("5× or 20× Pro usage, priority access to new models", "5× або 20× ліміту Pro, пріоритетний доступ до нових моделей")],
+            [L("Team", "Team"), L("from ~$25 / seat / mo", "від ~$25 / місце / міс"), L("Pro features for a team + admin & collaboration", "Можливості Pro для команди + адмін і співпраця")],
+            [L("Enterprise", "Enterprise"), L("Custom", "За домовленістю"), L("Org-wide security, SSO, advanced controls", "Безпека рівня організації, SSO, розширені контролі")],
+          ],
+          caption: L("Prices and limits change — check claude.com/pricing for today's numbers. Verified Jun 2026.", "Ціни й ліміти змінюються — актуальні цифри на claude.com/pricing. Перевірено: червень 2026."),
+        },
+        { kind: "callout", tone: "tip", title: L("Don't overthink the plan", "Не переускладнюй вибір плану"), md: L(
+          "Start Free. Upgrade to **Pro** when you hit usage limits or want **Opus** and the agentic tools (Cowork, Code). You can change or cancel anytime in Settings → Billing.",
+          "Почни з Free. Переходь на **Pro**, коли впираєшся в ліміти або хочеш **Opus** та agentic-інструменти (Cowork, Code). Змінити чи скасувати — будь-коли в Settings → Billing.",
+        ) },
+      ],
+    },
+    {
+      id: "t5",
+      title: L("What Claude can & can't do", "Що Claude вміє і чого ні"),
+      blocks: [
+        { kind: "prose", md: L(
+          "Claude is strong at language-shaped work: writing and editing, explaining and tutoring, summarizing long material, analyzing data and documents, reasoning through problems, and reading images (vision). With tools it can search the web, run code, and work your files. **What it can't do:** it knows nothing that isn't in its context or training — no live access to your accounts, files or the internet unless you connect a tool or attach the material. It can also be **confidently wrong** (hallucinate), especially on facts, numbers and anything after its knowledge cutoff. Verify what matters.",
+          "Claude сильний у роботі з мовою: писати й редагувати, пояснювати й навчати, підсумовувати довгі матеріали, аналізувати дані й документи, міркувати над задачами та читати зображення (vision). З інструментами він шукає в інтернеті, запускає код і працює з файлами. **Чого він не вміє:** він не знає нічого поза своїм context чи навчанням — немає живого доступу до акаунтів, файлів чи інтернету, поки ти не під'єднаєш інструмент або не прикріпиш матеріал. Він також може **впевнено помилятися** (hallucinate), особливо щодо фактів, чисел і всього після knowledge cutoff. Перевіряй важливе.",
+        ) },
+        { kind: "compare",
+          a: L("Claude is great at", "Claude чудовий у"),
+          b: L("Be careful with", "Будь обережним із"),
+          rows: [
+            [L("Task type", "Тип задачі"), L("Writing, summarizing, explaining, brainstorming", "Письмо, підсумки, пояснення, brainstorming"), L("Exact facts/figures with no source", "Точні факти/цифри без джерела")],
+            [L("Knowledge", "Знання"), L("Reasoning over what you give it", "Міркування над тим, що ти даєш"), L("Anything recent — needs web search", "Усе свіже — потрібен web search")],
+            [L("Math / logic", "Математика / логіка"), L("Step-by-step reasoning", "Покрокові міркування"), L("Silent arithmetic — ask it to show work / use code", "Мовчазна арифметика — проси показати роботу / код")],
+            [L("Output", "Результат"), L("Drafts you refine", "Чернетки, які ти доопрацьовуєш"), L("Treating first output as final truth", "Сприйняття першого виводу як істини")],
+          ],
+        },
+        { kind: "callout", tone: "senior", title: L("Trust, but verify", "Довіряй, але перевіряй"), md: L(
+          "When Claude searches, it can cite sources — ask for them. For high-stakes facts, math or code, have it show its reasoning or run code, then check. A confident tone is not evidence (more in M25).",
+          "Коли Claude шукає, він може наводити джерела — проси їх. Для важливих фактів, математики чи коду нехай покаже міркування або запустить код, а тоді перевір. Впевнений тон — не доказ (детальніше в M25).",
+        ) },
+      ],
+    },
+  ],
+  keyPoints: [
+    L("Claude is an assistant that reasons over its context window and can use tools to act.", "Claude — асистент, що міркує над context window і вміє діяти інструментами."),
+    L("It only knows what's in its context or training — attach material or connect a tool for the rest.", "Він знає лише те, що в його context чи навчанні — для решти прикріпи матеріал або під'єднай інструмент."),
+    L("Three models in the apps: Opus 4.8 (most capable), Sonnet 4.6 (balanced default), Haiku 4.5 (fastest).", "Три моделі в застосунках: Opus 4.8 (найпотужніша), Sonnet 4.6 (збалансований дефолт), Haiku 4.5 (найшвидша)."),
+    L("Same Claude, many surfaces: web/desktop/mobile apps + Cowork, Code, Chrome, Excel/PowerPoint.", "Той самий Claude, багато поверхонь: web/desktop/mobile + Cowork, Code, Chrome, Excel/PowerPoint."),
+    L("Start Free; Pro adds Opus and the agentic tools. Claude can be confidently wrong — verify what matters.", "Почни з Free; Pro додає Opus і agentic-інструменти. Claude може впевнено помилятися — перевіряй важливе."),
+  ],
+  pitfalls: [
+    { title: L("Expecting live knowledge", "Очікувати живих знань"), body: L("\"What's today's price of X?\" with no web search gives stale or invented answers — enable search or attach the data.", "\"Яка сьогодні ціна X?\" без web search дає застарілі або вигадані відповіді — увімкни пошук або прикріпи дані.") },
+    { title: L("Assuming it can see your files or screen", "Думати, що він бачить твої файли чи екран"), body: L("It can't until you attach files or grant a tool (Cowork / a connector). No attachment, no access.", "Не бачить, поки не прикріпиш файли або не даси інструмент (Cowork / connector). Немає вкладення — немає доступу.") },
+    { title: L("Trusting confident answers on facts/numbers", "Довіряти впевненим відповідям щодо фактів/чисел"), body: L("Ask for sources or have it run code; verify high-stakes claims before acting on them.", "Проси джерела або запуск коду; перевіряй важливі твердження, перш ніж діяти.") },
+  ],
+  interview: [
+    { q: L("In one sentence, what is Claude?", "Одним реченням: що таке Claude?"), a: L("An AI assistant that reasons over the content in its context window and, when given tools, can act in the world — search, run code, use your files.", "AI-асистент, що міркує над вмістом свого context window і, маючи інструменти, може діяти у світі — шукати, запускати код, працювати з файлами."), level: "beginner" },
+    { q: L("Why does Claude sometimes not know recent events?", "Чому Claude іноді не знає свіжих подій?"), a: L("Its knowledge comes from training data up to a cutoff date plus whatever is in the chat; for anything newer it must web-search.", "Його знання — це навчальні дані до дати cutoff плюс те, що в чаті; для свіжішого він мусить робити web-search."), level: "beginner" },
+    { q: L("How do you choose between Opus, Sonnet and Haiku?", "Як обрати між Opus, Sonnet і Haiku?"), a: L("Match depth vs speed/cost: Haiku for quick and cheap, Sonnet as the balanced default, Opus for hard reasoning or long agentic tasks.", "Балансуй глибину проти швидкості/ціни: Haiku — швидко й дешево, Sonnet — збалансований дефолт, Opus — складні міркування чи довгі agentic-задачі."), level: "middle" },
+  ],
+  seeAlso: ["m2", "m3", "m27"],
+  sources: [
+    { title: "Models overview — Claude Docs", url: "https://docs.claude.com/en/docs/about-claude/models/overview" },
+    { title: "Choosing the right Claude model — Claude", url: "https://claude.com/resources/tutorials/choosing-the-right-claude-model" },
+    { title: "Pricing — Claude", url: "https://claude.com/pricing" },
+    { title: "What is the Pro plan? — Help Center", url: "https://support.claude.com/en/articles/8325606-what-is-the-pro-plan" },
+    { title: "Introducing Claude Opus 4.8 — Anthropic", url: "https://www.anthropic.com/news/claude-opus-4-8" },
+  ],
+};
+
+const m2: Module = {
+  id: "m2",
+  section: "s1",
+  order: 2,
+  level: "beginner",
+  title: L("Interface & settings tour", "Інтерфейс і огляд налаштувань"),
+  tagline: L(
+    "A quick tour so nothing in the Claude UI is a mystery — the message box, the model menu, and the settings that matter.",
+    "Швидкий тур, щоб у UI Claude не лишилось загадок — поле вводу, меню моделі та налаштування, що мають значення.",
+  ),
+  readMins: 7,
+  mentalModel: L(
+    "Two places to know: the chat (composer + sidebar) where you work, and Settings where you shape how Claude behaves and what it remembers.",
+    "Два місця, які варто знати: чат (composer + sidebar), де ти працюєш, і Settings, де ти формуєш поведінку Claude і те, що він памʼятає.",
+  ),
+  topics: [
+    {
+      id: "t1",
+      title: L("Chat layout & the message box", "Розкладка чату й поле вводу"),
+      blocks: [
+        { kind: "prose", md: L(
+          "The app has a **sidebar** on the left (new chat, recent chats, **Projects**, search) and the **chat** on the right. The thing to master is the **message box (composer)**: type your prompt, then use the **\"+\" button** (or type **\"/\"**) to add files, turn on **Research**, pick a **style**, and more. Next to **send** is the **model menu** for choosing the model and how hard it thinks; a **voice** icon lets you talk instead of type.",
+          "Зліва — **sidebar** (новий чат, недавні чати, **Projects**, пошук), справа — **чат**. Опанувати варто **поле вводу (composer)**: введи prompt, а тоді кнопкою **\"+\"** (або символом **\"/\"**) додай файли, увімкни **Research**, обери **style** тощо. Поруч із **send** — **меню моделі** для вибору моделі та глибини мислення; іконка **voice** дозволяє говорити замість друку.",
+        ) },
+        { kind: "figure", fig: "interface-map", caption: L("The composer is the cockpit: the +/\"/\" menu, the model menu, voice, and send — beside a sidebar of chats and Projects.", "Composer — це кабіна пілота: меню +/\"/\", меню моделі, voice і send — поруч із sidebar чатів і Projects.") },
+        { kind: "table",
+          head: [L("Control", "Елемент"), L("Where", "Де"), L("What it does", "Що робить")],
+          rows: [
+            [L("+ / \"/\"", "+ / \"/\""), L("Left of the composer", "Зліва в composer"), L("Add files, Research, styles, tools", "Додати файли, Research, styles, tools")],
+            [L("Model menu", "Меню моделі"), L("By the send button", "Біля кнопки send"), L("Pick model + effort + thinking", "Обрати модель + effort + thinking")],
+            [L("Voice", "Voice"), L("In the chat window", "У вікні чату"), L("Talk to Claude (voice mode)", "Говорити з Claude (voice mode)")],
+            [L("Sidebar", "Sidebar"), L("Left edge", "Лівий край"), L("New chat, recents, Projects, search", "Новий чат, недавні, Projects, пошук")],
+          ],
+        },
+      ],
+    },
+    {
+      id: "t2",
+      title: L("Choosing model, effort & thinking", "Вибір моделі, effort і thinking"),
+      blocks: [
+        { kind: "prose", md: L(
+          "One menu controls three related things: **which model** answers (Opus / Sonnet / Haiku, M1), the **effort** level (how much work it puts in — Low / Medium / High / Max on capable models), and **extended thinking** (whether it reasons step-by-step before answering). More effort and thinking mean better answers on hard problems, but slower and costlier ones. For everyday questions the defaults are fine; raise them for hard reasoning.",
+          "Одне меню керує трьома повʼязаними речами: **яка модель** відповідає (Opus / Sonnet / Haiku, M1), рівень **effort** (скільки зусиль — Low / Medium / High / Max на потужних моделях) і **extended thinking** (чи міркує покроково перед відповіддю). Більше effort і thinking — кращі відповіді на складних задачах, але повільніші й дорожчі. Для щоденних питань вистачає дефолтів; піднімай їх для складних міркувань.",
+        ) },
+        { kind: "callout", tone: "tip", title: L("Pick the smallest model that nails the task", "Обирай найменшу модель, що впорається"), md: L(
+          "Sonnet handles most things fast; switch to **Opus** for hard reasoning or long agentic work, and drop to **Haiku** for quick or bulk tasks (more on cost in M10).",
+          "Sonnet швидко тягне більшість задач; перемикайся на **Opus** для складних міркувань чи довгих agentic-задач і на **Haiku** для швидких або масових (про вартість — M10).",
+        ) },
+      ],
+    },
+    {
+      id: "t3",
+      title: L("Settings: profile, appearance, voice, language", "Settings: профіль, вигляд, voice, мова"),
+      blocks: [
+        { kind: "prose", md: L(
+          "Open **Settings** from your initials in the lower-left. The ones beginners care about: **Instructions for Claude** (account-wide custom instructions — tell it your role, preferences and how to respond, once, for every chat); **Appearance** (Light / Match System / Dark, plus a dyslexic-friendly font); **Voice** (Settings → General → Voice settings); and **Language** (the interface is available in about 11 languages, independent of the language you chat in).",
+          "Відкрий **Settings** через свої ініціали внизу зліва. Що важливо новачку: **Instructions for Claude** (інструкції на весь акаунт — вкажи роль, уподобання й бажаний стиль відповіді один раз для всіх чатів); **Appearance** (Light / Match System / Dark та шрифт для дислексії); **Voice** (Settings → General → Voice settings); і **Language** (інтерфейс ~11 мовами, незалежно від мови спілкування).",
+        ) },
+        { kind: "table",
+          head: [L("Setting", "Налаштування"), L("Where", "Де"), L("Why you'd touch it", "Навіщо чіпати")],
+          rows: [
+            [L("Instructions for Claude", "Instructions for Claude"), L("Settings → Profile", "Settings → Profile"), L("Set role/preferences once for all chats", "Задати роль/уподобання раз для всіх чатів")],
+            [L("Appearance", "Appearance"), L("Settings → Appearance", "Settings → Appearance"), L("Light/dark, dyslexic-friendly font", "Світла/темна тема, шрифт для дислексії")],
+            [L("Voice", "Voice"), L("Settings → General", "Settings → General"), L("Choose a voice & mode for voice mode", "Обрати голос і режим для voice mode")],
+            [L("Language", "Language"), L("Settings → Language", "Settings → Language"), L("Change the interface language", "Змінити мову інтерфейсу")],
+          ],
+        },
+        { kind: "callout", tone: "tip", title: L("\"Instructions for Claude\" is the highest-leverage setting", "\"Instructions for Claude\" — найвпливовіше налаштування"), md: L(
+          "One sentence about who you are and how you like answers (\"I'm a backend dev; be concise; show code\") improves every future chat — set it once instead of re-typing it each time (more in M3 / M6).",
+          "Одне речення про те, хто ти і які відповіді любиш (\"I'm a backend dev; be concise; show code\"), покращує кожен наступний чат — задай раз замість повторювати щоразу (детальніше в M3 / M6).",
+        ) },
+      ],
+    },
+    {
+      id: "t4",
+      title: L("Privacy, data controls & billing", "Приватність, дані та білінг"),
+      blocks: [
+        { kind: "prose", md: L(
+          "Two settings matter most. **Help Improve Claude** (Settings → Privacy) controls whether your chats are used to train future models — it's your choice, and that choice also affects how long chats are retained (longer if you allow training, about **30 days** if you don't). **Billing** (Settings → Billing) is where you upgrade, switch monthly/annual, or cancel. Deleting a conversation removes it from your history right away.",
+          "Найважливіші — два налаштування. **Help Improve Claude** (Settings → Privacy) визначає, чи використовуються твої чати для навчання майбутніх моделей — це твій вибір, і він також впливає на термін зберігання чатів (довше, якщо дозволяєш навчання, близько **30 днів**, якщо ні). **Billing** (Settings → Billing) — де оновлюєш план, перемикаєш місяць/рік або скасовуєш. Видалення розмови одразу прибирає її з історії.",
+        ) },
+        { kind: "callout", tone: "security", title: L("Know your data choice", "Знай свій вибір щодо даних"), md: L(
+          "Review **Settings → Privacy** and set \"Help Improve Claude\" to match your comfort. For a one-off sensitive chat, use an **Incognito chat** (next topic) — it isn't saved, remembered, or used for training (more in M5 / M25).",
+          "Переглянь **Settings → Privacy** і встанови \"Help Improve Claude\" під свій комфорт. Для разової чутливої розмови використай **Incognito chat** (наступна тема) — він не зберігається, не запамʼятовується і не йде на навчання (детальніше в M5 / M25).",
+        ) },
+      ],
+    },
+    {
+      id: "t5",
+      title: L("Organizing chats, Incognito & getting around", "Організація чатів, Incognito та навігація"),
+      blocks: [
+        { kind: "prose", md: L(
+          "Recent chats live in the sidebar; **Projects** (M7) group related chats with shared instructions and files, and you can **star** a Project to pin it. On paid plans, **chat search** lets Claude find and reference past conversations. For a private, throwaway session, start an **Incognito chat** (the ghost icon) — it's excluded from history, Memory, search and training. On the Mac desktop app, **double-tap Option** opens a quick-entry box from any app.",
+          "Недавні чати — у sidebar; **Projects** (M7) групують повʼязані чати зі спільними інструкціями й файлами, а Project можна **star**, щоб закріпити. На платних планах **chat search** дає Claude знаходити й цитувати минулі розмови. Для приватної одноразової сесії відкрий **Incognito chat** (іконка-привид) — він поза історією, Memory, пошуком і навчанням. У desktop-застосунку на Mac **подвійне натискання Option** відкриває швидкий ввід із будь-якого застосунку.",
+        ) },
+        { kind: "compare",
+          a: L("Regular chat", "Звичайний чат"),
+          b: L("Incognito chat", "Incognito chat"),
+          rows: [
+            [L("Saved to history", "Зберігається в історії"), L("Yes", "Так"), L("No", "Ні")],
+            [L("Used by Memory & search", "Використовується Memory і пошуком"), L("Yes", "Так"), L("No — excluded", "Ні — виключено")],
+            [L("Used to train models", "Йде на навчання моделей"), L("Only if you allow it", "Лише якщо дозволиш"), L("Never", "Ніколи")],
+            [L("Best for", "Найкраще для"), L("Everyday work you'll revisit", "Щоденна робота, до якої повернешся"), L("One-off or sensitive questions", "Разові чи чутливі питання")],
+          ],
+        },
+        { kind: "callout", tone: "tip", title: L("There isn't a big official shortcut sheet", "Великого офіційного списку гарячих клавіш немає"), md: L(
+          "The reliable power moves: **\"/\"** and **\"+\"** in the composer, and on **Mac desktop**, double-tap **Option** for quick entry and **Caps Lock** for dictation.",
+          "Надійні прийоми: **\"/\"** і **\"+\"** у composer, а на **Mac desktop** — подвійне **Option** для швидкого вводу та **Caps Lock** для диктування.",
+        ) },
+      ],
+    },
+  ],
+  keyPoints: [
+    L("The composer is the cockpit: +/\"/\" adds files, Research and styles; the model menu sets model + effort + thinking.", "Composer — кабіна пілота: +/\"/\" додає файли, Research і styles; меню моделі задає модель + effort + thinking."),
+    L("Open Settings from your initials (lower-left). \"Instructions for Claude\" shapes every chat.", "Settings — через ініціали внизу зліва. \"Instructions for Claude\" впливає на кожен чат."),
+    L("Appearance (light/dark, dyslexic font), Voice and Language all live under Settings.", "Appearance (світла/темна, шрифт для дислексії), Voice і Language — усі в Settings."),
+    L("\"Help Improve Claude\" (Settings → Privacy) is your training/retention choice; Billing is where you upgrade/cancel.", "\"Help Improve Claude\" (Settings → Privacy) — твій вибір навчання/зберігання; Billing — оновлення/скасування."),
+    L("Incognito chats (ghost icon) are excluded from history, Memory, search and training.", "Incognito chats (іконка-привид) поза історією, Memory, пошуком і навчанням."),
+  ],
+  pitfalls: [
+    { title: L("Re-typing your context every chat", "Повторювати свій контекст щочату"), body: L("Set \"Instructions for Claude\" once instead — it applies to every conversation automatically.", "Натомість задай \"Instructions for Claude\" один раз — воно діє в кожній розмові автоматично.") },
+    { title: L("Not knowing your privacy choice", "Не знати свій вибір приватності"), body: L("Check Settings → Privacy so you're comfortable with how chats are trained on and retained.", "Перевір Settings → Privacy, щоб бути впевненим у тому, як чати йдуть на навчання і скільки зберігаються.") },
+    { title: L("Expecting a rich keyboard-shortcut set", "Очікувати багато гарячих клавіш"), body: L("Only a few are official — the slash/plus menus and (Mac desktop) quick entry / dictation.", "Офіційних мало — меню slash/plus і (Mac desktop) швидкий ввід / диктування.") },
+  ],
+  interview: [
+    { q: L("Where do you set preferences that should apply to every chat?", "Де задати уподобання, що діють у кожному чаті?"), a: L("Settings → \"Instructions for Claude\" (account-wide). Per-project behavior goes in a Project's instructions instead.", "Settings → \"Instructions for Claude\" (на весь акаунт). Поведінку для конкретного проєкту задають в інструкціях Project."), level: "beginner" },
+    { q: L("What does an Incognito chat skip?", "Що пропускає Incognito chat?"), a: L("It isn't saved to history, isn't used by Memory or chat search, and isn't used for training (it's still briefly retained for safety).", "Він не зберігається в історії, не використовується Memory чи chat search і не йде на навчання (та коротко зберігається для безпеки)."), level: "beginner" },
+    { q: L("What three things does the model menu control?", "Якими трьома речами керує меню моделі?"), a: L("The model, the effort level, and extended thinking.", "Модель, рівень effort і extended thinking."), level: "middle" },
+  ],
+  seeAlso: ["m1", "m3", "m5"],
+  sources: [
+    { title: "Get started with Claude — Help Center", url: "https://support.claude.com/en/articles/8114491-get-started-with-claude" },
+    { title: "Change the model, effort, and thinking settings — Help Center", url: "https://support.claude.com/en/articles/8664678-change-the-model-effort-and-thinking-settings" },
+    { title: "Customizing your appearance settings — Help Center", url: "https://support.claude.com/en/articles/8887527-customizing-your-appearance-settings" },
+    { title: "How do I change my model improvement privacy settings? — Privacy Center", url: "https://privacy.claude.com/en/articles/12109829-how-do-i-change-my-model-improvement-privacy-settings" },
+    { title: "Using incognito chats — Help Center", url: "https://support.claude.com/en/articles/12260368-using-incognito-chats" },
+  ],
+};
+
+const m3: Module = {
+  id: "m3",
+  section: "s1",
+  order: 3,
+  level: "beginner",
+  title: L("Talking to Claude — prompting basics", "Спілкування з Claude — основи prompting"),
+  tagline: L(
+    "How a request becomes a result — say what you want, give the context, and iterate.",
+    "Як запит стає результатом — скажи, що хочеш, дай context і ітеруй.",
+  ),
+  readMins: 7,
+  mentalModel: L(
+    "Everything Claude knows in a chat lives in its context window — so a good prompt puts the right things in the window and says clearly what to do with them.",
+    "Усе, що Claude знає в чаті, лежить у його context window — тож хороший prompt кладе у вікно потрібне й чітко каже, що з цим робити.",
+  ),
+  topics: [
+    {
+      id: "t1",
+      title: L("What a prompt is & how Claude reads it", "Що таке prompt і як Claude його читає"),
+      blocks: [
+        { kind: "prose", md: L(
+          "A **prompt** is just your message. Claude reads it together with everything else currently in the chat — earlier messages, attached files, your instructions, and memory — and produces the most useful continuation. There's no hidden knowledge of your situation: if it matters, it has to be in the window. So prompting well is mostly *putting the right information in front of Claude and stating the goal clearly.*",
+          "**Prompt** — це просто твоє повідомлення. Claude читає його разом з усім іншим, що зараз у чаті — попередні повідомлення, прикріплені файли, твої інструкції та memory — і дає найкорисніше продовження. Прихованого знання про твою ситуацію немає: якщо щось важливе, воно має бути у вікні. Тож добре prompt-ити — це здебільшого *покласти перед Claude потрібну інформацію й чітко сформулювати мету.*",
+        ) },
+        { kind: "figure", fig: "prompt-flow", caption: L("Your prompt plus the context in the window go into Claude; it reasons and answers; you iterate with follow-ups.", "Твій prompt разом із context у вікні йдуть у Claude; він міркує й відповідає; ти ітеруєш уточненнями.") },
+      ],
+    },
+    {
+      id: "t2",
+      title: L("Context: what Claude knows in a chat", "Context: що Claude знає в чаті"),
+      blocks: [
+        { kind: "prose", md: L(
+          "\"Context\" is everything Claude can currently see: the conversation so far, files you've attached, your account **Instructions for Claude**, project knowledge (M7), and **Memory** (M5). It does **not** include things you only said in *other* chats (unless Memory or chat search bring them in), your files (unless attached), or the live internet (unless it searches). When in doubt, paste or attach the material.",
+          "\"Context\" — це все, що Claude зараз бачить: попередню розмову, прикріплені файли, твої **Instructions for Claude**, knowledge проєкту (M7) і **Memory** (M5). Він **не** включає те, що ти казав лише в *інших* чатах (хіба що Memory чи chat search це підтягнуть), твої файли (поки не прикріпиш) чи живий інтернет (поки не пошукає). Сумніваєшся — встав або прикріпи матеріал.",
+        ) },
+        { kind: "callout", tone: "tip", title: L("A new chat starts almost empty", "Новий чат починається майже порожнім"), md: L(
+          "Want a clean slate? Start a new chat. Want continuity? Stay in the same chat, or rely on Memory / Projects to carry context forward (more in M5, M10).",
+          "Хочеш чистий аркуш? Почни новий чат. Хочеш безперервність? Лишайся в тому ж чаті або поклади перенесення контексту на Memory / Projects (детальніше в M5, M10).",
+        ) },
+      ],
+    },
+    {
+      id: "t3",
+      title: L("Being specific: task, format, constraints", "Конкретика: задача, формат, обмеження"),
+      blocks: [
+        { kind: "prose", md: L(
+          "Vague prompts get generic answers. Three levers fix that: state the **task** (\"summarize\", \"rewrite\", \"find bugs\"), the **format** you want (\"a 5-bullet list\", \"a table\", \"JSON\"), and any **constraints** (\"under 200 words\", \"for a non-technical reader\", \"only using the attached data\"). You don't need magic words — just be the clear, specific manager Claude can follow.",
+          "Розмиті prompt дають загальні відповіді. Три важелі це виправляють: назви **task** (\"summarize\", \"rewrite\", \"find bugs\"), бажаний **format** (\"список із 5 пунктів\", \"таблиця\", \"JSON\") і будь-які **constraints** (\"до 200 слів\", \"для нетехнічного читача\", \"тільки за прикріпленими даними\"). Магічні слова не потрібні — будь чітким, конкретним керівником, за яким Claude може йти.",
+        ) },
+        { kind: "compare",
+          a: L("Vague prompt", "Розмитий prompt"),
+          b: L("Specific prompt", "Конкретний prompt"),
+          rows: [
+            [L("Ask", "Запит"), L("\"Tell me about this CSV\"", "\"Розкажи про цей CSV\""), L("\"Summarize the top 3 trends in this CSV as bullets, for execs\"", "\"Підсумуй 3 головні тренди цього CSV пунктами, для керівництва\"")],
+            [L("Format", "Формат"), L("Unspecified", "Не задано"), L("Bullets, ≤120 words", "Пункти, ≤120 слів")],
+            [L("Result", "Результат"), L("Generic, may miss the point", "Загальний, може промазати"), L("On-target, usable as-is", "Влучний, придатний як є")],
+          ],
+        },
+        { kind: "table",
+          head: [L("What you want", "Що хочеш"), L("Add to your prompt", "Додай у prompt")],
+          rows: [
+            [L("A specific shape", "Конкретну форму"), L("\"Reply as a table with columns X, Y, Z\"", "\"Відповідай таблицею зі стовпцями X, Y, Z\"")],
+            [L("The right audience", "Потрібну аудиторію"), L("\"Explain for a beginner / for my CFO\"", "\"Поясни для новачка / для мого CFO\"")],
+            [L("Tighter output", "Стисліший вивід"), L("\"Keep it under 150 words\"", "\"Тримай у межах 150 слів\"")],
+            [L("A grounded answer", "Обґрунтовану відповідь"), L("\"Use only the attached file\" / \"Search the web and cite sources\"", "\"Лише за прикріпленим файлом\" / \"Пошукай в інтернеті й наведи джерела\"")],
+          ],
+        },
+      ],
+    },
+    {
+      id: "t4",
+      title: L("Iterating & follow-ups", "Ітерації та уточнення"),
+      blocks: [
+        { kind: "prose", md: L(
+          "Treat it as a conversation, not a slot machine. If the first answer isn't right, **say what to change** — \"shorter\", \"more formal\", \"focus on section 2\", \"you misread the date\". Claude keeps the context, so follow-ups refine rather than restart. Iterating in small steps beats trying to write one perfect mega-prompt.",
+          "Сприймай це як розмову, а не гральний автомат. Якщо перша відповідь не та — **скажи, що змінити**: \"коротше\", \"формальніше\", \"зосередься на розділі 2\", \"ти неправильно прочитав дату\". Claude тримає context, тож уточнення доопрацьовують, а не починають з нуля. Малі кроки кращі за спробу написати один ідеальний мега-prompt.",
+        ) },
+        { kind: "callout", tone: "tip", title: L("Steer, don't start over", "Скеровуй, а не починай заново"), md: L(
+          "A quick \"good, but make it concise and add a code example\" usually beats rewriting the whole prompt. For a genuinely different direction, start a new chat so old context doesn't tag along.",
+          "Швидке \"добре, але зроби стисліше й додай приклад коду\" зазвичай краще за переписування всього prompt. Для справді іншого напрямку відкрий новий чат, щоб старий context не тягнувся.",
+        ) },
+      ],
+    },
+    {
+      id: "t5",
+      title: L("Common beginner mistakes", "Типові помилки новачків"),
+      blocks: [
+        { kind: "prose", md: L(
+          "The usual traps: asking for recent facts without turning on web search; assuming Claude can see a file or screen you never attached; burying the actual question under paragraphs of backstory; and accepting a confident answer without checking. The fix is the same move each time — put the right context in, state the goal, and verify what matters.",
+          "Звичні пастки: питати свіжі факти без увімкненого web search; думати, що Claude бачить файл чи екран, який ти не прикріпив; ховати справжнє питання під абзацами передісторії; приймати впевнену відповідь без перевірки. Виправлення щоразу однакове — поклади потрібний context, сформулюй мету й перевір важливе.",
+        ) },
+        { kind: "callout", tone: "warn", title: L("When accuracy counts", "Коли важлива точність"), md: L(
+          "For facts, numbers or code, ask Claude to cite sources, show its reasoning, or run code — then check. A confident tone is not evidence (more in M1, M25).",
+          "Для фактів, чисел чи коду проси Claude навести джерела, показати міркування або запустити код — а тоді перевір. Впевнений тон — не доказ (детальніше в M1, M25).",
+        ) },
+      ],
+    },
+  ],
+  keyPoints: [
+    L("A prompt is read together with everything in the context window — put what matters in front of Claude.", "Prompt читається разом з усім у context window — поклади перед Claude те, що важливо."),
+    L("Be specific: state the task, the format, and the constraints.", "Будь конкретним: назви task, format і constraints."),
+    L("A new chat starts nearly empty; the same chat (or Memory/Projects) carries context forward.", "Новий чат майже порожній; той самий чат (або Memory/Projects) переносить context далі."),
+    L("Iterate with small follow-ups instead of restarting.", "Ітеруй малими уточненнями замість почати заново."),
+    L("Verify facts, numbers and code — confidence isn't correctness.", "Перевіряй факти, числа й код — впевненість не дорівнює правильності."),
+  ],
+  pitfalls: [
+    { title: L("Asking about recent events without web search", "Питати про свіжі події без web search"), body: L("You get stale or invented answers — enable search or attach the data.", "Отримаєш застарілі чи вигадані відповіді — увімкни пошук або прикріпи дані.") },
+    { title: L("Referring to \"the file/the screen\" you never attached", "Згадувати \"файл/екран\", який не прикріпив"), body: L("Claude can't see it. Attach it, or it's not in the context.", "Claude його не бачить. Прикріпи — інакше його немає в context.") },
+    { title: L("One giant prompt with the question buried", "Один велетенський prompt із захованим питанням"), body: L("Lead with the goal, then add the context — don't make Claude dig for the ask.", "Спершу мета, потім context — не змушуй Claude шукати суть запиту.") },
+  ],
+  interview: [
+    { q: L("Why does being specific about format help so much?", "Чому конкретика щодо формату так допомагає?"), a: L("It removes guesswork — Claude optimizes for exactly what you asked, so naming the shape (table, bullets, word count) and audience yields usable output the first time.", "Вона прибирає здогадки — Claude оптимізує саме під твій запит, тож названа форма (таблиця, пункти, ліміт слів) і аудиторія дають придатний результат з першого разу."), level: "beginner" },
+    { q: L("What's the fastest way to fix an answer that's close but off?", "Який найшвидший спосіб виправити майже правильну відповідь?"), a: L("A targeted follow-up in the same chat (\"make it concise, fix the date\") — the context is retained, so it refines instead of restarting.", "Точкове уточнення в тому ж чаті (\"зроби стисліше, виправ дату\") — context зберігається, тож відбувається доопрацювання, а не рестарт."), level: "beginner" },
+    { q: L("When should you start a new chat instead of following up?", "Коли краще почати новий чат замість уточнення?"), a: L("When you want a clean context for an unrelated task — to avoid old messages biasing the answer and to save context budget.", "Коли потрібен чистий context для незвʼязаної задачі — щоб старі повідомлення не зміщували відповідь і щоб зекономити context budget."), level: "middle" },
+  ],
+  seeAlso: ["m6", "m1", "m5"],
+  sources: [
+    { title: "Get started with Claude — Help Center", url: "https://support.claude.com/en/articles/8114491-get-started-with-claude" },
+    { title: "Prompt engineering overview — Claude Docs", url: "https://docs.claude.com/en/docs/build-with-claude/prompt-engineering/overview" },
+    { title: "Be clear and direct — Claude Docs", url: "https://docs.claude.com/en/docs/build-with-claude/prompt-engineering/be-clear-and-direct" },
+  ],
+};
+
+const m4: Module = {
+  id: "m4",
+  section: "s1",
+  order: 4,
+  level: "beginner",
+  title: L("Attachments, writing styles & voice", "Вкладення, writing styles і голос"),
+  tagline: L(
+    "Bring your material in — files, images and your voice — and shape the voice that comes out.",
+    "Принось свій матеріал — файли, зображення й голос — і формуй голос на виході.",
+  ),
+  readMins: 7,
+  mentalModel: L(
+    "Inputs in (files, images, voice), style out — you control both what Claude sees and how it sounds.",
+    "Входи (файли, зображення, голос), стиль на виході — ти керуєш і тим, що Claude бачить, і тим, як він звучить.",
+  ),
+  topics: [
+    {
+      id: "t1",
+      title: L("Attaching files & images", "Додавання файлів і зображень"),
+      blocks: [
+        { kind: "prose", md: L(
+          "Use the **\"+\"** in the composer to attach files and images, drag them into the chat, or paste an image. Claude reads documents (PDF, DOCX, TXT, CSV, HTML, JSON, and more) and images (PNG, JPG, GIF, WebP). For PDFs under ~100 pages it reads both the **text and the visuals** (charts, layout). Chat uploads are generous — up to **500 MB per file, 20 files per chat**. One caveat: for non-PDF documents Claude extracts **text only**, so images embedded inside a DOCX won't be seen.",
+          "Кнопкою **\"+\"** у composer прикріпляй файли й зображення, перетягуй їх у чат або вставляй картинку. Claude читає документи (PDF, DOCX, TXT, CSV, HTML, JSON та інші) і зображення (PNG, JPG, GIF, WebP). Для PDF до ~100 сторінок він читає і **текст, і візуальне** (графіки, верстку). Ліміти chat uploads щедрі — до **500 MB на файл, 20 файлів на чат**. Нюанс: з не-PDF документів Claude дістає **лише текст**, тож зображення всередині DOCX він не побачить.",
+        ) },
+        { kind: "table",
+          head: [L("You attach", "Ти прикріпляєш"), L("Claude reads", "Claude читає"), L("Good for", "Для чого")],
+          rows: [
+            [L("PDF (<100 pp)", "PDF (<100 стор.)"), L("Text + visuals", "Текст + візуальне"), L("Reports, papers, scanned layouts", "Звіти, статті, скани з версткою")],
+            [L("DOCX / TXT / HTML", "DOCX / TXT / HTML"), L("Text only", "Лише текст"), L("Drafts, notes, articles", "Чернетки, нотатки, статті")],
+            [L("CSV / JSON", "CSV / JSON"), L("The data", "Дані"), L("Analysis, summaries, charts", "Аналіз, підсумки, графіки")],
+            [L("Images (PNG/JPG/…)", "Зображення (PNG/JPG/…)"), L("The picture (vision)", "Картинку (vision)"), L("Screenshots, diagrams, photos", "Скриншоти, діаграми, фото")],
+          ],
+          caption: L("Chat uploads: up to 500 MB/file, 20 files/chat. Project files are capped at 30 MB each. Verified Jun 2026.", "Chat uploads: до 500 MB/файл, 20 файлів/чат. Файли в Project обмежені 30 MB кожен. Перевірено: червень 2026."),
+        },
+        { kind: "callout", tone: "tip", title: L("Attach, don't describe", "Прикріплюй, а не описуй"), md: L(
+          "If your question is about a document or screenshot, attach it instead of retyping it. Claude answers from what it can actually see.",
+          "Якщо питання про документ чи скриншот — прикріпи його, а не передруковуй. Claude відповідає з того, що справді бачить.",
+        ) },
+      ],
+    },
+    {
+      id: "t2",
+      title: L("Writing styles: preset & custom", "Writing styles: готові та власні"),
+      blocks: [
+        { kind: "prose", md: L(
+          "**Styles** change how Claude writes without you re-asking each time. Presets include **Normal**, **Concise**, **Formal** and **Explanatory**; you can also create a **custom style** by uploading samples of your writing or describing the voice you want. Pick a style from the composer's tools menu.",
+          "**Styles** змінюють те, як Claude пише, без повторних прохань щоразу. Серед готових — **Normal**, **Concise**, **Formal** і **Explanatory**; можна створити й **власний style**, завантаживши зразки свого письма або описавши потрібний голос. Обирай style у меню інструментів composer.",
+        ) },
+        { kind: "callout", tone: "warn", title: L("Styles are moving to Skills", "Styles переходять у Skills"), md: L(
+          "Anthropic is migrating writing styles into **Skills** (M12). The Concise/Explanatory/Formal presets are being retired, \"Learning\" becomes a Skill, and custom styles migrate automatically (disabled by default — re-enable under Customize → Skills). Expect the styles menu to disappear over time; the capability lives on as Skills.",
+          "Anthropic переносить writing styles у **Skills** (M12). Готові Concise/Explanatory/Formal згортають, \"Learning\" стає Skill, а власні styles мігрують автоматично (вимкнені за замовчуванням — увімкни в Customize → Skills). З часом меню styles зникне; сама можливість лишиться як Skills.",
+        ) },
+        { kind: "compare",
+          a: L("Default voice", "Голос за замовчуванням"),
+          b: L("Custom style", "Власний style"),
+          rows: [
+            [L("Setup", "Налаштування"), L("None — works out of the box", "Жодного — працює одразу"), L("Upload samples or describe once", "Завантаж зразки або опиши один раз")],
+            [L("Best for", "Найкраще для"), L("General use", "Загального вжитку"), L("Your brand / personal voice, repeatedly", "Твій бренд / особистий голос, постійно")],
+            [L("Where it's heading", "Куди рухається"), L("Stays", "Лишається"), L("Becomes a Skill you enable", "Стає Skill, який вмикаєш")],
+          ],
+        },
+      ],
+    },
+    {
+      id: "t3",
+      title: L("Voice input & talking to Claude", "Голосовий ввід і розмова з Claude"),
+      blocks: [
+        { kind: "prose", md: L(
+          "You can **talk** to Claude instead of typing. **Voice mode** (the sound-wave icon) is a two-way spoken conversation — it's in beta on **all plans**, on web, iOS and Android. There's a small preset selection of voices, two modes (**hands-free** and **push-to-talk**), and multilingual input. Voice conversations count toward your usage and are saved as transcripts.",
+          "Із Claude можна **говорити** замість друку. **Voice mode** (іконка звукової хвилі) — це двостороння голосова розмова; вона в beta на **всіх планах**, на web, iOS та Android. Є невеликий набір готових голосів, два режими (**hands-free** і **push-to-talk**) та багатомовний ввід. Голосові розмови враховуються в ліміт і зберігаються як транскрипти.",
+        ) },
+        { kind: "callout", tone: "tip", title: L("Two different things", "Дві різні речі"), md: L(
+          "Voice mode (a spoken conversation) is not the same as dictation (speech turned into text you can edit). On Mac desktop, Caps Lock toggles dictation.",
+          "Voice mode (голосова розмова) — це не те саме, що dictation (мовлення, перетворене на текст, який можна редагувати). На Mac desktop dictation вмикає Caps Lock.",
+        ) },
+      ],
+    },
+    {
+      id: "t4",
+      title: L("Output formats: markdown, tables & artifacts", "Формати виводу: markdown, таблиці та artifacts"),
+      blocks: [
+        { kind: "prose", md: L(
+          "By default Claude replies in **Markdown** — headings, **bold**, lists, tables and code blocks all render nicely. When the output is substantial or meant to be used on its own — a document, a code file, an HTML/React mini-app, an SVG or a diagram — Claude puts it in an **Artifact**: a side panel you can view, edit, version and share. Artifacts are available on all plans (a quick intro here; M8 goes deep).",
+          "За замовчуванням Claude відповідає у **Markdown** — заголовки, **жирний**, списки, таблиці та блоки коду гарно відображаються. Коли вивід великий або призначений для окремого використання — документ, файл коду, HTML/React міні-застосунок, SVG чи діаграма — Claude кладе його в **Artifact**: бічну панель, яку можна переглядати, редагувати, версіонувати й ділитися. Artifacts доступні на всіх планах (тут короткий вступ; деталі — M8).",
+        ) },
+        { kind: "table",
+          head: [L("Output", "Вивід"), L("Looks like", "Має вигляд"), L("Covered in", "Розкрито в")],
+          rows: [
+            [L("Inline Markdown", "Inline Markdown"), L("Formatted text, tables, code", "Форматований текст, таблиці, код"), L("This module", "Цей модуль")],
+            [L("Artifact — document / code", "Artifact — документ / код"), L("Editable side panel", "Редагована бічна панель"), L("M8 Artifacts", "M8 Artifacts")],
+            [L("Artifact — app / diagram", "Artifact — застосунок / діаграма"), L("Runnable HTML/React, SVG", "Робочий HTML/React, SVG"), L("M8 / M9", "M8 / M9")],
+          ],
+        },
+        { kind: "callout", tone: "tip", title: L("Ask for the shape you want", "Проси потрібну форму"), md: L(
+          "\"Reply as a table\", \"give me a one-file HTML page\", \"put the essay in an artifact\" — naming the format gets you the right container.",
+          "\"Відповідай таблицею\", \"дай односторінковий HTML\", \"поклади есе в artifact\" — названий формат дає правильний контейнер.",
+        ) },
+      ],
+    },
+  ],
+  keyPoints: [
+    L("Attach files/images with \"+\", drag, or paste; Claude reads many doc types and sees images.", "Прикріпляй файли/зображення через \"+\", перетягуванням або вставкою; Claude читає багато типів і бачить зображення."),
+    L("Chat uploads: up to 500 MB/file, 20 files/chat; non-PDF docs are read as text only.", "Chat uploads: до 500 MB/файл, 20 файлів/чат; не-PDF документи читаються лише як текст."),
+    L("Styles shape Claude's voice (Normal/Concise/Formal/Explanatory + custom) — and are migrating into Skills.", "Styles формують голос Claude (Normal/Concise/Formal/Explanatory + власні) — і переходять у Skills."),
+    L("Voice mode (beta, all plans) is a spoken conversation; dictation is just speech-to-text.", "Voice mode (beta, усі плани) — голосова розмова; dictation — лише мовлення в текст."),
+    L("Default output is Markdown; substantial/standalone output becomes an editable Artifact.", "Дефолтний вивід — Markdown; великий/окремий вивід стає редагованим Artifact."),
+  ],
+  pitfalls: [
+    { title: L("Describing a document instead of attaching it", "Описувати документ замість прикріпити"), body: L("Attach it so Claude reads the real thing rather than your paraphrase.", "Прикріпи, щоб Claude читав оригінал, а не твій переказ.") },
+    { title: L("Expecting embedded images in a DOCX to be read", "Очікувати, що зображення в DOCX прочитаються"), body: L("Only PDFs (and standalone image files) are seen visually; other docs are text-extracted.", "Візуально читаються лише PDF (і окремі файли-зображення); інші документи — лише текст.") },
+    { title: L("Building habits on the styles menu", "Будувати звички навколо меню styles"), body: L("It's being replaced by Skills — learn Skills (M12) so your setup survives the migration.", "Його замінюють Skills — вивчи Skills (M12), щоб твоє налаштування пережило міграцію.") },
+  ],
+  interview: [
+    { q: L("How does Claude read a PDF vs a DOCX?", "Як Claude читає PDF проти DOCX?"), a: L("PDFs under ~100 pages are read with text + visuals; non-PDF docs like DOCX are text-extracted only (embedded images aren't seen).", "PDF до ~100 сторінок читаються з текстом + візуальним; не-PDF як DOCX — лише текст (вбудовані зображення не видно)."), level: "beginner" },
+    { q: L("What's happening to writing styles?", "Що відбувається з writing styles?"), a: L("They're being folded into Skills — presets like Concise/Explanatory/Formal are retiring and custom styles migrate (disabled by default), so the capability continues as Skills.", "Їх згортають у Skills — готові Concise/Explanatory/Formal зникають, а власні мігрують (вимкнені за замовчуванням), тож можливість лишається як Skills."), level: "middle" },
+    { q: L("When does a response become an Artifact instead of inline text?", "Коли відповідь стає Artifact, а не inline-текстом?"), a: L("When it's substantial and self-contained — a document, code file, mini-app or diagram — so you can view, edit, version and reuse it in a side panel.", "Коли вона велика й самодостатня — документ, файл коду, міні-застосунок чи діаграма — щоб переглядати, редагувати, версіонувати й повторно використовувати в бічній панелі."), level: "beginner" },
+  ],
+  seeAlso: ["m3", "m8", "m12"],
+  sources: [
+    { title: "Upload files to Claude — Help Center", url: "https://support.claude.com/en/articles/8241126-upload-files-to-claude" },
+    { title: "Configure and use styles — Help Center", url: "https://support.claude.com/en/articles/10181068-configure-and-use-styles" },
+    { title: "Use voice mode — Help Center", url: "https://support.claude.com/en/articles/11101966-use-voice-mode" },
+    { title: "What are artifacts and how do I use them? — Help Center", url: "https://support.claude.com/en/articles/9487310-what-are-artifacts-and-how-do-i-use-them" },
+  ],
+};
+
+const m5: Module = {
+  id: "m5",
+  section: "s1",
+  order: 5,
+  level: "beginner",
+  title: L("Memory & chat search", "Memory і пошук чатів"),
+  tagline: L(
+    "How Claude carries context across chats — what Memory stores, how to control it, and how to find past conversations.",
+    "Як Claude переносить context між чатами — що зберігає Memory, як ним керувати і як знаходити минулі розмови.",
+  ),
+  readMins: 7,
+  mentalModel: L(
+    "Memory = a durable summary that survives across chats (which you can edit); chat search = pulling a specific past conversation back in on demand.",
+    "Memory = тривкий підсумок, що живе між чатами (його можна редагувати); chat search = підтягування конкретної минулої розмови на вимогу.",
+  ),
+  topics: [
+    {
+      id: "t1",
+      title: L("What Memory is & what it stores", "Що таке Memory і що він зберігає"),
+      blocks: [
+        { kind: "prose", md: L(
+          "By default each new chat starts fresh. **Memory** changes that: Claude keeps a running **summary** of what it's learned about your work — your role and projects, how you like to communicate, your technical and coding preferences — and feeds it into every new (non-project) chat. The summary refreshes about every 24 hours. Memory is available on **all plans including Free** (Free since March 2026).",
+          "За замовчуванням кожен новий чат починається з чистого аркуша. **Memory** це змінює: Claude веде живий **підсумок** того, що дізнався про твою роботу — твою роль і проєкти, як ти любиш спілкуватися, твої технічні та code-уподобання — і подає його в кожен новий (не-project) чат. Підсумок оновлюється приблизно щодоби. Memory доступний на **всіх планах, включно з Free** (на Free — з березня 2026).",
+        ) },
+        { kind: "figure", fig: "memory-across-sessions", caption: L("Separate chats over time read from and write to a durable Memory; each Project keeps its own walled memory.", "Окремі чати в часі читають із Memory й пишуть у нього; кожен Project тримає власну ізольовану memory.") },
+        { kind: "callout", tone: "tip", title: L("Work context, not your diary", "Робочий контекст, а не щоденник"), md: L(
+          "Memory focuses on work-related details (role, projects, preferences). It's designed to make you repeat yourself less — not to store everything about you.",
+          "Memory зосереджений на робочих деталях (роль, проєкти, уподобання). Він створений, щоб ти менше повторювався — а не щоб зберігати про тебе все.",
+        ) },
+      ],
+    },
+    {
+      id: "t2",
+      title: L("Global vs project memory", "Global проти project memory"),
+      blocks: [
+        { kind: "prose", md: L(
+          "There are really two memory spaces. Your **global** memory summarizes all your ordinary chats. Each **Project** (M7) has its **own separate** memory, so a client project's context stays out of your other work. Project chats don't feed the global summary, and the global summary doesn't leak into a project.",
+          "Насправді є два простори memory. **Global** memory підсумовує всі твої звичайні чати. Кожен **Project** (M7) має **власну окрему** memory, тож контекст клієнтського проєкту не потрапляє в іншу твою роботу. Project-чати не живлять global-підсумок, а global-підсумок не протікає в проєкт.",
+        ) },
+        { kind: "compare",
+          a: L("Global memory", "Global memory"),
+          b: L("Project memory", "Project memory"),
+          rows: [
+            [L("Covers", "Охоплює"), L("Your non-project chats", "Твої не-project чати"), L("One project's chats", "Чати одного проєкту")],
+            [L("Isolation", "Ізоляція"), L("Shared across general chats", "Спільна для загальних чатів"), L("Walled to that project", "Замкнена в межах проєкту")],
+            [L("Use it for", "Використовуй для"), L("Your ongoing preferences", "Твої постійні уподобання"), L("Keeping a project's context separate", "Тримати контекст проєкту окремо")],
+          ],
+        },
+      ],
+    },
+    {
+      id: "t3",
+      title: L("Controlling memory: view, edit, forget", "Керування memory: перегляд, редагування, forget"),
+      blocks: [
+        { kind: "prose", md: L(
+          "You're in control. In **Settings → Capabilities → \"View and edit memory\"** you see everything Claude remembers and can change it. You can also just **tell Claude in chat** what to remember or correct — and that applies to your next chat immediately. Two off-switches: **Pause** (keep what's there but stop using and adding) and **Reset** (permanently delete all memories, including project memories).",
+          "Контроль за тобою. У **Settings → Capabilities → \"View and edit memory\"** видно все, що Claude памʼятає, і це можна змінити. Можна й просто **сказати Claude у чаті**, що запамʼятати чи виправити — і це застосується до наступного чату одразу. Два вимикачі: **Pause** (лишити наявне, але не використовувати й не додавати) і **Reset** (остаточно видалити всю memory, включно з project memory).",
+        ) },
+        { kind: "table",
+          head: [L("Action", "Дія"), L("Where", "Де"), L("Effect", "Ефект")],
+          rows: [
+            [L("View / edit", "Перегляд / редагування"), L("Settings → Capabilities → View and edit memory", "Settings → Capabilities → View and edit memory"), L("See & change what Claude knows", "Бачити й міняти те, що Claude знає")],
+            [L("Add in chat", "Додати в чаті"), L("Tell Claude \"remember that…\"", "Сказати Claude \"запамʼятай, що…\""), L("Applies to your next chat", "Діє з наступного чату")],
+            [L("Pause", "Pause"), L("Memory toggle", "Перемикач memory"), L("Keeps memory but stops using/updating it", "Лишає memory, але не використовує й не оновлює")],
+            [L("Reset", "Reset"), L("Memory toggle", "Перемикач memory"), L("Permanently deletes all (incl. project) memory", "Остаточно видаляє всю (включно з project) memory")],
+          ],
+        },
+        { kind: "callout", tone: "security", title: L("Incognito skips memory", "Incognito оминає memory"), md: L(
+          "An Incognito chat (M2) isn't used by memory or saved to history, and won't draw on existing memory. Use it when you don't want a conversation to shape what Claude remembers.",
+          "Incognito chat (M2) не використовується memory й не зберігається в історії та не спирається на наявну memory. Використовуй, коли не хочеш, щоб розмова впливала на те, що Claude памʼятає.",
+        ) },
+      ],
+    },
+    {
+      id: "t4",
+      title: L("Importing memories & finding past chats", "Імпорт memories та пошук минулих чатів"),
+      blocks: [
+        { kind: "prose", md: L(
+          "Moving from another assistant? **Memory import** (Settings → Capabilities → Memory → Start import) lets you paste your exported memories from tools like ChatGPT or Gemini; it's experimental and available on Free/Pro/Max/Team. Separately, **chat search** lets Claude **search and reference your past conversations** on demand (\"what did we decide about X?\") — it uses retrieval behind the scenes and is on **paid plans**, on by default.",
+          "Переходиш з іншого асистента? **Memory import** (Settings → Capabilities → Memory → Start import) дозволяє вставити експортовані memories з інструментів на кшталт ChatGPT чи Gemini; це експериментально й доступно на Free/Pro/Max/Team. Окремо **chat search** дає Claude **шукати й цитувати твої минулі розмови** на вимогу (\"що ми вирішили про X?\") — під капотом це retrieval, на **платних планах**, увімкнено за замовчуванням.",
+        ) },
+        { kind: "compare",
+          a: L("Memory", "Memory"),
+          b: L("Chat search", "Chat search"),
+          rows: [
+            [L("How it works", "Як працює"), L("Always-on summary injected into new chats", "Завжди увімкнений підсумок у нових чатах"), L("On-demand retrieval when you ask", "Retrieval на вимогу, коли просиш")],
+            [L("You see", "Ти бачиш"), L("An editable summary", "Редагований підсумок"), L("Citations to the original chats", "Цитати на оригінальні чати")],
+            [L("Plans", "Плани"), L("All plans incl. Free", "Усі плани, включно з Free"), L("Paid plans (Pro/Max/Team/Enterprise)", "Платні плани (Pro/Max/Team/Enterprise)")],
+            [L("Best for", "Найкраще для"), L("Standing preferences & context", "Постійні уподобання й контекст"), L("Pulling back a specific past discussion", "Повернути конкретне минуле обговорення")],
+          ],
+        },
+        { kind: "callout", tone: "tip", title: L("They work together", "Вони працюють разом"), md: L(
+          "Memory keeps the gist always-on; chat search fetches the details when you ask. Both skip Incognito chats.",
+          "Memory тримає суть завжди напоготові; chat search дістає деталі, коли просиш. Обидва оминають Incognito chats.",
+        ) },
+      ],
+    },
+  ],
+  keyPoints: [
+    L("Memory is a running, editable summary of your work context, fed into every new non-project chat (~24h refresh).", "Memory — живий редагований підсумок твого робочого контексту, що подається в кожен новий не-project чат (оновлення ~24 год)."),
+    L("Available on all plans incl. Free; global memory and per-project memory are separate spaces.", "Доступний на всіх планах, включно з Free; global memory і per-project memory — окремі простори."),
+    L("Control it in Settings → Capabilities (view/edit), or just tell Claude in chat; Pause or Reset to stop/wipe.", "Керуй у Settings → Capabilities (перегляд/редагування) або просто скажи в чаті; Pause чи Reset, щоб спинити/стерти."),
+    L("Memory import (experimental) brings memories from other assistants; chat search (paid) retrieves past chats on demand.", "Memory import (експеримент) переносить memories з інших асистентів; chat search (платно) дістає минулі чати на вимогу."),
+    L("Incognito chats are excluded from both Memory and chat search.", "Incognito chats виключені і з Memory, і з chat search."),
+  ],
+  pitfalls: [
+    { title: L("Assuming Claude remembers another chat by default", "Думати, що Claude памʼятає інший чат за замовчуванням"), body: L("Without Memory or chat search, each chat is independent — it won't recall other conversations on its own.", "Без Memory чи chat search кожен чат незалежний — він не згадає інші розмови сам по собі.") },
+    { title: L("Forgetting Memory is editable", "Забувати, що Memory редагований"), body: L("Wrong or stale facts persist until you fix or reset them — check \"View and edit memory\" now and then.", "Хибні чи застарілі факти лишаються, поки не виправиш чи не скинеш — заглядай у \"View and edit memory\" час від часу.") },
+    { title: L("Expecting chat search on Free", "Очікувати chat search на Free"), body: L("Chat search is a paid feature; on Free you still get Memory (the always-on summary).", "Chat search — платна функція; на Free лишається Memory (завжди увімкнений підсумок).") },
+  ],
+  interview: [
+    { q: L("How do Memory and chat search differ?", "Чим відрізняються Memory і chat search?"), a: L("Memory is an always-on, editable summary injected into new chats; chat search is on-demand retrieval of specific past conversations (paid plans), shown with citations.", "Memory — завжди увімкнений редагований підсумок у нових чатах; chat search — retrieval конкретних минулих розмов на вимогу (платні плани), з цитатами."), level: "beginner" },
+    { q: L("How do you correct something Claude \"knows\" about you?", "Як виправити те, що Claude \"знає\" про тебе?"), a: L("Edit it in Settings → Capabilities → View and edit memory, or just tell Claude in chat — the change applies to your next conversation.", "Виправ у Settings → Capabilities → View and edit memory або просто скажи в чаті — зміна діє з наступної розмови."), level: "beginner" },
+    { q: L("Why might a project's context not show up in your other chats?", "Чому контекст проєкту може не зʼявлятися в інших чатах?"), a: L("Projects have a separate, walled memory space; project chats don't feed global memory and vice versa.", "Projects мають окремий ізольований простір memory; project-чати не живлять global memory і навпаки."), level: "middle" },
+  ],
+  seeAlso: ["m7", "m2", "m10"],
+  sources: [
+    { title: "Use Claude's chat search and memory to build on previous context — Help Center", url: "https://support.claude.com/en/articles/11817273-use-claude-s-chat-search-and-memory-to-build-on-previous-context" },
+    { title: "Import and export your memory from Claude — Help Center", url: "https://support.claude.com/en/articles/12123587-import-and-export-your-memory-from-claude" },
+    { title: "Using incognito chats — Help Center", url: "https://support.claude.com/en/articles/12260368-using-incognito-chats" },
+    { title: "Release notes — Help Center", url: "https://support.claude.com/en/articles/12138966-release-notes" },
+  ],
+};
+
+
 /* ---- assembled, ordered, and indexed ------------------------------------ */
-export const MODULES: Module[] = [...planned, m6, m7, m8, m9, m10, m11, m12, m13, m14, m15, m16, m17, m18, m19, m20, m21, m22, m23, m24].sort((a, b) => a.order - b.order);
+export const MODULES: Module[] = [...planned, m1, m2, m3, m4, m5, m6, m7, m8, m9, m10, m11, m12, m13, m14, m15, m16, m17, m18, m19, m20, m21, m22, m23, m24].sort((a, b) => a.order - b.order);
 
 export function sectionById(id: string): Section | undefined {
   return SECTIONS.find((s) => s.id === id);

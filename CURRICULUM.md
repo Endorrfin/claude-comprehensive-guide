@@ -78,13 +78,14 @@ type Block =
 
 ## D. The modules
 
-> **Build status (updated 2026-06-23, through S7).** Authored ✅ = M6–M21 (**16 / 28**). Sections **II, III
-> & IV complete**; Section **V** started (M20, M21 done; **M22–M24 pending**). Sections I, VI are navigable
-> skeletons (planned topics only). This file is the **seed plan**; where verification refined a topic, the
-> authored content + the correction note live in `concepts.ts` and `CLAUDE.md` §14 (e.g. M19 connectors &
-> plugins are **account-level, not project-scoped**; M21 "shared context" = the separate **Work across
-> Microsoft 365 apps** feature, and the Office agents are **GA on all paid plans**; M20 Chrome on Pro =
-> Haiku-only, with protected actions always gated).
+> **Build status (updated 2026-06-23, through S9).** Authored ✅ = M1–M24 (**24 / 28**). Sections **I, II, III,
+> IV & V complete** (Section I = the M1–M5 beginner block, authored in S9). Only Section **VI (M25–M28)** is a
+> navigable skeleton (planned topics only). This file is the **seed plan**; where verification refined a topic,
+> the authored content + the correction note live in `concepts.ts` and `CLAUDE.md` §14 (e.g. M4 chat uploads
+> are **500 MB/file** not 30 MB, and writing **styles are migrating to Skills**; M2 has **no official keyboard-
+> shortcut sheet**; M5 Memory is **two spaces** — global + walled per-project — and chat search is **paid-only**;
+> M19 connectors & plugins are **account-level, not project-scoped**; M21 "shared context" = the separate **Work
+> across Microsoft 365 apps** feature, Office agents **GA on all paid plans**; M20 Chrome on Pro = Haiku-only).
 
 ### Section I · Foundations & first steps  `[beginner]`  — the on-ramp (skippable for pros)
 
