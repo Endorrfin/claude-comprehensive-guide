@@ -1,0 +1,130 @@
+.bal {
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  background: var(--surface);
+  padding: 16px;
+  margin: 4px 0;
+}
+
+/* task + mode row */
+.bal-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+.bal-task {
+  font-size: 12.5px;
+  color: var(--tx2);
+  line-height: 1.45;
+  flex: 1 1 280px;
+}
+.bal-task-k {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--accent-bright);
+  background: var(--accent-dim);
+  border-radius: 5px;
+  padding: 2px 7px;
+  margin-right: 8px;
+}
+.bal-seg {
+  display: inline-flex;
+  border: 1px solid var(--line2);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.bal-seg button {
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--tx2);
+  background: transparent;
+  border: none;
+  border-right: 1px solid var(--line2);
+  padding: 5px 13px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.bal-seg button:last-child {
+  border-right: none;
+}
+.bal-seg button.on {
+  background: var(--accent-dim);
+  color: var(--accent-bright);
+  font-weight: 600;
+}
+
+/* stage */
+.bal-stage {
+  width: 100%;
+  height: auto;
+}
+
+/* gate prompt */
+.bal-gate {
+  border: 1px solid var(--accent-deep);
+  border-left-width: 3px;
+  border-radius: var(--r-sm);
+  background: var(--code-bg);
+  padding: 10px 13px;
+  margin-top: 12px;
+}
+.bal-gate.protected {
+  border-color: var(--sem-warn);
+}
+.bal-gate.domain {
+  border-color: var(--sem-tool);
+}
+.bal-gate-ttl {
+  font-family: var(--font-head);
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--tx);
+  margin-bottom: 3px;
+}
+.bal-gate-note {
+  font-size: 12px;
+  color: var(--tx2);
+  line-height: 1.45;
+  margin-bottom: 9px;
+}
+.bal-gate-opts {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* controls */
+.bal-controls {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+.bal-spacer {
+  flex: 1;
+}
+.bal-count {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--tx3);
+}
+
+/* insight */
+.bal-note {
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--tx2);
+  border-left: 2px solid var(--sem-tool);
+  padding: 6px 0 6px 12px;
+  margin-top: 12px;
+}
+
+@media (max-width: 560px) {
+  .bal-seg button { padding: 5px 9px; font-size: 11px; }
+}

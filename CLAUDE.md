@@ -306,6 +306,13 @@ Footer: **"Vasyl Krupka · Senior Fullstack Engineer"** + 🇺🇦. Dark is prim
     access tiers** (fixed by category): **View only** (browsers, trading platforms) · **Click only**
     (terminals, IDEs) · **Full control** (everything else). **No sandbox**; screenshots see the screen;
     trading/crypto **blocked by default**; per-app approval (30 min in Dispatch); cross-app link trap.
+  - **Projects · connectors · plugins · Dispatch (M19, verified S7):** a **Cowork project** = a **local**
+    workspace (Instructions · Scheduled tasks · Context [folder / linked chat project / URL] · project-scoped
+    Memory); **desktop-only, no cloud sync, no sharing on Team/Enterprise**; create from scratch / existing
+    folder / imported chat project. **Connectors & plugins are account-level, NOT project-scoped** (only
+    Instructions + Context are scoped). **Dispatch** = one continuous phone↔desktop thread (**Pro/Max only** —
+    narrower than Cowork) that **routes** dev→Claude Code / knowledge→Cowork on an **awake** desktop and
+    messages back the result; computer use in phone sessions uses 30-min approvals.
 - **Skills:** `SKILL.md` (YAML frontmatter: name+description) + scripts/resources; pre-built pptx/xlsx/
   docx/pdf; create in Code, upload via API, or add in claude.ai settings; run on claude.ai/API/Bedrock/Foundry.
 - **Claude Code:** subagents (Task tool, own context), **agent teams** (git-coordinated; launched
@@ -315,19 +322,35 @@ Footer: **"Vasyl Krupka · Senior Fullstack Engineer"** + 🇺🇦. Dark is prim
   (all plans, mobile beta); remote (Anthropic-hosted: M365/Gmail/Calendar) vs local (stdio) MCP.
 - **Projects/Artifacts/Memory:** Projects wall off context+files+skills; Artifacts now persistent +
   API calls + MCP (Live Artifacts = stateful/connected); Memory to **all users incl. free since 2026-03-02**.
-- **Claude for Chrome:** browser agent (navigate/click/forms, record workflows, scheduled); beta all paid plans.
-- **Claude for Excel/PowerPoint:** Excel reads multi-tab workbooks w/ cell-level citations, pivot tables;
-  Opus 4.6; Max/Team/Enterprise; shared context with PowerPoint add-in (2026-03).
+- **Claude in Chrome (M20, verified S7):** browser **extension**; side-panel agent that screenshots the
+  active tab + reads the DOM, then navigates/clicks/types/fills/extracts; multi-tab via tab group; built-in
+  site knowledge (Slack/Gmail/Calendar/Docs/GitHub); **shortcuts** (`/`) + **recorded workflows** +
+  **scheduled** shortcuts; pairs with Code (build-test-verify + console logs). **Beta, all paid plans,
+  Chrome-only**; **Pro = Haiku 4.5 only** (Max/Team/Ent pick Opus 4.7 / Sonnet 4.6 / Haiku 4.5). Two
+  **permission modes** (Ask before acting = plan + per-domain prompts · Act without asking = autonomous,
+  higher injection risk); **protected actions** (purchase/delete/account/permissions) always ask in both;
+  **refuses instructions found in page/email content**; blocked sites (banking/trading/crypto/adult/piracy).
+- **Claude for Excel/PowerPoint (M21, verified S7):** Microsoft 365 **add-ins**, **GA on ALL paid plans**
+  (Pro/Max/Team/Enterprise) — *not* beta (the old "Opus 4.6; Max/Team/Ent" note was **stale**; no model
+  pinned). **Excel:** multi-tab, **clickable cell-level citations**, dependency-safe edits + change tracking
+  + overwrite protection; native ops by language (pivot tables, charts, conditional formatting, data
+  validation); skills (`/`) + connectors; per-app Instructions; **no** data tables/macros/VBA; `.xlsx`/`.xlsm`.
+  **PowerPoint:** template-aware (slide master), pinpoint edits, native editable charts. **"Shared context"
+  = the separate opt-in "Work across Microsoft 365 apps"** (Excel/PPT/Word/Outlook, **open files only**,
+  default on Pro/Max · off Team/Enterprise) — within one app, Instructions + history are **separate** Excel↔PPT.
+  Prompt-injection: trusted files only; risky funcs (WEBSERVICE/IMPORTDATA/INDIRECT/DDE/CALL…) pop per-tool confirms.
 
 ## 13. Session roadmap (step by step, ~12 sessions)
 
 > Pattern (from the gold standard): **lock a golden standard first**, then batch. Each session ends with
 > typecheck + build + (after Pages is live) a push to confirm deploy. Bilingual = author EN then UA per chapter.
 
-> **Progress (2026-06-23): S0–S6 ✅ done** — 13 / 28 modules authored (M6–M18); Sections **II & III
-> complete**, Section **IV** done through **M18** (M19 pending). 6 of 7 signature sims built (Agent Loop,
-> Prompt Anatomy, Token Budget, MCP Flow, Progressive Disclosure; + light Schedule-Timeline). **Next: S7
-> (Section V) — M19, M20 Chrome, M21 Excel/PowerPoint.** Beginner block (M1–M5) still slated for S9.
+> **Progress (2026-06-23): S0–S7 ✅ done** — 16 / 28 modules authored (M6–M21); Sections **II, III & IV
+> complete**, Section **V** started (M20, M21 done; M22–M24 pending). 6 of 7 signature sims built (Agent
+> Loop, Prompt Anatomy, Token Budget, MCP Flow, Progressive Disclosure; ★ Sub-agent Fan-out still to come
+> in S8) + 2 light interactives (Schedule-Timeline M17, Browser-Agent-Loop M20). **Next: S8 — M22 Claude
+> Code essentials, M23 Sub-agents/teams + ★ Sub-agent Fan-out, M24 hooks/slash/patterns.** Beginner block
+> (M1–M5) still slated for S9.
 
 - **S0 · Planning** ✅ — agree stack/structure/scope; write this `CLAUDE.md`; task list.
   **Status: drafted, awaiting user approval before S1.**
@@ -343,7 +366,7 @@ Footer: **"Vasyl Krupka · Senior Fullstack Engineer"** + 🇺🇦. Dark is prim
 - **S4 · Context + Connectors** ✅ — Ch.10 Context/token mgmt + **Token Budget**; Ch.11 Connectors & MCP + **MCP Flow**.
 - **S5 · Skills & plugins** ✅ — Ch.12 Skills + **Progressive Disclosure**; Ch.13 Building skills; Ch.14 Plugins/marketplaces.
 - **S6 · Cowork core** ✅ — Ch.16 Files/outputs; Ch.17 Scheduled tasks (+timeline); Ch.18 Computer use (+3-tiers). *(M15 was the S1 golden.)*
-- **S7 · Cowork advanced + tools** — Ch.19 Cowork projects/connectors/plugins/mobile; Ch.20 Claude in Chrome; Ch.21 Excel/PowerPoint.
+- **S7 · Cowork advanced + tools** ✅ — Ch.19 Cowork projects/connectors/plugins/mobile; Ch.20 Claude in Chrome (+ light Browser-Agent-Loop); Ch.21 Excel/PowerPoint.
 - **S8 · Claude Code & agentic** — Ch.22 Code essentials; Ch.23 Sub-agents/teams/worktrees + **Sub-agent Fan-out**; Ch.24 hooks/slash/advanced patterns.
 - **S9 · Beginner block** — Ch.1–5 (what is Claude, interface, prompting basics, attachments/styles, memory/search) — reuses components built above.
 - **S10 · Mastery + polish** — Ch.25 Security; Ch.26 Choosing the right tool + **Tool Picker**; Ch.27 Ecosystem map polish; Ch.28 Mental models + glossary; global search, flashcards, mobile/a11y/perf, **bilingual QA**. *(web-search to confirm latest facts.)*
@@ -636,3 +659,36 @@ Footer: **"Vasyl Krupka · Senior Fullstack Engineer"** + 🇺🇦. Dark is prim
   figure resolves; table widths == head, compare 3-tuples, callout tones valid; bilingual; ids/seeAlso
   valid). Workspace holds **source only** — `node_modules` untouched; no `dist/` or git lock on the mounted FS.
   **Next (S7): Section V — M19 Cowork projects/connectors/plugins/mobile; M20 Claude in Chrome; M21 Excel/PowerPoint.**
+- **2026-06-23 · S7 Section V — Cowork advanced + Chrome + Office (M19–M21)** — DONE. Authored all three to
+  golden quality after web-verifying every fact against the Help Center: Cowork **projects** (Apr 9) ·
+  **Assign tasks from anywhere / Dispatch** · **Get started with Claude in Chrome** (Apr 27) + Chrome
+  **permissions** + Chrome **safety** · **Use Claude for Excel** · **Use Claude for PowerPoint** · **Work
+  across Microsoft 365 apps** (May 7). **M19 Cowork projects, connectors, plugins & mobile** (4 topics) + 2
+  figures (`cowork-project`, `dispatch-flow`). **M20 Claude in Chrome** (4 topics) + the **light interactive
+  `browser-agent-loop`** — perceive→reason→act→observe with the *real* permission model wired in (plan +
+  per-domain prompts in “Ask before acting”; protected actions always-gated in **both** modes; interactive
+  Approve/Decline; step/play/pause, reduced-motion, bilingual, ARIA). **M21 Claude for Excel & PowerPoint**
+  (4 topics) + figure `excel-citations` (cell-level citation provenance + cross-app strip). Registered **1
+  sim + 3 figures** in `registry.tsx`; removed m19/m20/m21 stubs; spliced into `MODULES`. **Section IV now
+  complete (M15–M19); Section V started (M20, M21 done; M22–M24 pending).**
+  **Correctness notes / user-rule-8 challenges:** (1) **Connectors & plugins are account-level, NOT
+  project-scoped** — only **Instructions + Context** are scoped to a Cowork project; corrected the
+  curriculum’s “connectors in Cowork” framing. (2) **Dispatch is Pro/Max only** (narrower than Cowork = all
+  paid) and **routes** dev→Claude Code / knowledge→Cowork over **one** persistent phone↔desktop thread on an
+  **awake** desktop. (3) **Office agents are GA on ALL paid plans** (Pro/Max/Team/Enterprise) — the §12
+  “Opus 4.6; Max/Team/Ent” note was **stale**; no model asserted; Excel has **no** data tables/macros/VBA.
+  (4) **“Shared context with PowerPoint” is imprecise** — within one app Instructions+history are **separate**
+  Excel↔PPT; the real shared context is the distinct opt-in **“Work across Microsoft 365 apps”** (Excel/PPT/
+  Word/Outlook, **open files only**, default on Pro/Max · off Team/Enterprise). (5) **Chrome on Pro = Haiku
+  4.5 only** (Max/Team/Ent pick Opus 4.7 / Sonnet 4.6 / Haiku 4.5); Chrome-only; still **beta** (contrast:
+  Office agents are GA). (6) Authored to render cleanly under the tiny `Md` (no single-`*` italics; compare
+  cells stay plain). **Verified** (linux arm64 bindings `@rolldown/binding-linux-arm64-gnu@1.0.3` +
+  `lightningcss-linux-arm64-gnu@1.32.0` in `/tmp` via `NODE_PATH`; built into a fresh `/tmp` outDir to dodge
+  the sandbox unlink/`emptyOutDir` limit): `tsc --noEmit` clean (strict · noUnusedLocals/Parameters) ·
+  `vite build` OK (**61 modules**) · data-integrity **ALL PASS** (28 modules · **16 authored**; m19/m20/m21
+  4 topics each; browser-agent-loop sim + cowork-project/dispatch-flow/excel-citations figures resolve; **8
+  sim + 14 figure keys**; **1516 bilingual values** non-empty; table widths == head, compare 3-tuples,
+  callout tones valid; ids/seeAlso valid; **SIGNATURE_SIMS intact** — m20 stays a LIGHT sim, not ★). No
+  ESLint config exists; the lint gate is TypeScript strict (passed). Workspace holds **source only** —
+  `node_modules` untouched. **Next (S8): M22 Claude Code essentials; M23 Sub-agents/teams/worktrees +
+  ★ Sub-agent Fan-out; M24 hooks/slash commands/advanced patterns.**

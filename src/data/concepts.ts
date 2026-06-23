@@ -756,6 +756,501 @@ const m18: Module = {
 };
 
 /* ======================================================================
+   M19 · Cowork projects, connectors, plugins & mobile — fully authored (S7)
+   ====================================================================== */
+const m19: Module = {
+  id: "m19",
+  section: "s4",
+  order: 19,
+  level: "senior",
+  title: L("Cowork projects, connectors, plugins & mobile", "Cowork projects, connectors, plugins і mobile"),
+  tagline: L(
+    "Turn one-off Cowork tasks into a standing workspace: a project that keeps files, instructions, schedules and memory — powered by your account connectors and plugins, and reachable from your phone.",
+    "Перетвори разові Cowork-задачі на постійний workspace: project, що тримає файли, instructions, розклади й memory — на основі твоїх акаунтних connectors і plugins, і доступний навіть із телефону.",
+  ),
+  readMins: 8,
+  mentalModel: L(
+    "A Cowork project is a folder with a memory; your connectors and plugins plug in from the account level; Dispatch is one phone-to-desktop thread that routes each task to the right agent.",
+    "Cowork project — це папка з памʼяттю; твої connectors і plugins під'єднуються з рівня акаунта; Dispatch — це один thread «телефон↔десктоп», що скеровує кожну задачу до потрібного агента.",
+  ),
+  topics: [
+    {
+      id: "t1",
+      title: L("Cowork projects — persistent context for recurring work", "Cowork projects — персистентний context для повторюваної роботи"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "A plain Cowork task starts cold every time. A **project** groups related tasks into one workspace that keeps its own **files, instructions, scheduled tasks, context and memory** — so Claude stops re-learning your setup on every run. If you use **Projects** in Claude chat, Cowork projects feel similar, but they live **locally on your desktop** and are built around the tasks you run through Cowork.\n\nFind **Projects** in the left panel and click **+** to create one three ways: **Start from scratch** (a new folder with instructions and files), **Import from a Claude project** (pull the files and instructions out of a chat project — one at a time, no bulk import), or **Use an existing folder** on your computer (point Claude at a folder you already have). You then name it, choose where on disk it lives, and add instructions.",
+            "Звичайна Cowork-задача щоразу стартує «з нуля». **Project** групує повʼязані задачі в один workspace, що тримає власні **файли, instructions, scheduled tasks, context і memory** — тож Claude не вивчає твоє оточення наново при кожному запуску. Якщо ти користуєшся **Projects** у чаті Claude, Cowork projects схожі, але живуть **локально на десктопі** і побудовані навколо задач, які ти виконуєш через Cowork.\n\nЗнайди **Projects** у лівій панелі й тисни **+**, щоб створити трьома способами: **Start from scratch** (нова папка з instructions і файлами), **Import from a Claude project** (витягти файли й instructions із chat-project — по одному, без bulk-імпорту), або **Use an existing folder** на компʼютері (вказати Claude на наявну папку). Далі даєш назву, обираєш місце на диску й додаєш instructions.",
+          ),
+        },
+        { kind: "figure", fig: "cowork-project", caption: L("A Cowork project is a local folder that wraps four project-scoped pieces — Instructions, Scheduled tasks, Context, Memory — while account-level connectors and plugins plug in from outside.", "Cowork project — це локальна папка, що огортає чотири project-scoped частини — Instructions, Scheduled tasks, Context, Memory — тоді як акаунтні connectors і plugins під'єднуються ззовні.") },
+        {
+          kind: "table",
+          head: [L("Project piece", "Частина проєкту"), L("What it does", "Що робить"), L("Scope", "Scope")],
+          rows: [
+            [L("Instructions", "Instructions"), L("Tone, formatting and rules Claude follows for **every** task in the project", "Тон, форматування й правила, яких Claude дотримується для **кожної** задачі проєкту"), L("Project", "Project")],
+            [L("Scheduled tasks", "Scheduled tasks"), L("Recurring tasks that belong to this project (a morning brief, a weekly update)", "Повторювані задачі цього проєкту (ранковий бриф, щотижневе оновлення)"), L("Project", "Project")],
+            [L("Context", "Context"), L("A local folder, a linked chat project, or a pasted URL Claude can reference", "Локальна папка, повʼязаний chat-project або вставлений URL для довідки"), L("Project", "Project")],
+            [L("Memory", "Memory"), L("Claude remembers what it learned working inside the project", "Claude памʼятає, що дізнався, працюючи в проєкті"), L("Project only — not shared", "Лише project — не спільне")],
+          ],
+          caption: L("Only these four are project-scoped. Connectors, plugins and skills come from the account level (next topic).", "Лише ці чотири — project-scoped. Connectors, plugins і skills приходять з рівня акаунта (наступний топік)."),
+        },
+        {
+          kind: "callout",
+          tone: "senior",
+          title: L("Project memory is walled, and projects are local-only", "Memory проєкту ізольована, а проєкти лише локальні"),
+          md: L(
+            "Memory is **scoped to the project** — what Claude learns in one project doesn't leak into another. Projects are **desktop-only and stored locally**: there's **no cloud sync**, and on **Team/Enterprise** Cowork projects **can't be shared**. **Archiving** only removes the project's metadata from the UI — your files and folders on disk are untouched.",
+            "Memory **прив'язана до проєкту** — що Claude вивчив в одному, не протікає в інший. Проєкти **лише на десктопі й зберігаються локально**: **немає cloud sync**, а на **Team/Enterprise** Cowork projects **не можна шарити**. **Archiving** лише прибирає метадані проєкту з UI — твої файли й папки на диску лишаються недоторканими.",
+          ),
+        },
+      ],
+    },
+    {
+      id: "t2",
+      title: L("Connectors in Cowork", "Connectors у Cowork"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "Cowork doesn't have its own connector system. The **MCP connectors you configured once on your account** — Gmail, Drive, Slack, a custom remote MCP — are simply **available to Cowork tasks**, the same way they're available in chat. They're **account- or org-level**, not bound to a project, and Claude reaches for them per task. That's a deliberate split worth internalizing: the **only** project-scoped things are **Instructions** and **Context** (the folder / linked project / URL you attach). Everything else — connectors, plugins, skills — composes in from outside.",
+            "У Cowork немає власної системи connectors. **MCP connectors, які ти налаштував один раз на акаунті** — Gmail, Drive, Slack, кастомний remote MCP — просто **доступні Cowork-задачам**, так само як у чаті. Вони **рівня акаунта/організації**, не привʼязані до проєкту, і Claude звертається до них під задачу. Це свідомий поділ, який варто засвоїти: **єдине** project-scoped — це **Instructions** і **Context** (папка / повʼязаний проєкт / URL, які ти додаєш). Усе інше — connectors, plugins, skills — під'єднується ззовні.",
+          ),
+        },
+        {
+          kind: "compare",
+          a: L("Project-scoped", "Project-scoped"),
+          b: L("Account / org-level", "Рівень акаунта / організації"),
+          rows: [
+            [L("Set where", "Де налаштовується"), L("Inside the project", "Усередині проєкту"), L("Once, in Settings", "Один раз, у Settings")],
+            [L("What", "Що"), L("Instructions; Context = folder, linked chat project, or URL", "Instructions; Context = папка, повʼязаний chat-project або URL"), L("MCP connectors, installed plugins, enabled skills", "MCP connectors, встановлені plugins, увімкнені skills")],
+            [L("Reach", "Охоплення"), L("Only this project's tasks", "Лише задачі цього проєкту"), L("Every Cowork task, and other Claude surfaces", "Кожна Cowork-задача й інші поверхні Claude")],
+          ],
+        },
+        {
+          kind: "callout",
+          tone: "tip",
+          title: L("Reuse, don't duplicate", "Перевикористовуй, не дублюй"),
+          md: L(
+            "Because connectors are account-level, you set up Gmail or a custom MCP **once** and it works in every project and chat. Put project-specific facts in **Context** and project behaviour in **Instructions** — not in a connector. See **Connectors & MCP** (M11) for how the connection and OAuth scopes actually work.",
+            "Оскільки connectors рівня акаунта, ти налаштовуєш Gmail чи кастомний MCP **один раз** — і це працює в кожному проєкті й чаті. Project-специфічні факти клади в **Context**, а поведінку проєкту — в **Instructions**, не в connector. Див. **Connectors & MCP** (M11), як саме працюють підключення й OAuth scopes.",
+          ),
+        },
+      ],
+    },
+    {
+      id: "t3",
+      title: L("Plugins & role workflows", "Plugins і рольові процеси"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "A **plugin** is a bundle — **skills + subagents + commands + hooks + MCP servers** packaged together and installed in one step. Like connectors, plugins are **installed once** and then available across your Cowork tasks; they aren't project-scoped. Cowork ships **11 open-source role plugins** (productivity, sales, customer-support, product-management, marketing, legal, finance, data, enterprise-search, bio-research, and the cowork-plugin-management helper). Installing one is how you give Cowork a **ready-made role workflow**: the marketing plugin brings marketing skills and subagents; the finance plugin brings finance ones.",
+            "**Plugin** — це bundle: **skills + subagents + commands + hooks + MCP servers**, спаковані разом і встановлені одним кроком. Як і connectors, plugins **встановлюються один раз** і далі доступні в усіх Cowork-задачах; вони не project-scoped. Cowork постачає **11 open-source рольових plugins** (productivity, sales, customer-support, product-management, marketing, legal, finance, data, enterprise-search, bio-research і помічник cowork-plugin-management). Встановлення одного — це спосіб дати Cowork **готовий рольовий workflow**: marketing-plugin приносить marketing-skills і subagents; finance-plugin — фінансові.",
+          ),
+        },
+        {
+          kind: "callout",
+          tone: "tip",
+          title: L("Install once, match it to your role", "Встанови раз, підбери під свою роль"),
+          md: L(
+            "Browse and install plugins from **claude.com/plugins** (or a custom marketplace). Pick the one or two role plugins that match what you actually do, rather than installing everything — each adds skills and subagents Claude may consider. Authoring and trust details live in **Plugins & marketplaces** (M14).",
+            "Переглядай і встановлюй plugins на **claude.com/plugins** (або у власному marketplace). Обери один-два рольові plugins під те, що ти реально робиш, а не став усе — кожен додає skills і subagents, які Claude може враховувати. Деталі авторства й довіри — у **Plugins & marketplaces** (M14).",
+          ),
+        },
+      ],
+    },
+    {
+      id: "t4",
+      title: L("Mobile & dispatch — start from your phone", "Mobile і dispatch — запуск із телефону"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "**Dispatch** gives you **one continuous conversation** with Claude that you reach from your phone or your desktop. Text it a task like you'd message a coworker, go do something else, and come back to finished work. The job runs **on your computer** — with your local files, connectors, plugins, and your apps through computer use — and Claude **messages you the result** plus a push notification when it's done or needs your go-ahead.\n\nThe clever part: Dispatch **routes** each task to the right agent. Development work spins up a **Claude Code** session; knowledge work spins up a **Cowork** session — and both appear in their own sidebars. It's a **single persistent thread** that keeps context across tasks, so you can hand off from phone to desktop without re-explaining.",
+            "**Dispatch** дає **одну безперервну розмову** з Claude, доступну з телефону чи десктопа. Напиши задачу, як написав би колезі, займися іншим — і повернись до готової роботи. Задача виконується **на твоєму компʼютері** — з локальними файлами, connectors, plugins і застосунками через computer use — а Claude **надсилає тобі результат** і push-сповіщення, коли готово або потрібен твій дозвіл.\n\nХитрість: Dispatch **скеровує** кожну задачу до потрібного агента. Розробка піднімає сесію **Claude Code**; knowledge work — сесію **Cowork**, і обидві зʼявляються у власних sidebars. Це **один персистентний thread**, що тримає context між задачами, тож можна передати справу з телефону на десктоп без повторних пояснень.",
+          ),
+        },
+        { kind: "figure", fig: "dispatch-flow", caption: L("One thread, two devices: a task texted from your phone runs on your awake desktop, is routed to Claude Code or Cowork, and the result comes back to the same thread.", "Один thread, два пристрої: задача з телефону виконується на ввімкненому десктопі, скеровується до Claude Code або Cowork, і результат повертається в той самий thread.") },
+        {
+          kind: "table",
+          head: [L("Requirement", "Вимога"), L("Detail", "Деталь")],
+          rows: [
+            [L("Plan", "План"), L("**Pro or Max** — narrower than Cowork itself, which is all paid plans", "**Pro або Max** — вужче, ніж сам Cowork, доступний усім платним планам")],
+            [L("Apps", "Застосунки"), L("Latest **Claude Desktop** (macOS / Windows x64) **and** the latest **Claude mobile app**", "Найновіший **Claude Desktop** (macOS / Windows x64) **і** найновіший **Claude mobile app**")],
+            [L("Desktop state", "Стан десктопа"), L("Computer **awake** and the app **open** — work runs on your machine, not in the cloud", "Компʼютер **увімкнений**, застосунок **відкритий** — робота йде на твоїй машині, не в хмарі")],
+            [L("Network", "Мережа"), L("Active internet on **both** phone and desktop", "Активний інтернет на **обох** — телефоні й десктопі")],
+            [L("Threads", "Threads"), L("One continuous thread — you can't start or manage multiple", "Один безперервний thread — не можна створити чи вести кілька")],
+          ],
+        },
+        {
+          kind: "callout",
+          tone: "security",
+          title: L("A phone message can move real files — trust the whole chain", "Повідомлення з телефону може рухати реальні файли — довіряй усьому ланцюгу"),
+          md: L(
+            "Dispatch hands a mobile agent remote control of a desktop agent. A message from your phone can trigger **real actions** on your computer — reading, moving or deleting local files, hitting connected services, driving your browser, and using desktop apps via **computer use** (which has **no sandbox** and uses **30-minute** approvals in phone-started sessions). Before enabling it: trust every app and service in the chain, know what's reachable, and know how to revoke access. Keep computer-use-heavy work off **unattended** phone tasks.",
+            "Dispatch віддає мобільному агенту віддалене керування десктопним агентом. Повідомлення з телефону може запустити **реальні дії** на компʼютері — читання, переміщення чи видалення локальних файлів, звернення до підключених сервісів, керування браузером і застосунками через **computer use** (який **не має sandbox** і використовує **30-хвилинні** дозволи в сесіях, запущених із телефону). Перш ніж вмикати: довіряй кожному застосунку й сервісу в ланцюгу, знай, що доступне, і вмій відкликати доступ. Тримай задачі з активним computer use подалі від **автономних** мобільних запусків.",
+          ),
+        },
+      ],
+    },
+  ],
+  keyPoints: [
+    L("A Cowork project is a local workspace grouping related tasks with their own files, instructions, scheduled tasks, context and memory — created from scratch, an existing folder, or an imported chat project.", "Cowork project — це локальний workspace, що групує повʼязані задачі з власними файлами, instructions, scheduled tasks, context і memory — створюється з нуля, з наявної папки або імпортом chat-project."),
+    L("Project memory is walled per project; projects are desktop-only, stored locally with no cloud sync, and can't be shared on Team/Enterprise.", "Memory проєкту ізольована; проєкти лише на десктопі, зберігаються локально без cloud sync і не шаряться на Team/Enterprise."),
+    L("Connectors and plugins are account/org-level, not project-scoped — only Instructions and Context are scoped to a project.", "Connectors і plugins рівня акаунта/організації, не project-scoped — лише Instructions і Context прив'язані до проєкту."),
+    L("Plugins bundle skills + subagents + commands + hooks + MCP; the 11 open-source role plugins give Cowork ready-made role workflows (install from claude.com/plugins).", "Plugins пакують skills + subagents + commands + hooks + MCP; 11 open-source рольових plugins дають Cowork готові рольові workflows (встановлення з claude.com/plugins)."),
+    L("Dispatch is one continuous phone↔desktop thread (Pro/Max only) that routes each task to Claude Code or Cowork on your awake desktop and messages you the result.", "Dispatch — один безперервний thread «телефон↔десктоп» (лише Pro/Max), що скеровує задачу до Claude Code чи Cowork на ввімкненому десктопі й надсилає результат."),
+  ],
+  pitfalls: [
+    { title: L("Expecting project memory to be global", "Очікувати, що memory проєкту глобальна"), body: L("Memory is per-project by design — facts you need everywhere belong in global Memory or in Instructions, not locked inside one project.", "Memory за задумом прив'язана до проєкту — факти, потрібні всюди, мають жити в глобальній Memory чи в Instructions, а не замкнені в одному проєкті.") },
+    { title: L("Thinking connectors live inside a project", "Думати, що connectors живуть у проєкті"), body: L("Connectors and plugins are account-level; only Instructions and Context (folder / linked project / URL) are project-scoped. Configure connectors once in Settings.", "Connectors і plugins рівня акаунта; лише Instructions і Context (папка / повʼязаний проєкт / URL) project-scoped. Налаштовуй connectors раз у Settings.") },
+    { title: L("Assuming Dispatch runs with the laptop asleep", "Гадати, що Dispatch працює зі сплячим ноутбуком"), body: L("There's no cloud runner — the desktop must be awake with the app open. If it sleeps, the task waits. Plan around that for time-sensitive mobile tasks.", "Немає хмарного раннера — десктоп має бути ввімкнений із відкритим застосунком. Якщо засне, задача чекає. Враховуй це для термінових мобільних задач.") },
+  ],
+  interview: [
+    { q: L("How is a Cowork project different from a chat Project?", "Чим Cowork project відрізняється від chat Project?"), a: L("A Cowork project lives locally on your desktop and is built around the tasks and files you run through Cowork. It adds project-scoped scheduled tasks, folder/URL/linked-project context, and project memory. You can import a chat project to seed it, but there's no cloud sync and no sharing on Team/Enterprise.", "Cowork project живе локально на десктопі й побудований навколо задач і файлів, які ти ганяєш через Cowork. Він додає project-scoped scheduled tasks, context із папки/URL/повʼязаного проєкту й project memory. Можна імпортувати chat-project як основу, але немає cloud sync і шарингу на Team/Enterprise.", ), level: "senior" },
+    { q: L("Where do connectors and plugins live relative to a Cowork project?", "Де живуть connectors і plugins відносно Cowork project?"), a: L("At the account/org level, not inside the project. You configure a connector or install a plugin once and it's available to every Cowork task (and other surfaces). Only Instructions and Context are project-scoped — so don't expect project A's connector setup to differ from project B's.", "На рівні акаунта/організації, не в проєкті. Connector налаштовується, а plugin встановлюється один раз — і доступні кожній Cowork-задачі (та іншим поверхням). Лише Instructions і Context project-scoped — тож не чекай, що налаштування connector у проєкті A відрізнятиметься від проєкту B.", ), level: "senior" },
+    { q: L("What's the trust model of Dispatch, and why does it matter?", "Яка модель довіри в Dispatch і чому це важливо?"), a: L("Dispatch chains a mobile agent to a desktop agent: a phone message can trigger real local actions — reading/moving/deleting files, hitting connectors, driving the browser, and computer use with no sandbox (30-minute approvals). So you must trust every link in the chain, know what's reachable, and be able to revoke access — and keep computer-use-heavy work off unattended phone tasks.", "Dispatch зчіплює мобільного агента з десктопним: повідомлення з телефону може запустити реальні локальні дії — читання/переміщення/видалення файлів, звернення до connectors, керування браузером і computer use без sandbox (30-хвилинні дозволи). Тож треба довіряти кожній ланці, знати, що досяжне, і вміти відкликати доступ — і тримати важкий computer use подалі від автономних мобільних задач.", ), level: "staff" },
+  ],
+  seeAlso: ["m15", "m7", "m14", "m17"],
+  sources: [
+    { title: "Organize your tasks with projects in Claude Cowork — Help Center", url: "https://support.claude.com/en/articles/14116274-organize-your-tasks-with-projects-in-claude-cowork" },
+    { title: "Assign tasks from anywhere in Claude Cowork — Help Center", url: "https://support.claude.com/en/articles/13947068-assign-tasks-from-anywhere-in-claude-cowork" },
+    { title: "Use Claude Cowork safely — Help Center", url: "https://support.claude.com/en/articles/13364135-use-claude-cowork-safely" },
+  ],
+};
+
+/* ======================================================================
+   M20 · Claude in Chrome — fully authored (S7, + light Browser-Agent Loop)
+   ====================================================================== */
+const m20: Module = {
+  id: "m20",
+  section: "s5",
+  order: 20,
+  level: "middle",
+  title: L("Claude in Chrome", "Claude in Chrome"),
+  tagline: L(
+    "A browser extension that works the web in a side panel: it reads the page via screenshots, clicks, types and fills forms — asking per site and before anything irreversible.",
+    "Розширення браузера, що працює з вебом у бічній панелі: читає сторінку через скриншоти, клікає, друкує й заповнює форми — питаючи per-site і перед будь-чим незворотним.",
+  ),
+  readMins: 7,
+  mentalModel: L(
+    "An agent in a side panel: it sees only the active tab (via screenshots), acts through the browser like you would, and stops to ask per site and before anything irreversible.",
+    "Агент у бічній панелі: бачить лише активну вкладку (через скриншоти), діє через браузер, як ти, і спиняється спитати per-site і перед будь-чим незворотним.",
+  ),
+  topics: [
+    {
+      id: "t1",
+      title: L("What the browser agent is", "Що таке browser-agent"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "**Claude in Chrome** is a browser **extension**: Claude reads, clicks and navigates websites alongside you in a **side panel** that stays open while you browse. It **sees what you see** — it takes screenshots of the **active tab** and reads the page text — and acts by running JavaScript to click buttons, type and fill forms.\n\nIt's in **beta on all paid plans** (Pro, Max, Team, Enterprise) and runs in **Google Chrome only** — not other Chromium browsers, not mobile. Install it from the Chrome Web Store, pin it, and grant the browser permissions it needs.",
+            "**Claude in Chrome** — це **розширення** браузера: Claude читає, клікає й навігує сайтами поруч із тобою в **бічній панелі**, що лишається відкритою під час перегляду. Він **бачить те, що бачиш ти** — робить скриншоти **активної вкладки** й читає текст сторінки — і діє, виконуючи JavaScript, щоб клікати, друкувати й заповнювати форми.\n\nЦе **beta на всіх платних планах** (Pro, Max, Team, Enterprise) і працює **лише в Google Chrome** — не в інших Chromium-браузерах і не на мобільному. Встанови з Chrome Web Store, закріпи й надай потрібні дозволи браузера.",
+          ),
+        },
+        {
+          kind: "callout",
+          tone: "senior",
+          title: L("Beta, Chrome-only — and the model depends on your plan", "Beta, лише Chrome — і модель залежить від плану"),
+          md: L(
+            "On **Pro**, Claude in Chrome runs on **Haiku 4.5** only. On **Max / Team / Enterprise** you pick the model per task — **Opus 4.7** (max reasoning), **Sonnet 4.6** (complex multi-step) or **Haiku 4.5** (speed). It's still beta, so favour simple, supervised tasks over long autonomous workflows.",
+            "На **Pro** Claude in Chrome працює лише на **Haiku 4.5**. На **Max / Team / Enterprise** ти обираєш модель під задачу — **Opus 4.7** (максимум міркування), **Sonnet 4.6** (складні багатокрокові) чи **Haiku 4.5** (швидкість). Це ще beta, тож надавай перевагу простим задачам під наглядом, а не довгим автономним workflows.",
+          ),
+        },
+      ],
+    },
+    {
+      id: "t2",
+      title: L("The loop: navigate, click, fill, extract", "Цикл: навігація, клік, форми, extract"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "Like every Claude agent, the browser agent runs a loop: **perceive** (screenshot + read the DOM) → **reason** (plan the next action) → **act** (navigate, click, type, extract) → **observe** the result → repeat until the goal is met. Step through it below and watch where it stops to ask.\n\nTwo things make it fast in practice: it has **built-in knowledge of popular sites** (Slack, Google Calendar, Gmail, Google Docs, GitHub), so high-level commands like \"schedule a meeting\" or \"update the doc\" work without step-by-step directions; and a **tab group** — drag tabs into Claude's group and it can read and synthesise across all of them at once, and keep working in the background while you switch tabs (as long as Chrome stays open).",
+            "Як кожен агент Claude, browser-agent крутить цикл: **perceive** (скриншот + читання DOM) → **reason** (план наступної дії) → **act** (навігація, клік, друк, extract) → **observe** результат → повтор до досягнення мети. Прокрокуй нижче й поглянь, де він спиняється спитати.\n\nДва чинники роблять його швидким на практиці: **вбудоване знання популярних сайтів** (Slack, Google Calendar, Gmail, Google Docs, GitHub) — тож команди верхнього рівня на кшталт «schedule a meeting» чи «update the doc» працюють без покрокових інструкцій; і **tab group** — перетягни вкладки в групу Claude, і він читає й синтезує по всіх одразу, а також працює у фоні, поки ти перемикаєш вкладки (доки Chrome відкритий).",
+          ),
+        },
+        { kind: "sim", sim: "browser-agent-loop" },
+        {
+          kind: "table",
+          head: [L("Capability", "Можливість"), L("What it means", "Що означає")],
+          rows: [
+            [L("Navigate", "Навігація"), L("Open URLs and move through a site's pages", "Відкривати URL і ходити сторінками сайту")],
+            [L("Click & fill forms", "Клік і форми"), L("Press buttons, choose options, type into fields", "Тиснути кнопки, обирати опції, друкувати в поля")],
+            [L("Extract / read", "Extract / читання"), L("Pull text and data off the page back into the chat", "Витягувати текст і дані зі сторінки назад у чат")],
+            [L("Multi-tab synthesis", "Multi-tab синтез"), L("Read across several tabs in Claude's tab group at once", "Читати кілька вкладок у tab group Claude одразу")],
+            [L("Visual context", "Візуальний контекст"), L("Upload an image or screenshot a region to point at an element", "Завантажити зображення чи скриншот області, щоб вказати на елемент")],
+          ],
+        },
+      ],
+    },
+    {
+      id: "t3",
+      title: L("Shortcuts, recordings & scheduled web tasks", "Shortcuts, записи й заплановані web-задачі"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "You drive it three ways. **Prompt** in natural language. Save a working prompt as a **shortcut** — type `/` in the chat to reuse it instantly. Or **record a workflow**: click the record icon, perform the steps yourself, stop, and save them as a shortcut so Claude repeats the exact sequence. Recording is how you \"teach\" Claude a repetitive task that follows the same pattern each time.\n\nThen **schedule** your shortcuts to run automatically — daily, weekly, monthly or annually — from the clock icon. That turns Claude in Chrome into recurring web automation: check a dashboard every morning, pull a report every Friday.",
+            "Керуєш ним трьома способами. **Prompt** звичайною мовою. Збережи робочий prompt як **shortcut** — введи `/` у чаті, щоб миттєво перевикористати. Або **запиши workflow**: тисни іконку запису, сам виконай кроки, зупини й збережи їх як shortcut, щоб Claude повторював точну послідовність. Запис — це спосіб «навчити» Claude повторюваної задачі з однаковим патерном щоразу.\n\nДалі **заплануй** свої shortcuts на автозапуск — щодня, щотижня, щомісяця чи щороку — через іконку годинника. Це перетворює Claude in Chrome на повторюване web-автоматизування: перевіряти dashboard щоранку, тягнути звіт щопʼятниці.",
+          ),
+        },
+        {
+          kind: "table",
+          head: [L("Way to drive it", "Спосіб керування"), L("Best for", "Найкраще для")],
+          rows: [
+            [L("Prompt", "Prompt"), L("One-off tasks; exploring; anything new", "Разові задачі; дослідження; будь-що нове")],
+            [L("Shortcut", "Shortcut"), L("A proven prompt you reuse often (type `/`)", "Перевірений prompt, який часто повторюєш (введи `/`)")],
+            [L("Recorded workflow", "Записаний workflow"), L("A fixed click-by-click sequence to repeat exactly", "Фіксована послідовність кліків, яку треба повторювати точно")],
+            [L("Scheduled shortcut", "Запланований shortcut"), L("Recurring web tasks (daily/weekly/monthly)", "Повторювані web-задачі (день/тиждень/місяць)")],
+          ],
+        },
+        {
+          kind: "callout",
+          tone: "senior",
+          title: L("It also pairs with Claude Code and Desktop", "Він також працює з Claude Code і Desktop"),
+          md: L(
+            "Claude Code + the extension form a **build-test-verify** loop: build in the terminal, then have Claude open the browser to test, compare against a design, and read **console logs** (errors, network, DOM) to debug. You can also enable the **Claude in Chrome connector** in Claude Desktop to drive the browser from a desktop chat. Scheduling ties back to **Scheduled tasks** (M17).",
+            "Claude Code + розширення утворюють цикл **build-test-verify**: збираєш у терміналі, далі Claude відкриває браузер, тестує, порівнює з дизайном і читає **console logs** (помилки, мережа, DOM) для дебагу. Також можна ввімкнути **Claude in Chrome connector** у Claude Desktop, щоб керувати браузером із десктоп-чату. Планування повʼязане зі **Scheduled tasks** (M17).",
+          ),
+        },
+      ],
+    },
+    {
+      id: "t4",
+      title: L("Permissions & safety", "Дозволи та безпека"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "Acting on live websites is risky, so control sits in two **permission modes**. **Ask before acting** has Claude write a **plan** — listing the sites it will touch and the actions it will take — which you approve before anything runs; it then acts within those bounds but still stops at irreversible steps. **Act without asking** is a high-risk mode where Claude operates near-autonomously. On any site, you can also get a per-site prompt: **Allow this action** (safest), **Always allow on this site** (trust the whole site), or **Decline**.",
+            "Дії на живих сайтах ризиковані, тож контроль — у двох **permission modes**. **Ask before acting**: Claude пише **план** — перелік сайтів, яких торкнеться, і дій, які зробить — який ти схвалюєш до запуску; далі діє в цих межах, але все одно спиняється на незворотних кроках. **Act without asking** — режим високого ризику, де Claude діє майже автономно. На будь-якому сайті також буває per-site запит: **Allow this action** (найбезпечніше), **Always allow on this site** (довіра всьому сайту) або **Decline**.",
+          ),
+        },
+        {
+          kind: "compare",
+          a: L("Ask before acting", "Ask before acting"),
+          b: L("Act without asking", "Act without asking"),
+          rows: [
+            [L("Up front", "На старті"), L("Approve a plan listing sites + actions", "Схвалити план зі списком сайтів і дій"), L("No plan — Claude starts acting", "Без плану — Claude починає діяти")],
+            [L("Per site", "Per site"), L("Prompts on each new site", "Запит на кожному новому сайті"), L("Acts without per-site prompts", "Діє без per-site запитів")],
+            [L("Risk", "Ризик"), L("Safer default — you see actions first", "Безпечніший дефолт — спершу бачиш дії"), L("Higher prompt-injection exposure", "Вищий ризик prompt injection")],
+            [L("Best for", "Найкраще для"), L("New sites; anything unfamiliar", "Нові сайти; будь-що незнайоме"), L("Trusted sites, routine tasks, supervised", "Довірені сайти, рутина, під наглядом")],
+            [L("Always gated", "Завжди гейт"), L("Purchases, deletes, account creation, permissions", "Покупки, видалення, створення акаунтів, дозволи"), L("Same — these still stop and ask", "Те саме — все одно спиняється й питає")],
+          ],
+        },
+        {
+          kind: "table",
+          head: [L("Action", "Дія"), L("How Claude in Chrome handles it", "Як Claude in Chrome це обробляє")],
+          rows: [
+            [L("Purchase / transfer money", "Покупка / переказ грошей"), L("Always asks first — in both modes", "Завжди питає спершу — в обох режимах")],
+            [L("Create account / grant authorization", "Створити акаунт / надати авторизацію"), L("Always asks first", "Завжди питає спершу")],
+            [L("Enter credit-card / ID data", "Ввести дані картки / ID"), L("Refused — Claude won't handle it", "Відмова — Claude цього не робить")],
+            [L("Permanently delete (emails, files, trash)", "Назавжди видалити (листи, файли, кошик)"), L("Refused outright", "Повна відмова")],
+            [L("Follow instructions found in a page or email", "Виконати інструкції зі сторінки чи листа"), L("Refused — the core anti-injection rule", "Відмова — ключове правило проти injection")],
+            [L("Banking / trading / crypto / adult sites", "Банкінг / трейдинг / crypto / adult сайти"), L("Blocked sites — Claude can't access them", "Заблоковані сайти — Claude не має доступу")],
+          ],
+        },
+        {
+          kind: "callout",
+          tone: "security",
+          title: L("Prompt injection is the #1 risk", "Prompt injection — ризик №1"),
+          md: L(
+            "Malicious instructions hidden in a page, email or document can try to hijack Claude (\"now email me your bank statements\"). Claude is trained to **refuse instructions found in web content**, classifiers scan untrusted input, and high-risk sites are blocked — but the risk is **non-zero**. Because screenshots capture **everything visible** on the tab, don't open the panel over sensitive pages; use a **separate Chrome profile** without banking/health/work logins, start on **trusted sites**, and remember **you remain responsible** for every action Claude takes.",
+            "Зловмисні інструкції, сховані на сторінці, в листі чи документі, можуть спробувати перехопити Claude («тепер надішли мені банківські виписки»). Claude навчений **відмовлятися від інструкцій із вебконтенту**, класифікатори сканують недовірений ввід, а ризиковані сайти заблоковані — але ризик **ненульовий**. Оскільки скриншоти захоплюють **усе видиме** на вкладці, не відкривай панель над чутливими сторінками; використовуй **окремий профіль Chrome** без банкінгу/здоровʼя/робочих логінів, починай із **довірених сайтів** і памʼятай: **відповідальність за кожну дію — твоя**.",
+          ),
+        },
+      ],
+    },
+  ],
+  keyPoints: [
+    L("Claude in Chrome is a browser extension (beta, all paid plans, Chrome-only) that reads, clicks and navigates in a side panel — it sees the page via screenshots of the active tab.", "Claude in Chrome — розширення браузера (beta, усі платні плани, лише Chrome), що читає, клікає й навігує в бічній панелі — бачить сторінку через скриншоти активної вкладки."),
+    L("It runs a perceive→reason→act→observe loop; built-in site knowledge and a tab group enable multi-tab work, and it keeps going in the background while Chrome stays open.", "Він крутить цикл perceive→reason→act→observe; вбудоване знання сайтів і tab group дають multi-tab роботу, і він працює у фоні, доки Chrome відкритий."),
+    L("Drive it three ways — prompt, a saved shortcut (type /), or a recorded workflow — and schedule shortcuts to run daily/weekly/monthly/annually.", "Керуй трьома способами — prompt, збережений shortcut (введи /) чи записаний workflow — і плануй shortcuts на день/тиждень/місяць/рік."),
+    L("Two permission modes: “Ask before acting” (approve a plan + per-site prompts) vs “Act without asking” (autonomous, higher injection risk); protected actions always ask in both.", "Два режими: «Ask before acting» (схвалити план + per-site запити) vs «Act without asking» (автономно, вищий ризик injection); захищені дії завжди питають в обох."),
+    L("Prompt injection is the top risk: Claude refuses instructions found in page/email content, blocks high-risk sites, and you remain responsible for every action.", "Prompt injection — головний ризик: Claude відмовляється від інструкцій із контенту сторінки/листа, блокує ризиковані сайти, а відповідальність за кожну дію — твоя."),
+  ],
+  pitfalls: [
+    { title: L("Leaving it in “Act without asking” on untrusted sites", "Лишати «Act without asking» на недовірених сайтах"), body: L("That's exactly where prompt injection bites — reserve autonomous mode for trusted, routine tasks you're actively supervising.", "Саме там і вдаряє prompt injection — лиши автономний режим для довірених рутинних задач під наглядом.") },
+    { title: L("Opening the panel over sensitive pages", "Відкривати панель над чутливими сторінками"), body: L("Screenshots capture whatever's visible. Close confidential tabs or use a separate Chrome profile without sensitive logins.", "Скриншоти захоплюють усе видиме. Закрий конфіденційні вкладки або використай окремий профіль Chrome без чутливих логінів.") },
+    { title: L("Expecting it to handle banking or trading", "Чекати, що він працюватиме з банкінгом чи трейдингом"), body: L("Those are blocked sites and money actions are gated or refused by design — use a connector or do it yourself.", "Це заблоковані сайти, а грошові дії за задумом гейтяться чи відхиляються — використай connector або зроби сам.") },
+  ],
+  interview: [
+    { q: L("How does Claude in Chrome “see” and act on a page, and what's the main risk?", "Як Claude in Chrome «бачить» і діє на сторінці, і який головний ризик?"), a: L("It screenshots the active tab and reads the DOM, then runs JavaScript to click, type and fill. The main risk is prompt injection — malicious instructions hidden in page or email content. Mitigations: per-domain permission, a trained refusal to follow instructions found in web content, classifiers on untrusted input, and blocked high-risk sites.", "Він робить скриншот активної вкладки й читає DOM, далі виконує JavaScript, щоб клікати, друкувати й заповнювати. Головний ризик — prompt injection: зловмисні інструкції у вмісті сторінки чи листа. Запобіжники: per-domain дозвіл, навчена відмова виконувати інструкції з вебконтенту, класифікатори на недовіреному вводі й заблоковані ризиковані сайти.", ), level: "middle" },
+    { q: L("Contrast the two permission modes and say what's always gated.", "Порівняй два режими дозволів і скажи, що завжди гейтиться."), a: L("“Ask before acting” approves a plan up front and prompts per site — the safer default. “Act without asking” is near-autonomous with higher injection exposure. In both, protected actions always stop and ask: purchases/transfers, permanent deletes, account creation, and permission/security changes.", "«Ask before acting» спершу схвалює план і питає per-site — безпечніший дефолт. «Act without asking» майже автономний, з вищим ризиком injection. В обох захищені дії завжди спиняються й питають: покупки/перекази, незворотні видалення, створення акаунтів і зміна дозволів/безпеки.", ), level: "senior" },
+    { q: L("When would you pick a connector over Claude in Chrome for the same web app?", "Коли обрати connector замість Claude in Chrome для того самого web-застосунку?"), a: L("When a connector/MCP exists (Gmail, Calendar, Drive): it's faster, scoped by OAuth, and isn't exposed to page-level prompt injection. Reach for Claude in Chrome only when there's no connector or you genuinely need to drive the real UI. That's the precise-first ordering from computer use (M18) and the Tool Picker (M26).", "Коли є connector/MCP (Gmail, Calendar, Drive): він швидший, обмежений OAuth і не наражений на prompt injection рівня сторінки. Бери Claude in Chrome, лише коли connector немає або реально треба керувати справжнім UI. Це «найточніше першим» із computer use (M18) і Tool Picker (M26).", ), level: "senior" },
+  ],
+  seeAlso: ["m18", "m11", "m25", "m17"],
+  sources: [
+    { title: "Get started with Claude in Chrome — Help Center", url: "https://support.claude.com/en/articles/12012173-get-started-with-claude-in-chrome" },
+    { title: "Claude in Chrome Permissions Guide — Help Center", url: "https://support.claude.com/en/articles/12902446-claude-in-chrome-permissions-guide" },
+    { title: "Using Claude in Chrome safely — Help Center", url: "https://support.claude.com/en/articles/12902428-using-claude-in-chrome-safely" },
+  ],
+};
+
+/* ======================================================================
+   M21 · Claude for Excel & PowerPoint — fully authored (S7)
+   ====================================================================== */
+const m21: Module = {
+  id: "m21",
+  section: "s5",
+  order: 21,
+  level: "middle",
+  title: L("Claude for Excel & PowerPoint", "Claude for Excel і PowerPoint"),
+  tagline: L(
+    "Office add-ins that work inside the apps: Excel answers with clickable cell-level citations and edits safely; PowerPoint builds on your template — and one feature carries context across the whole Microsoft 365 suite.",
+    "Office-add-in, що працюють усередині застосунків: Excel відповідає клікабельними cell-level citations і редагує безпечно; PowerPoint будує на твоєму шаблоні — а одна можливість переносить context по всьому Microsoft 365.",
+  ),
+  readMins: 7,
+  mentalModel: L(
+    "A teammate inside Excel and PowerPoint that shows its work — every answer cites the exact cell, every edit is highlighted and explained — and can carry context between your open Office files.",
+    "Колега всередині Excel і PowerPoint, що показує свою роботу — кожна відповідь цитує конкретну клітинку, кожна правка підсвічена й пояснена — і вміє переносити context між відкритими Office-файлами.",
+  ),
+  topics: [
+    {
+      id: "t1",
+      title: L("The Excel agent: ask, cite, navigate", "Excel-agent: запит, цитата, навігація"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "**Claude for Excel** is an **add-in** that puts Claude in a sidebar inside Excel — built for people who live in spreadsheets, especially financial analysis and modeling. Ask a question about your workbook and you get an answer with **cell-level citations**: clickable links that jump straight to the referenced cell, so you can verify the logic, not just trust it. Claude **navigates multi-tab workbooks**, builds models, fills templates, and debugs errors (`#REF!`, `#VALUE!`, circular references) — always reading **only the workbook you have open**.\n\nClaude for Excel (and PowerPoint, Word, Outlook) is **generally available on all paid plans** — Pro, Max, Team, Enterprise. Note the contrast with Claude in Chrome: the Office agents are **GA, not beta**.",
+            "**Claude for Excel** — це **add-in**, що додає Claude у бічну панель усередині Excel — для тих, хто живе в таблицях, особливо у фінансовому аналізі й моделюванні. Постав запитання про workbook — і отримаєш відповідь із **cell-level citations**: клікабельні посилання, що ведуть прямо до згаданої клітинки, аби перевірити логіку, а не просто довіряти. Claude **навігує multi-tab workbooks**, будує моделі, заповнює шаблони й дебажить помилки (`#REF!`, `#VALUE!`, циклічні посилання) — завжди читаючи **лише відкритий workbook**.\n\nClaude for Excel (а також PowerPoint, Word, Outlook) **загальнодоступний на всіх платних планах** — Pro, Max, Team, Enterprise. Контраст із Claude in Chrome: Office-агенти — **GA, не beta**.",
+          ),
+        },
+        { kind: "figure", fig: "excel-citations", caption: L("Cell-level citations link each claim to the exact cell; edits are highlighted and explained. The cross-app feature carries context from an open workbook into an open deck.", "Cell-level citations повʼязують кожне твердження з конкретною клітинкою; правки підсвічені й пояснені. Cross-app можливість переносить context із відкритого workbook у відкритий deck.") },
+        {
+          kind: "callout",
+          tone: "senior",
+          title: L("GA on all paid plans — with real Excel limits", "GA на всіх платних планах — з реальними обмеженнями Excel"),
+          md: L(
+            "Availability moved fast: Excel started as a research preview, then went **GA across Pro/Max/Team/Enterprise** — so the old \"Max/Team/Enterprise only\" framing is stale. Usage counts against your normal Claude limits. But Claude **doesn't** do **data tables, macros, or VBA**, and it's **not** for final client deliverables or audit-critical calculations without your review. It supports `.xlsx` and `.xlsm` on Excel for web/Windows/Mac/iPad.",
+            "Доступність змінювалася швидко: Excel стартував як research preview, далі став **GA на Pro/Max/Team/Enterprise** — тож старе «лише Max/Team/Enterprise» застаріле. Використання рахується у твої звичайні ліміти Claude. Але Claude **не** працює з **data tables, macros чи VBA**, і він **не** для фінальних клієнтських деліверів чи аудит-критичних розрахунків без твоєї перевірки. Підтримує `.xlsx` і `.xlsm` на Excel для web/Windows/Mac/iPad.",
+          ),
+        },
+      ],
+    },
+    {
+      id: "t2",
+      title: L("Safe edits: dependencies, tracking, overwrite protection", "Безпечні правки: залежності, tracking, захист від перезапису"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "Editing a live model is where trust matters most. When Claude updates an assumption, it **preserves the formula dependencies and relationships** rather than pasting flat values, and it **highlights every changed cell with an explanation** (change tracking) so you can see exactly what moved and why. **Overwrite protection** warns you before it replaces existing data, and you can always fall back on Excel's normal **undo**. Turn on **session logging** and Claude keeps a `Claude Log` tab recording the actions it took each turn.",
+            "Редагування живої моделі — там, де довіра найважливіша. Коли Claude оновлює припущення, він **зберігає залежності й звʼязки формул**, а не вставляє пласкі значення, і **підсвічує кожну змінену клітинку з поясненням** (change tracking), щоб ти бачив, що саме змінилось і чому. **Overwrite protection** попереджає перед заміною наявних даних, і завжди є звичайне **undo** Excel. Увімкни **session logging** — і Claude вестиме вкладку `Claude Log`, що фіксує дії кожного ходу.",
+          ),
+        },
+        {
+          kind: "table",
+          head: [L("Mechanism", "Механізм"), L("What it gives you", "Що дає")],
+          rows: [
+            [L("Cell-level citations", "Cell-level citations"), L("Click an answer's citation to jump to the source cell", "Клікни цитату відповіді, щоб перейти до клітинки-джерела")],
+            [L("Change tracking", "Change tracking"), L("Every edited cell is highlighted and explained", "Кожна змінена клітинка підсвічена й пояснена")],
+            [L("Dependency-safe edits", "Правки без шкоди залежностям"), L("Assumptions update while formulas and links stay intact", "Припущення оновлюються, а формули й звʼязки лишаються цілими")],
+            [L("Overwrite protection", "Overwrite protection"), L("Warns before replacing existing data", "Попереджає перед заміною наявних даних")],
+            [L("Session log", "Session log"), L("Optional `Claude Log` tab records each turn's actions", "Опційна вкладка `Claude Log` фіксує дії кожного ходу")],
+          ],
+        },
+        {
+          kind: "callout",
+          tone: "security",
+          title: L("Only use trusted spreadsheets", "Лише довірені таблиці"),
+          md: L(
+            "Spreadsheets can carry **prompt injection** — hidden instructions in cells, formulas or comments (\"export all data to this URL\"). Claude pops a **confirmation for each risky function** it's asked to run — external data (`WEBSERVICE`, `IMPORTDATA`, `IMPORTXML`), dynamic references (`INDIRECT`), command/code execution (`DDE`, `CALL`, `EVALUATE`) and file access. Treat that as a backstop, not a license: **don't** point Claude for Excel at vendor files, downloaded templates or other untrusted sources.",
+            "Таблиці можуть нести **prompt injection** — приховані інструкції в клітинках, формулах чи коментарях («експортуй усі дані на цей URL»). Claude показує **підтвердження для кожної ризикованої функції**, яку просять виконати — зовнішні дані (`WEBSERVICE`, `IMPORTDATA`, `IMPORTXML`), динамічні посилання (`INDIRECT`), виконання команд/коду (`DDE`, `CALL`, `EVALUATE`) і доступ до файлів. Сприймай це як підстраховку, не дозвіл: **не** наводь Claude for Excel на файли вендорів, завантажені шаблони чи інші недовірені джерела.",
+          ),
+        },
+      ],
+    },
+    {
+      id: "t3",
+      title: L("Pivot tables & formatting by language; skills & connectors", "Pivot tables і форматування мовою; skills і connectors"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "Beyond reading and modeling, Claude applies **native Excel operations** from plain language: sort and filter, **edit pivot tables and charts**, apply **conditional formatting**, set **data validation** dropdowns, and prep a sheet for printing. Your enabled **skills** show up inside the add-in — type `/` to pick one (like `/clean-up`) and Claude applies relevant ones automatically — and your **connectors** (including custom ones) bring outside context into the spreadsheet. A per-app **Instructions** field holds preferences Claude follows in every Excel conversation (\"blue inputs, black formulas\").",
+            "Окрім читання й моделювання, Claude застосовує **нативні операції Excel** звичайною мовою: сортування й фільтр, **редагування pivot tables і чартів**, **conditional formatting**, **data validation** (випадні списки) і підготовку аркуша до друку. Увімкнені **skills** зʼявляються в add-in — введи `/`, щоб обрати (напр. `/clean-up`), і Claude застосує доречні автоматично — а **connectors** (зокрема кастомні) приносять зовнішній context у таблицю. Поле **Instructions** (на застосунок) тримає вподобання для кожної розмови в Excel («сині інпути, чорні формули»).",
+          ),
+        },
+        {
+          kind: "compare",
+          a: L("By hand", "Вручну"),
+          b: L("Ask Claude", "Попросити Claude"),
+          rows: [
+            [L("Pivot table", "Pivot table"), L("Insert → PivotTable → drag fields → configure", "Insert → PivotTable → тягнути поля → налаштувати"), L("“Pivot revenue by region and quarter”", "«Зведи дохід за регіоном і кварталом»")],
+            [L("Conditional format", "Conditional format"), L("Home → Conditional Formatting → build the rule", "Home → Conditional Formatting → скласти правило"), L("“Highlight cells below target in red”", "«Підсвіти клітинки нижче цілі червоним»")],
+            [L("Trace an error", "Знайти помилку"), L("Manually follow precedents to find the #REF!", "Вручну йти за precedents, щоб знайти #REF!"), L("“Why is B14 #REF!? Trace it”", "«Чому B14 #REF!? Простеж»")],
+            [L("Explain a number", "Пояснити число"), L("Click around formulas to reconstruct the logic", "Клікати по формулах, відновлюючи логіку"), L("Answer with a clickable cell citation", "Відповідь із клікабельною cell citation")],
+          ],
+        },
+      ],
+    },
+    {
+      id: "t4",
+      title: L("PowerPoint & working across Microsoft 365", "PowerPoint і робота крізь Microsoft 365"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "**Claude for PowerPoint** is the sibling add-in. It reads your deck's **slide master, layouts, fonts and colors** and builds or edits slides that stay **on-template**: generate a full deck from a description, make pinpoint edits to one slide without regenerating the rest, and turn bullet points into **native, editable charts and diagrams** (not flat images).\n\nThe real \"shared context\" is a separate feature — **Work across Microsoft 365 apps**. With it, Claude coordinates **Excel, PowerPoint, Word and Outlook**: it can read from your open workbook and write into your open deck (\"build a summary deck from this model\"), carrying context automatically so you don't copy-paste between apps.",
+            "**Claude for PowerPoint** — споріднений add-in. Він читає **slide master, layouts, шрифти й кольори** твого deck і будує чи редагує слайди, що лишаються **в межах шаблону**: згенерувати повний deck з опису, зробити точкову правку одного слайда без перегенерації решти й перетворити bullets на **нативні, редаговані чарти й діаграми** (не пласкі зображення).\n\nСправжній «shared context» — це окрема можливість **Work across Microsoft 365 apps**. З нею Claude координує **Excel, PowerPoint, Word і Outlook**: читає відкритий workbook і пише у відкритий deck («збери підсумковий deck із цієї моделі»), переносячи context автоматично, щоб не копіювати між застосунками.",
+          ),
+        },
+        {
+          kind: "callout",
+          tone: "senior",
+          title: L("“Shared context” has a precise meaning", "«Shared context» має точне значення"),
+          md: L(
+            "Within a **single** app, **Instructions and chat history are separate** between Excel and PowerPoint — they don't share. The cross-app sharing is the **opt-in** \"Work across apps\" feature, and it's narrow on purpose: it only touches files that are **currently open**, can't create/open/close/switch files for you, and its cross-app chat history isn't saved between sessions. The toggle is **on by default for Pro/Max** and **off for Team/Enterprise** (an admin enables it).",
+            "У **межах одного** застосунку **Instructions і chat history окремі** між Excel і PowerPoint — вони не спільні. Cross-app спільність — це **opt-in** можливість «Work across apps», і вона навмисно вузька: торкається лише **відкритих** файлів, не вміє створювати/відкривати/закривати/перемикати файли за тебе, а її cross-app історія чату не зберігається між сесіями. Перемикач **увімкнено за замовчуванням для Pro/Max** і **вимкнено для Team/Enterprise** (вмикає адмін).",
+          ),
+        },
+        {
+          kind: "table",
+          head: [L("Cross-app fact", "Факт про cross-app"), L("Detail", "Деталь")],
+          rows: [
+            [L("Apps", "Застосунки"), L("Excel · PowerPoint · Word · Outlook", "Excel · PowerPoint · Word · Outlook")],
+            [L("Scope", "Scope"), L("Reads/writes **only currently-open** files", "Читає/пише **лише відкриті** файли")],
+            [L("Default", "За замовчуванням"), L("On for Pro/Max; off for Team/Enterprise (admin-gated)", "Увімкнено для Pro/Max; вимкнено для Team/Enterprise (через адміна)")],
+            [L("Skills", "Skills"), L("Your skills apply in the right app as Claude moves through the task", "Твої skills діють у потрібному застосунку під час задачі")],
+            [L("History", "Історія"), L("Cross-app chat history isn't saved between sessions", "Cross-app історія чату не зберігається між сесіями")],
+          ],
+        },
+      ],
+    },
+  ],
+  keyPoints: [
+    L("Claude for Excel and PowerPoint are Microsoft 365 add-ins, generally available on all paid plans (Pro/Max/Team/Enterprise) — not beta like Claude in Chrome.", "Claude for Excel і PowerPoint — add-in для Microsoft 365, загальнодоступні на всіх платних планах (Pro/Max/Team/Enterprise) — не beta, як Claude in Chrome."),
+    L("Excel answers with clickable cell-level citations, preserves formula dependencies on edits, and highlights + explains every change, with overwrite protection.", "Excel відповідає клікабельними cell-level citations, зберігає залежності формул при правках і підсвічує + пояснює кожну зміну, з overwrite protection."),
+    L("You can run native Excel operations by language — pivot tables, charts, conditional formatting, data validation — and use your skills (type /) and connectors inside the add-in.", "Нативні операції Excel — мовою: pivot tables, чарти, conditional formatting, data validation — плюс твої skills (введи /) і connectors усередині add-in."),
+    L("PowerPoint builds and edits decks against your template (slide master, fonts, colors) and turns bullets into native editable charts; Instructions and history are per-app (Excel ≠ PowerPoint).", "PowerPoint будує й редагує deck за твоїм шаблоном (slide master, шрифти, кольори) і робить із bullets нативні редаговані чарти; Instructions і історія — на застосунок (Excel ≠ PowerPoint)."),
+    L("“Work across Microsoft 365 apps” is the real shared context — it coordinates Excel/PowerPoint/Word/Outlook over currently-open files (on by default for Pro/Max, off for Team/Enterprise).", "«Work across Microsoft 365 apps» — справжній shared context: координує Excel/PowerPoint/Word/Outlook по відкритих файлах (увімкнено для Pro/Max, вимкнено для Team/Enterprise)."),
+  ],
+  pitfalls: [
+    { title: L("Treating the output as final", "Сприймати вивід як фінальний"), body: L("Not for client deliverables or audit-critical calculations without your review — verify citations and use undo; Claude assists, it doesn't replace your judgment.", "Не для клієнтських деліверів чи аудит-критичних розрахунків без перевірки — звіряй citations і використовуй undo; Claude допомагає, а не замінює твоє судження.") },
+    { title: L("Opening untrusted spreadsheets", "Відкривати недовірені таблиці"), body: L("Hidden cells/comments can carry prompt injection. Risky functions pop confirmations, but the rule stands: don't run Claude for Excel on vendor or downloaded files you don't trust.", "Приховані клітинки/коментарі можуть нести prompt injection. Ризиковані функції питають підтвердження, але правило таке: не запускай Claude for Excel на файлах вендорів чи завантаженнях, яким не довіряєш.") },
+    { title: L("Expecting macros/VBA — or shared instructions across apps", "Чекати macros/VBA — чи спільних instructions між застосунками"), body: L("Excel skips data tables, macros and VBA; and Excel and PowerPoint don't share Instructions or history. Cross-app context is the separate opt-in feature, and only over open files.", "Excel пропускає data tables, macros і VBA; а Excel і PowerPoint не діляться Instructions чи історією. Cross-app context — окрема opt-in можливість, і лише по відкритих файлах.") },
+  ],
+  interview: [
+    { q: L("What makes Claude for Excel trustworthy for finance work?", "Що робить Claude for Excel надійним для фінансової роботи?"), a: L("Clickable cell-level citations let you verify each claim against the source cell; edits preserve formula dependencies; every change is highlighted and explained (change tracking); overwrite protection and an optional session log add accountability. It's still assistive — not for audit-critical numbers without your review.", "Клікабельні cell-level citations дають перевірити кожне твердження по клітинці-джерелу; правки зберігають залежності формул; кожна зміна підсвічена й пояснена (change tracking); overwrite protection і опційний session log додають підзвітності. Це все ще допомога — не для аудит-критичних чисел без перевірки.", ), level: "middle" },
+    { q: L("What's the difference between per-app context and “Work across Microsoft 365 apps”?", "Яка різниця між per-app context і «Work across Microsoft 365 apps»?"), a: L("Within one app, Instructions and chat history are separate between Excel and PowerPoint. “Work across apps” is a distinct opt-in that lets Claude read one open file and write another across Excel/PowerPoint/Word/Outlook, carrying context automatically — but only for currently-open files, with cross-app history not saved, on by default for Pro/Max and off for Team/Enterprise.", "У межах одного застосунку Instructions і chat history окремі між Excel і PowerPoint. «Work across apps» — окрема opt-in можливість, що дає Claude читати один відкритий файл і писати інший по Excel/PowerPoint/Word/Outlook, переносячи context автоматично — але лише для відкритих файлів, без збереження cross-app історії, увімкнено для Pro/Max і вимкнено для Team/Enterprise.", ), level: "senior" },
+    { q: L("How does Claude for Excel guard against prompt injection?", "Як Claude for Excel захищається від prompt injection?"), a: L("It only reads the open workbook, and any risky function it's asked to run — external data (WEBSERVICE, IMPORTDATA), dynamic references (INDIRECT), command/code execution (DDE, CALL, EVALUATE), file access — triggers a per-tool confirmation pop-up. Those are backstops; the standing guidance is to avoid untrusted, downloaded or vendor spreadsheets entirely.", "Він читає лише відкритий workbook, і будь-яка ризикована функція, яку просять виконати — зовнішні дані (WEBSERVICE, IMPORTDATA), динамічні посилання (INDIRECT), виконання команд/коду (DDE, CALL, EVALUATE), доступ до файлів — викликає підтвердження для кожного tool. Це підстраховки; настанова — взагалі уникати недовірених, завантажених чи вендорських таблиць.", ), level: "senior" },
+  ],
+  seeAlso: ["m20", "m12", "m11", "m26"],
+  sources: [
+    { title: "Use Claude for Excel — Help Center", url: "https://support.claude.com/en/articles/12650343-use-claude-for-excel" },
+    { title: "Use Claude for PowerPoint — Help Center", url: "https://support.claude.com/en/articles/13521390-use-claude-for-powerpoint" },
+    { title: "Work across Microsoft 365 apps — Help Center", url: "https://support.claude.com/en/articles/13892150-work-across-microsoft-365-apps" },
+  ],
+};
+
+/* ======================================================================
    M6 · Prompting mastery — fully authored (★ Prompt Anatomy)
    ====================================================================== */
 const m6: Module = {
@@ -2599,42 +3094,9 @@ const planned: Module[] = [
 
   // Section III  (m11 · m12 · m13 · m14 are fully authored above)
 
-  // Section IV (m15 · m16 · m17 are fully authored above)
-  mod("m19", "s4", 19, "senior",
-    L("Cowork projects, connectors, plugins & mobile", "Cowork projects, connectors, plugins і mobile"),
-    L("Persistent context, connectors and plugins — startable from your phone.", "Персистентний context, connectors і plugins — запуск навіть із телефону."),
-    L("Persistent context + connectors + plugins, startable from your phone.", "Персистентний context + connectors + plugins, із запуском із телефону."),
-    7,
-    [
-      ["Cowork projects", "Cowork projects"],
-      ["Connectors in Cowork", "Connectors у Cowork"],
-      ["Plugins & role workflows", "Plugins і рольові процеси"],
-      ["Mobile & dispatch", "Mobile і dispatch"],
-    ], ["m15", "m7", "m14"]),
+  // Section IV (m15–m19 are fully authored above)
 
-  // Section V
-  mod("m20", "s5", 20, "middle",
-    L("Claude in Chrome", "Claude in Chrome"),
-    L("The browser agent: navigate, click, fill forms, record workflows.", "Browser-agent: навігація, кліки, форми, запис workflows."),
-    L("A browser agent that sees, clicks and types for you.", "Browser-agent, що бачить, клікає і друкує за тебе."),
-    6,
-    [
-      ["What the browser agent does", "Що робить browser-agent"],
-      ["Navigate / click / fill forms / extract", "Навігація / кліки / форми / extract"],
-      ["Recording workflows", "Запис workflows"],
-      ["Scheduled web tasks; safety", "Заплановані web-задачі; безпека"],
-    ], ["m18", "m25"]),
-  mod("m21", "s5", 21, "middle",
-    L("Claude for Excel & PowerPoint", "Claude for Excel і PowerPoint"),
-    L("Office agents with cell-level citations and shared context.", "Office-агенти з cell-level citations і shared context."),
-    L("Spreadsheet & slide work with citations and shared context.", "Робота з таблицями й слайдами з citations і shared context."),
-    6,
-    [
-      ["Excel agent: multi-tab, cell-level citations", "Excel-agent: multi-tab, cell-level citations"],
-      ["Safe edits & formula dependencies", "Безпечні правки й залежності формул"],
-      ["Pivot tables & formatting via language", "Pivot tables і форматування мовою"],
-      ["Shared context with PowerPoint", "Shared context із PowerPoint"],
-    ], ["m8", "m20"]),
+  // Section V (m20 · m21 are fully authored above)
   mod("m22", "s5", 22, "senior",
     L("Claude Code essentials", "Claude Code: основи"),
     L("Environments, models, effort, permissions, CLAUDE.md, plan mode.", "Середовища, моделі, effort, дозволи, CLAUDE.md, plan mode."),
@@ -2718,7 +3180,7 @@ const planned: Module[] = [
 ];
 
 /* ---- assembled, ordered, and indexed ------------------------------------ */
-export const MODULES: Module[] = [...planned, m6, m7, m8, m9, m10, m11, m12, m13, m14, m15, m16, m17, m18].sort((a, b) => a.order - b.order);
+export const MODULES: Module[] = [...planned, m6, m7, m8, m9, m10, m11, m12, m13, m14, m15, m16, m17, m18, m19, m20, m21].sort((a, b) => a.order - b.order);
 
 export function sectionById(id: string): Section | undefined {
   return SECTIONS.find((s) => s.id === id);
