@@ -44,7 +44,20 @@ src/
 
 ## Status
 
-**S1 — scaffold + golden module.** The full skeleton is navigable (all 28 modules + their topics in the
-menu and on the Ecosystem-Map landing). **M15 · Cowork mental model & The Agent Loop** is fully authored
-with the hero simulator; the other 27 modules show their planned topics and fill in session by session.
-See `CLAUDE.md` (source of truth) and `CURRICULUM.md` (detailed plan).
+**13 / 28 modules authored (through S6).** The full skeleton is navigable (all 28 modules + their topics
+in the menu and on the Ecosystem-Map landing); unauthored modules show their planned topics and fill in
+session by session.
+
+- **Section II — Prompting & workspace:** ✅ complete — M6 Prompting, M7 Projects, M8 Artifacts,
+  M9 Live Artifacts, M10 Context & tokens.
+- **Section III — Extending Claude:** ✅ complete — M11 Connectors/MCP, M12 Skills, M13 Building skills,
+  M14 Plugins.
+- **Section IV — Cowork:** M15 Cowork + Agent Loop, M16 Files/outputs, M17 Scheduled tasks,
+  M18 Computer use done; **M19** (projects/connectors/mobile) pending.
+- **Sections I (beginner), V (tools & code), VI (mastery):** planned skeletons, author next.
+
+**Signature interactives built (6 of 7):** Agent Loop (M15) · Prompt Anatomy (M6) · Token Budget (M10) ·
+MCP Flow (M11) · Progressive Disclosure (M12) — plus light interactives (Schedule Timeline M17). Remaining:
+Sub-agent Fan-out (M23) · Tool Picker (M26).
+
+See `CLAUDE.md` (source of truth + per-session log) and `CURRICULUM.md` (detailed plan).
