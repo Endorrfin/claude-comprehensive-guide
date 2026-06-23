@@ -546,3 +546,42 @@ Footer: **"Vasyl Krupka · Senior Fullstack Engineer"** + 🇺🇦. Dark is prim
   unblocked.)* **Branching:** S5b sits on top of S5a — merge order should be **s5 (M12) → then s5b**, or
   simply merge **s5b** (it contains M12 + M13 + M14). **Next (S6): Ch.16 Files/outputs; Ch.17 Scheduled
   tasks (+timeline); Ch.18 Computer use (+3-tiers) — M15 already golden.**
+- **2026-06-23 · S6a Cowork core — Files/outputs + Scheduled tasks (M16–M17)** — DONE. **Scoped to M16 +
+  M17** per the user's request; **M18 Computer use deferred to S6b**. Web-verified every fact first against
+  four canonical Help-Center articles: **Get started with Claude Cowork**, **Schedule recurring tasks in
+  Cowork** (dated Apr 9 2026), **Use Claude Cowork safely**, and **Create and edit files with Claude**
+  (dated Apr 29 2026). **M16 Files, folders & outputs** fully authored (4 topics: selecting/granting folders
+  · read-path vs write-path / scratchpad vs your folder · deliverables & presenting files · safety
+  deletes/overwrites/boundaries) with mental model, 5 key points, 3 pitfalls, 3 interview Q&A, 3 sources;
+  new **`FileFlow`** figure (uploads + granted folder → agent + sandbox VM → docx/xlsx/pptx/pdf written back,
+  with a 🔒 delete/overwrite gate and a lifetime legend: folder persists, sandbox & uploads temporary).
+  **M17 Scheduled tasks** fully authored (4 topics: cadence vs one-off · creating a task [/schedule skill +
+  Scheduled-page modal] · cadence/cron & the awake rule · managing/debugging) with mental model, 5 key
+  points, 3 pitfalls, 3 interview Q&A, 3 sources. Built the **light scheduled-task timeline interactive**
+  `ScheduleTimelineSim` (+ `scheduleTimeline.css`): pick a cadence (one-off · hourly · daily · weekdays ·
+  weekly) → see the cron + plain-English readout → play a "now" cursor that fires each run and writes a dated
+  file; a **"Computer asleep" toggle** demonstrates the verified **skip → catch-up-on-wake** rule (runs in
+  the asleep band are skipped, then one catch-up fires at wake). Deterministic, bilingual,
+  reduced-motion-gated autoplay/pop, ARIA. Registered 1 sim (`schedule-timeline`) + 1 figure (`file-flow`)
+  in `registry.tsx`; removed the m16/m17 stubs; spliced both into `MODULES`.
+  **Correctness notes / user-rule-8 challenges & version facts caught:** (1) **No cron textbox** — the
+  curriculum's "17.3 Cron-style timing" implies a cron field, but the verified Cowork UI exposes **preset
+  cadences only** (hourly · daily · weekly · weekdays · manual); cron is taught as the *underlying mental
+  model* (what the scheduler/API use) + a cadence→cron→English mapping table + a `senior` callout, and
+  `/schedule` accepts **natural-language timing**. (2) **The awake rule** (the #1 gotcha) — scheduled tasks
+  run **only while the computer is awake and Claude Desktop is open**; there is **no cloud cron**; missed
+  runs are skipped then caught up once on wake (shown in history). Taught in prose, a `warn` callout, and
+  the sim. (3) **Deletion protection holds in both permission modes** ("Ask before acting" / "Act without
+  asking") — verified and taught. (4) **30 MB/file** deliverable cap; office files come from the **pre-built
+  skills** (docx/xlsx/pptx/pdf) cross-linked to M12; code-execution/file-creation is on **all plans incl.
+  Free**, but **Cowork (local-folder access + scheduling) is paid-only** (Pro/Max/Team/Enterprise, Desktop
+  macOS/Windows). **Verified (linux arm64 native bindings `@rolldown/binding-linux-arm64-gnu@1.0.3` +
+  `lightningcss-linux-arm64-gnu@1.32.0` installed in `/tmp` and reached via `NODE_PATH`; data-integrity run
+  via `node --experimental-strip-types`; built into a fresh `/tmp` outDir to dodge the sandbox
+  unlink/`emptyOutDir` limit):** `tsc --noEmit` clean (strict · noUnusedLocals/Parameters) · `vite build` OK
+  (**55 modules**, JS ≈182 kB gzip, CSS ≈7.58 kB gzip, 193 ms, relative `./assets`) · data-integrity
+  **ALL PASS** (28 modules · **12 authored**; m16 4 topics/12 blocks · m17 4 topics/14 blocks; file-flow
+  figure + schedule-timeline sim resolve; table widths == head, compare rows 3-tuples, callout tones valid;
+  bilingual coverage; ids/orders/seeAlso valid; SIGNATURE_SIMS intact). Workspace holds **source only** —
+  `node_modules` untouched (linux bindings live in `/tmp`); no `dist/` or git lock left on the mounted FS.
+  **Next (S6b): Ch.18 Computer use (+3-tiers); then Section V (M19 onward) / S7.**

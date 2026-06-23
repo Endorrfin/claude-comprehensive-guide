@@ -247,6 +247,361 @@ const m15: Module = {
 };
 
 /* ======================================================================
+   M16 · Files, folders & outputs — fully authored (figure: FileFlow)
+   ====================================================================== */
+const m16: Module = {
+  id: "m16",
+  section: "s4",
+  order: 16,
+  level: "middle",
+  title: L("Files, folders & outputs", "Файли, теки та outputs"),
+  tagline: L(
+    "Cowork's real power is files: it reads the folder you grant, builds in a throwaway sandbox, and writes finished deliverables back — with a permission gate on anything destructive.",
+    "Справжня сила Cowork — це файли: він читає надану теку, працює в одноразовому sandbox і записує готові результати назад — із дозвільним gate на будь-що руйнівне.",
+  ),
+  readMins: 9,
+  mentalModel: L(
+    "Three places, one that lasts: chat uploads and the sandbox are scratch — only the folder you grant persists, so that's where finished work lands.",
+    "Три місця, одне залишається: chat-uploads і sandbox — чернетка; зберігається лише надана тека, тож саме туди потрапляє готова робота.",
+  ),
+  topics: [
+    {
+      id: "t1",
+      title: L("Selecting & granting folders", "Вибір і надання тек"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "You point Cowork at a **folder** on your computer, and it can read and write **only** the folders you connect. The rule of thumb is least privilege: grant the **narrowest** folder that gets the job done — a dedicated working folder, not your whole home directory.\n\nTwo layers of standing context shape every run. **Global instructions** (Settings → Cowork) carry your role, tone and output preferences into *every* session. **Folder instructions** add project-specific context whenever you select a given folder — and Claude can update them itself as it learns the project. Code and shell commands run inside an **isolated VM**, and network access follows the egress settings you've configured.",
+            "Ти вказуєш Cowork **теку** на компʼютері, і він читає й пише **лише** ті теки, які ти підключив. Правило — least privilege: надавай **найвужчу** теку, якої достатньо — окрему робочу теку, а не всю домашню директорію.\n\nДва шари постійного контексту впливають на кожен запуск. **Global instructions** (Settings → Cowork) переносять твою роль, тон і формат виводу в *кожну* сесію. **Folder instructions** додають контекст конкретного проєкту, коли ти обираєш певну теку — і Claude може сам їх оновлювати, пізнаючи проєкт. Код і shell-команди виконуються в **ізольованій VM**, а доступ до мережі слідує налаштованим egress-правилам.",
+          ),
+        },
+        { kind: "figure", fig: "file-flow", caption: L("Cowork reads your granted folder and chat uploads, builds in a temporary sandbox VM, and writes deliverables back to your folder — pausing at a delete/overwrite gate. Only your folder persists.", "Cowork читає надану теку й chat-uploads, працює в тимчасовій sandbox VM і пише результати назад у твою теку — зупиняючись на gate видалення/перезапису. Зберігається лише твоя тека.") },
+        {
+          kind: "callout",
+          tone: "security",
+          title: L("Use a dedicated working folder", "Використовуй окрему робочу теку"),
+          md: L(
+            "Because Claude can **read, write and permanently delete** files in a folder you grant, create a dedicated folder for it and keep backups. Don't point it at financial documents, credentials or personal records.",
+            "Оскільки Claude може **читати, писати й остаточно видаляти** файли в наданій теці, створи для нього окрему теку й тримай резервні копії. Не давай доступ до фінансових документів, облікових даних чи особистих записів.",
+          ),
+        },
+      ],
+    },
+    {
+      id: "t2",
+      title: L("Reading vs writing — scratchpad vs your folder", "Читання vs запис — scratchpad vs твоя тека"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "Three places matter, and only one lasts. **Uploads** are files you attach in chat — scoped to the conversation. The **sandbox / scratchpad** is the isolated VM on your computer where Claude runs code and stages intermediate work — temporary, wiped after the task. **Your folder** is the one that persists: it's where deliverables land.\n\nSo the *read path* pulls your granted folder and uploads into context, and the *write path* sends Claude's output to disk (and surfaces file cards in chat).",
+            "Важать три місця, і залишається лише одне. **Uploads** — файли, які ти додаєш у чат, у межах розмови. **Sandbox / scratchpad** — ізольована VM на твоєму компʼютері, де Claude запускає код і робить проміжну роботу — тимчасово, очищується після задачі. **Твоя тека** — те, що зберігається: саме сюди потрапляють результати.\n\nОтже, *read path* тягне надану теку й uploads у context, а *write path* надсилає вивід Claude на диск (і показує file-картки в чаті).",
+          ),
+        },
+        {
+          kind: "compare",
+          a: L("Read path", "Read path"),
+          b: L("Write path", "Write path"),
+          rows: [
+            [L("What moves", "Що рухається"), L("Files → Claude's context", "Файли → context Claude"), L("Claude's output → disk", "Вивід Claude → диск")],
+            [L("Source / target", "Джерело / ціль"), L("Granted folder + chat uploads", "Надана тека + chat-uploads"), L("Granted folder (+ file cards in chat)", "Надана тека (+ file-картки в чаті)")],
+            [L("Permission", "Дозвіл"), L("Allowed for folders you connect", "Дозволено для підключених тек"), L("Allowed; delete / overwrite asks first", "Дозволено; видалення / перезапис питає")],
+            [L("Persists?", "Зберігається?"), L("Uploads temporary; folder stays", "Uploads тимчасові; тека лишається"), L("Yes — that's the deliverable", "Так — це і є результат")],
+          ],
+        },
+        {
+          kind: "callout",
+          tone: "tip",
+          title: L("Output not where you expected?", "Результат не там, де очікував?"),
+          md: L(
+            "Check the **output location Claude named** in its summary, and that you granted the right folder. Deliverables go to your folder; the sandbox is wiped — nothing there survives the task.",
+            "Перевір **локацію виводу, яку назвав Claude** у підсумку, і що ти надав правильну теку. Результати йдуть у твою теку; sandbox очищується — там нічого не переживає задачу.",
+          ),
+        },
+      ],
+    },
+    {
+      id: "t3",
+      title: L("Deliverables & presenting files", "Результати та показ файлів"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "Cowork produces **real office files**, not just chat text — driven by the pre-built skills you met in M12 (docx · xlsx · pptx · pdf). That means Excel with *working* formulas (VLOOKUP, conditional formatting, multiple tabs), PowerPoint decks from rough notes, Word reports, PDFs, plus PNG charts and analysis over CSV/TSV data. The max size is **30 MB per file** (a larger PDF can be processed in the computing environment without loading it into the context window).\n\nFinished files are written to your folder and surfaced as **file cards** in chat; you can also save straight to Google Drive. For Markdown drafts, **Edit with Claude** lets you highlight text, click, and type the change in place.",
+            "Cowork створює **справжні офісні файли**, а не лише текст у чаті — за допомогою вбудованих skills із M12 (docx · xlsx · pptx · pdf). Це Excel із *робочими* формулами (VLOOKUP, conditional formatting, кілька вкладок), PowerPoint-колоди з чернеток, Word-звіти, PDF, а також PNG-графіки й аналіз CSV/TSV. Максимум — **30 MB на файл** (більший PDF можна обробити в computing environment, не завантажуючи в context window).\n\nГотові файли пишуться в твою теку й показуються як **file-картки** в чаті; також можна зберегти прямо в Google Drive. Для Markdown-чернеток **Edit with Claude** дає виділити текст, клікнути й вписати зміну на місці.",
+          ),
+        },
+        {
+          kind: "table",
+          head: [L("Output", "Результат"), L("Engine / skill", "Engine / skill"), L("Good for", "Для чого")],
+          rows: [
+            [L(".xlsx", ".xlsx"), L("xlsx skill", "xlsx skill"), L("Models with live formulas, multi-tab, pivots", "Моделі з живими формулами, кілька вкладок, pivots")],
+            [L(".pptx", ".pptx"), L("pptx skill", "pptx skill"), L("Decks from notes or transcripts", "Колоди з нотаток чи транскриптів")],
+            [L(".docx", ".docx"), L("docx skill", "docx skill"), L("Reports, memos, letters", "Звіти, меморандуми, листи")],
+            [L(".pdf", ".pdf"), L("pdf skill", "pdf skill"), L("Extract / fill / merge, polished print", "Витяг / заповнення / злиття, чистий друк")],
+            [L(".png / charts", ".png / графіки"), L("Code execution", "Code execution"), L("Data viz from CSV/TSV", "Візуалізація з CSV/TSV")],
+          ],
+        },
+        {
+          kind: "callout",
+          tone: "tip",
+          title: L("Specific in, polished out", "Конкретика на вході — якість на виході"),
+          md: L(
+            "State the structure, content and formatting you want (\"three tabs: raw, summary, chart; bold totals\"). Vague asks need a round of refinement; a precise deliverable spec usually lands first try.",
+            "Опиши структуру, зміст і форматування (\"три вкладки: raw, summary, chart; жирні підсумки\"). Розмиті запити потребують доопрацювання; точна специфікація результату зазвичай влучає з першого разу.",
+          ),
+        },
+      ],
+    },
+    {
+      id: "t4",
+      title: L("Safety — deletes, overwrites, boundaries", "Безпека — видалення, перезапис, межі"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "Cowork takes **real actions** on your files, so it ships with guardrails. **Deletion protection** is the hard one: Claude must get your explicit permission before permanently deleting *any* file — you see a prompt and click **Allow** — and this holds in **both** permission modes. Beyond deletes, you choose how much to supervise with the mode selector, and you should review planned actions before allowing them, especially on sensitive files.\n\nFor **overwrites**, Claude writes into your folder; to protect originals, ask it to write new filenames or a dedicated `/output` subfolder rather than overwriting in place. That's a habit, not a hard gate — so make it explicit in your prompt.",
+            "Cowork виконує **реальні дії** з твоїми файлами, тож має запобіжники. **Deletion protection** — найжорсткіший: Claude мусить отримати твій явний дозвіл перед остаточним видаленням *будь-якого* файлу — ти бачиш запит і тиснеш **Allow** — і це діє в **обох** режимах дозволів. Окрім видалень, ти обираєш рівень контролю перемикачем режиму й маєш переглядати заплановані дії перед підтвердженням, особливо для чутливих файлів.\n\nЩодо **перезапису**: Claude пише у твою теку; щоб захистити оригінали, проси писати нові імена файлів або окрему теку `/output`, а не перезаписувати на місці. Це звичка, а не жорсткий gate — тож вказуй це явно в prompt.",
+          ),
+        },
+        {
+          kind: "compare",
+          a: L("Ask before acting", "Ask before acting"),
+          b: L("Act without asking", "Act without asking"),
+          rows: [
+            [L("Approvals", "Підтвердження"), L("Pauses for each action", "Пауза перед кожною дією"), L("Runs without pausing", "Працює без пауз")],
+            [L("Best when", "Найкраще коли"), L("New tools, unfamiliar files", "Нові tools, незнайомі файли"), L("Actively supervising trusted work", "Активний нагляд за довіреною роботою")],
+            [L("Prompt-injection exposure", "Ризик prompt-injection"), L("Lower — you can stop it", "Нижчий — можна зупинити"), L("Higher — no mid-task checkpoint", "Вищий — немає контрольної точки")],
+            [L("Deleting files", "Видалення файлів"), L("Always asks", "Завжди питає"), L("Still always asks", "Все одно завжди питає")],
+          ],
+        },
+        {
+          kind: "callout",
+          tone: "security",
+          title: L("The red lines", "Червоні лінії"),
+          md: L(
+            "Deletes always ask — in every mode. You remain responsible for actions Claude takes on your behalf, so keep sensitive documents out of granted folders and prefer **Ask before acting** for anything consequential.",
+            "Видалення завжди питає — у будь-якому режимі. Ти відповідаєш за дії, які Claude робить від твого імені, тож тримай чутливі документи поза наданими теками й обирай **Ask before acting** для всього важливого.",
+          ),
+        },
+      ],
+    },
+  ],
+  keyPoints: [
+    L("Cowork reads and writes only the folders you grant — scope to the narrowest one.", "Cowork читає й пише лише надані теки — обирай найвужчу."),
+    L("Three places; only your folder persists. Uploads and the sandbox are temporary.", "Три місця; зберігається лише твоя тека. Uploads і sandbox — тимчасові."),
+    L("It produces real deliverables (docx/xlsx/pptx/pdf, charts) via skills — max 30 MB/file.", "Він створює справжні результати (docx/xlsx/pptx/pdf, графіки) через skills — макс. 30 MB/файл."),
+    L("Deletes always require your explicit approval — in both permission modes.", "Видалення завжди потребує явного дозволу — в обох режимах."),
+    L("Two standing-context layers: Global instructions (all sessions) + Folder instructions (per folder).", "Два шари постійного контексту: Global instructions (усі сесії) + Folder instructions (на теку)."),
+  ],
+  pitfalls: [
+    { title: L("Granting your whole home folder", "Надання всієї домашньої теки"), body: L("Least privilege: use a dedicated working folder plus backups, not broad access to everything.", "Least privilege: окрема робоча тека плюс резервні копії, а не широкий доступ до всього.") },
+    { title: L("Hunting for outputs in the wrong place", "Пошук результатів не там"), body: L("Deliverables land in your folder, not the sandbox — check the location Claude named in its summary.", "Результати — у твоїй теці, не в sandbox — дивись локацію, яку Claude назвав у підсумку.") },
+    { title: L("\"Act without asking\" on untrusted content", "\"Act without asking\" з недовіреним контентом"), body: L("It removes your chance to stop a prompt-injection mid-task. Reserve it for trusted files you're watching.", "Це прибирає шанс зупинити prompt-injection під час задачі. Лишай його для довірених файлів під наглядом.") },
+  ],
+  interview: [
+    { q: L("Where do Cowork's outputs go, and what's temporary?", "Куди йдуть результати Cowork і що тимчасове?"), a: L("Deliverables persist in the folder you granted; chat uploads and the isolated sandbox/VM are temporary scratch that's wiped after the task.", "Результати зберігаються в наданій теці; chat-uploads і ізольована sandbox/VM — тимчасова чернетка, що очищується після задачі."), level: "middle" },
+    { q: L("How does Cowork shrink the blast radius of an autonomous file agent?", "Як Cowork зменшує радіус ураження автономного файлового агента?"), a: L("Least-privilege folder grants (it reads/writes only connected folders), code in an isolated VM, a hard deletion-approval gate in both modes, and a permission mode that can gate every write for oversight.", "Least-privilege надання тек (читає/пише лише підключені), код в ізольованій VM, жорсткий gate підтвердження видалень в обох режимах і режим дозволів, що може гейтити кожен запис для нагляду."), level: "senior" },
+    { q: L("When is \"Act without asking\" appropriate?", "Коли доречний \"Act without asking\"?"), a: L("Only when actively supervising, with trusted files, sites and tools, and able to stop immediately — because it raises prompt-injection risk by removing the mid-task checkpoint.", "Лише за активного нагляду, з довіреними файлами, сайтами й tools, і можливістю миттєво зупинити — бо він підвищує ризик prompt-injection, прибираючи контрольну точку."), level: "senior" },
+  ],
+  seeAlso: ["m15", "m17", "m12", "m25"],
+  sources: [
+    { title: "Get started with Claude Cowork — Help Center", url: "https://support.claude.com/en/articles/13345190-get-started-with-claude-cowork" },
+    { title: "Use Claude Cowork safely — Help Center", url: "https://support.claude.com/en/articles/13364135-use-claude-cowork-safely" },
+    { title: "Create and edit files with Claude — Help Center", url: "https://support.claude.com/en/articles/12111783-create-and-edit-files-with-claude" },
+  ],
+};
+
+/* ======================================================================
+   M17 · Scheduled tasks — fully authored (sim: ScheduleTimeline)
+   ====================================================================== */
+const m17: Module = {
+  id: "m17",
+  section: "s4",
+  order: 17,
+  level: "middle",
+  title: L("Scheduled tasks", "Заплановані задачі"),
+  tagline: L(
+    "Describe a job once; Claude runs it on your cadence — a morning briefing, a weekly report — and leaves the finished file waiting for you.",
+    "Опиши задачу один раз; Claude виконує її за твоїм розкладом — ранковий briefing, тижневий звіт — і лишає готовий файл на тебе.",
+  ),
+  readMins: 9,
+  mentalModel: L(
+    "A standing order, not a reminder: each run is a fresh Cowork session that does the work and writes the output — but only while your machine is awake and Desktop is open.",
+    "Постійне доручення, а не нагадування: кожен запуск — нова сесія Cowork, що робить роботу й пише результат — але лише поки компʼютер увімкнений і Desktop відкритий.",
+  ),
+  topics: [
+    {
+      id: "t1",
+      title: L("What scheduling is — cadence vs one-off", "Що таке планування — cadence vs одноразово"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "Scheduled tasks let you **delegate recurring work**. You write the prompt once; Claude saves it as the task's instructions and runs it automatically on the cadence you choose — or on demand. Each run is its **own Cowork session** with access to the same connectors, skills and plugins.\n\nThere are two shapes. A **one-off** runs once at a future moment (a `fireAt` timestamp), then it's done. A **recurring** task repeats on a cadence. Scheduling is on paid plans (Pro · Max · Team · Enterprise) in Claude Desktop. Play the timeline below to see the shapes — and what happens when the computer sleeps.",
+            "Заплановані задачі дають **делегувати періодичну роботу**. Ти пишеш prompt один раз; Claude зберігає його як інструкції задачі й запускає автоматично за обраним розкладом — або на вимогу. Кожен запуск — **окрема сесія Cowork** з тими ж connectors, skills і plugins.\n\nЄ дві форми. **Одноразова** виконується один раз у майбутній момент (мітка `fireAt`), і на цьому все. **Періодична** повторюється за cadence. Планування доступне на платних планах (Pro · Max · Team · Enterprise) у Claude Desktop. Запусти таймлайн нижче, щоб побачити форми — і що стається, коли компʼютер засинає.",
+          ),
+        },
+        { kind: "sim", sim: "schedule-timeline" },
+        {
+          kind: "compare",
+          a: L("One-off", "Одноразово"),
+          b: L("Recurring", "Періодично"),
+          rows: [
+            [L("Runs", "Запуск"), L("Once, at a set time", "Один раз, у заданий час"), L("Repeatedly, on a cadence", "Повторно, за cadence")],
+            [L("Mechanism", "Механізм"), L("fireAt (a future timestamp)", "fireAt (майбутня мітка часу)"), L("A cron-style schedule", "Cron-подібний розклад")],
+            [L("Good for", "Для чого"), L("A reminder, a one-time fetch", "Нагадування, разове отримання"), L("Briefings, digests, reports, monitoring", "Briefings, дайджести, звіти, моніторинг")],
+            [L("After it fires", "Після спрацювання"), L("Done — it's gone", "Готово — зникає"), L("Waits for the next tick", "Чекає на наступний tick")],
+          ],
+        },
+      ],
+    },
+    {
+      id: "t2",
+      title: L("Creating a recurring task", "Створення періодичної задачі"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "There are two ways to create one. The **`/schedule` skill**: in any task, type `/schedule`; Claude may ask a few multiple-choice questions, then shows you the **task name, the schedule, and what it does** to confirm with **Schedule**. Or the **Scheduled page**: click *Scheduled* in the left sidebar → *+ New task* and fill the modal.\n\nGood scheduled prompts name a **deliverable** and write it to a file, so every run leaves something behind — a briefing, a digest, a refreshed report.",
+            "Створити можна двома шляхами. **Skill `/schedule`**: у будь-якій задачі введи `/schedule`; Claude може поставити кілька питань із вибором відповіді, а потім покаже **назву задачі, розклад і що вона робить** для підтвердження кнопкою **Schedule**. Або **сторінка Scheduled**: клікни *Scheduled* у лівій панелі → *+ New task* і заповни модалку.\n\nГарні заплановані prompt називають **результат** і пишуть його у файл, щоб кожен запуск щось лишав — briefing, дайджест, оновлений звіт.",
+          ),
+        },
+        {
+          kind: "table",
+          head: [L("Field", "Поле"), L("What to put", "Що вказати")],
+          rows: [
+            [L("Task name", "Task name"), L("A short label", "Коротка назва")],
+            [L("Description", "Description"), L("What the task is for", "Для чого задача")],
+            [L("Prompt", "Prompt"), L("The instructions — type \"/\" to add Skills & plugins", "Інструкції — введи \"/\", щоб додати Skills і plugins")],
+            [L("Frequency", "Frequency"), L("hourly · daily · weekly · weekdays · manual", "hourly · daily · weekly · weekdays · manual")],
+            [L("Model", "Model"), L("Optional — trade speed vs depth", "Опційно — баланс швидкість/глибина")],
+            [L("Folder", "Folder"), L("Optional — where Claude works and writes", "Опційно — де Claude працює й пише")],
+          ],
+        },
+        {
+          kind: "code",
+          lang: "text",
+          code: "Every weekday at 7am: read my Google Calendar for today,\nsummarise meetings and prep needed, scan Slack for unread\nmentions, and write a short briefing to briefing-{date}.md.",
+          note: L(
+            "A strong scheduled prompt = a clear cadence + a concrete deliverable written to a dated file.",
+            "Сильний запланований prompt = чіткий cadence + конкретний результат у датований файл.",
+          ),
+        },
+        {
+          kind: "callout",
+          tone: "tip",
+          title: L("Use {date} / {week} placeholders", "Використовуй плейсхолдери {date} / {week}"),
+          md: L(
+            "Put `{date}` or `{week}` in the output filename — e.g. `briefing-{date}.md` — and each run writes a uniquely named file instead of overwriting the last one.",
+            "Додай `{date}` чи `{week}` в імʼя файлу — напр. `briefing-{date}.md` — і кожен запуск пише унікальний файл, а не перезаписує попередній.",
+          ),
+        },
+      ],
+    },
+    {
+      id: "t3",
+      title: L("Cadence, cron & the awake rule", "Cadence, cron і правило про пробудження"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "The Scheduled-task modal exposes **preset cadences** — hourly, daily, weekly, on weekdays, or manual — not a raw cron box. Behind them sits a cron-style schedule, and the `/schedule` skill also reads **natural-language timing** (\"every weekday at 7am\") and compiles it. Knowing the mapping helps you reason about *when* a task fires.\n\nThen the rule that trips everyone up: scheduled tasks **only run while your computer is awake and Claude Desktop is open**. There is no cloud cron. A run that lands while you're asleep or the app is closed is **skipped**, then runs **once** automatically when you wake or reopen — and the skip is recorded in the task's history.",
+            "Модалка задачі показує **готові cadence** — hourly, daily, weekly, weekdays або manual — а не сире поле cron. За ними стоїть cron-подібний розклад, а skill `/schedule` ще й читає **таймінг природною мовою** (\"every weekday at 7am\") і компілює його. Знання відповідності допомагає міркувати, *коли* задача спрацює.\n\nІ правило, на якому всі спотикаються: заплановані задачі **виконуються лише поки компʼютер увімкнений і Claude Desktop відкритий**. Хмарного cron немає. Запуск, що випав на сон чи закритий застосунок, **пропускається**, а потім **один раз** автоматично виконується при пробудженні/відкритті — і пропуск фіксується в історії задачі.",
+          ),
+        },
+        {
+          kind: "table",
+          head: [L("Cadence", "Cadence"), L("Cron-style", "Cron-стиль"), L("Plain English", "Простими словами")],
+          rows: [
+            [L("Hourly", "Hourly"), L("0 * * * *", "0 * * * *"), L("Top of every hour", "На початку кожної години")],
+            [L("Daily", "Daily"), L("0 7 * * *", "0 7 * * *"), L("Every day at 07:00", "Щодня о 07:00")],
+            [L("Weekdays", "Weekdays"), L("0 7 * * 1-5", "0 7 * * 1-5"), L("Mon–Fri at 07:00", "Пн–Пт о 07:00")],
+            [L("Weekly", "Weekly"), L("0 7 * * 1", "0 7 * * 1"), L("Every Monday at 07:00", "Щопонеділка о 07:00")],
+            [L("One-off", "One-off"), L("fireAt", "fireAt"), L("Once, at a set time", "Один раз, у заданий час")],
+          ],
+        },
+        {
+          kind: "callout",
+          tone: "senior",
+          title: L("No cron textbox — presets + natural language", "Без поля cron — пресети + природна мова"),
+          md: L(
+            "Cowork's UI doesn't take an arbitrary cron expression; it offers the presets above. Treat cron as the **mental model** (and what the underlying scheduler / API use). To get a specific time or weekday, pick the closest preset or describe it to `/schedule` in words.",
+            "UI Cowork не приймає довільний cron-вираз; він пропонує пресети вище. Сприймай cron як **ментальну модель** (і те, що використовує внутрішній планувальник / API). Щоб задати конкретний час чи день, обери найближчий пресет або опиши це `/schedule` словами.",
+          ),
+        },
+        {
+          kind: "callout",
+          tone: "warn",
+          title: L("Awake + open, or it waits", "Увімкнено + відкрито, інакше чекає"),
+          md: L(
+            "Don't rely on overnight or away-from-keyboard runs landing on time. If the Mac is asleep or Desktop is closed, the run is skipped and caught up on wake — fine for a daily briefing, not for time-critical alerts.",
+            "Не покладайся на нічні запуски чи запуски без тебе вчасно. Якщо Mac спить або Desktop закритий — запуск пропускається й надолужується при пробудженні: ок для щоденного briefing, не для критичних за часом сповіщень.",
+          ),
+        },
+      ],
+    },
+    {
+      id: "t4",
+      title: L("Managing & debugging schedules", "Керування та дебаг розкладів"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "The **Scheduled** page in the left sidebar is mission control. From there you can see every task, review **upcoming and past runs**, open a task to **edit** its instructions or cadence, **Pause** / **Resume** it, **Delete** it, or **Run on demand**.\n\nDebugging is mostly reading the history: open a run's session to see exactly what it did; check past runs for **skips** (asleep / app closed); and confirm the task's folder and connectors are still granted — a revoked connector or moved folder is the usual cause of an empty or failed run.",
+            "Сторінка **Scheduled** у лівій панелі — центр керування. Звідти видно кожну задачу, можна переглянути **майбутні й минулі запуски**, відкрити задачу, щоб **редагувати** інструкції чи cadence, **Pause** / **Resume**, **Delete** або **Run on demand**.\n\nДебаг — це здебільшого читання історії: відкрий сесію запуску, щоб побачити, що саме він зробив; перевір минулі запуски на **пропуски** (сон / закритий застосунок); і підтверди, що тека й connectors задачі досі надані — відкликаний connector чи переміщена тека — звична причина порожнього чи невдалого запуску.",
+          ),
+        },
+        {
+          kind: "table",
+          head: [L("Action", "Дія"), L("What it does", "Що робить")],
+          rows: [
+            [L("View runs", "View runs"), L("Inspect upcoming + past runs and their outputs", "Переглянути майбутні + минулі запуски та їх результати")],
+            [L("Edit", "Edit"), L("Change the prompt, cadence, model or folder", "Змінити prompt, cadence, модель чи теку")],
+            [L("Pause / Resume", "Pause / Resume"), L("Stop the schedule without deleting it", "Зупинити розклад, не видаляючи")],
+            [L("Run on demand", "Run on demand"), L("Fire it now, outside the schedule", "Запустити зараз, поза розкладом")],
+            [L("Delete", "Delete"), L("Remove the task entirely", "Повністю видалити задачу")],
+          ],
+        },
+        {
+          kind: "callout",
+          tone: "security",
+          title: L("Unattended means extra caution", "Без нагляду — особлива обережність"),
+          md: L(
+            "Because a schedule runs without you watching, start with low-risk read/summarise tasks. Avoid scheduling sensitive-data access or consequential actions (sending messages, purchases, anything hard to undo), review outputs after each run, and pause tasks you're not using.",
+            "Оскільки розклад працює без нагляду, починай із низькоризикових задач читання/підсумків. Уникай планування доступу до чутливих даних чи важливих дій (надсилання повідомлень, покупки, важко скасовуване), перевіряй результати після кожного запуску й став на паузу те, чим не користуєшся.",
+          ),
+        },
+      ],
+    },
+  ],
+  keyPoints: [
+    L("Write the prompt once; Claude runs it on your cadence, each run a fresh Cowork session.", "Пиши prompt один раз; Claude виконує за cadence, кожен запуск — нова сесія Cowork."),
+    L("One-off (fireAt) vs recurring (cron-style) — pick the shape that fits the job.", "Одноразово (fireAt) vs періодично (cron-стиль) — обери форму під задачу."),
+    L("The UI exposes preset cadences (hourly/daily/weekly/weekdays/manual), not raw cron.", "UI показує готові cadence (hourly/daily/weekly/weekdays/manual), не сирий cron."),
+    L("Tasks run only while the computer is awake and Desktop is open; missed runs catch up on wake.", "Задачі йдуть лише поки компʼютер увімкнений і Desktop відкритий; пропущені надолужуються при пробудженні."),
+    L("Manage it all from the Scheduled page: edit, pause, run-now, and review past runs.", "Керуй усім зі сторінки Scheduled: редагуй, став на паузу, запускай зараз і дивись минулі запуски."),
+  ],
+  pitfalls: [
+    { title: L("Expecting runs while asleep or closed", "Очікування запусків під час сну/закриття"), body: L("There's no cloud cron — missed runs are skipped and caught up on wake, not executed in the background.", "Хмарного cron немає — пропущені запуски надолужуються при пробудженні, а не йдуть у фоні.") },
+    { title: L("Overwriting each run's output", "Перезапис результату щоразу"), body: L("Without a {date}/{week} placeholder in the filename, every run clobbers the previous file.", "Без плейсхолдера {date}/{week} в імені кожен запуск затирає попередній файл.") },
+    { title: L("Scheduling risky actions", "Планування ризикових дій"), body: L("Unattended automation shouldn't send messages, make purchases, or touch sensitive files — keep schedules low-stakes.", "Автоматизація без нагляду не має надсилати повідомлення, робити покупки чи чіпати чутливі файли — тримай розклади низькоризиковими.") },
+  ],
+  interview: [
+    { q: L("One-off vs recurring scheduled task — how do they differ?", "Одноразова vs періодична задача — у чому різниця?"), a: L("A one-off fires once at a future timestamp (fireAt) and is done; a recurring task repeats on a cron-style cadence — briefings, digests, monitoring.", "Одноразова спрацьовує раз у майбутній момент (fireAt) і завершується; періодична повторюється за cron-cadence — briefings, дайджести, моніторинг."), level: "middle" },
+    { q: L("A user's daily 6am briefing didn't run overnight — why, and what happens next?", "Щоденний briefing о 6:00 не запустився вночі — чому і що далі?"), a: L("Scheduled tasks only run while the machine is awake and Desktop is open; an overnight run is skipped, then runs once automatically on wake, and the skip shows in the task's history. It is not a cloud cron.", "Заплановані задачі йдуть лише поки компʼютер увімкнений і Desktop відкритий; нічний запуск пропускається, потім один раз автоматично виконується при пробудженні, а пропуск видно в історії. Це не хмарний cron."), level: "senior" },
+    { q: L("What's a safe default for unattended scheduled tasks?", "Який безпечний дефолт для задач без нагляду?"), a: L("Low-risk read/summarise work, no sensitive-data access or consequential actions, dated output files, reviewed after each run, and paused when unused.", "Низькоризикова робота читання/підсумків, без доступу до чутливих даних і важливих дій, датовані файли, перевірка після кожного запуску й пауза, коли не потрібно."), level: "senior" },
+  ],
+  seeAlso: ["m15", "m16", "m25", "m11"],
+  sources: [
+    { title: "Schedule recurring tasks in Claude Cowork — Help Center", url: "https://support.claude.com/en/articles/13854387-schedule-recurring-tasks-in-claude-cowork" },
+    { title: "Get started with Claude Cowork — Help Center", url: "https://support.claude.com/en/articles/13345190-get-started-with-claude-cowork" },
+    { title: "Use Claude Cowork safely — Help Center", url: "https://support.claude.com/en/articles/13364135-use-claude-cowork-safely" },
+  ],
+};
+
+/* ======================================================================
    M6 · Prompting mastery — fully authored (★ Prompt Anatomy)
    ====================================================================== */
 const m6: Module = {
@@ -2090,29 +2445,7 @@ const planned: Module[] = [
 
   // Section III  (m11 · m12 · m13 · m14 are fully authored above)
 
-  // Section IV (m15 authored above)
-  mod("m16", "s4", 16, "middle",
-    L("Files, folders & outputs", "Файли, теки та outputs"),
-    L("Selecting folders, reading/writing, and producing deliverables.", "Вибір тек, читання/запис і створення результатів."),
-    L("Grant the narrowest folder; deliverables land there.", "Надавай найвужчу теку; результати потрапляють туди."),
-    7,
-    [
-      ["Selecting & granting folders", "Вибір і надання тек"],
-      ["Reading vs writing; scratchpad vs your folder", "Читання vs запис; scratchpad vs твоя тека"],
-      ["Deliverables (docx/xlsx/pptx/pdf)", "Результати (docx/xlsx/pptx/pdf)"],
-      ["Safety: deletes, overwrites, boundaries", "Безпека: видалення, перезапис, межі"],
-    ], ["m15", "m17"]),
-  mod("m17", "s4", 17, "middle",
-    L("Scheduled tasks", "Заплановані задачі"),
-    L("Recurring work, briefings, and cadence vs one-off.", "Періодична робота, briefings, cadence vs одноразово."),
-    L("Turn a one-off into a cadence.", "Перетвори одноразове на регулярне."),
-    6,
-    [
-      ["Cadence vs one-off", "Cadence vs одноразово"],
-      ["Creating a recurring task", "Створення періодичної задачі"],
-      ["Cron-style timing & examples", "Cron-таймінг і приклади"],
-      ["Managing & debugging schedules", "Керування та дебаг розкладів"],
-    ], ["m15", "m19"]),
+  // Section IV (m15 · m16 · m17 are fully authored above)
   mod("m18", "s4", 18, "senior",
     L("Computer use", "Computer use"),
     L("When Claude drives your screen; the three tiers of acting.", "Коли Claude керує екраном; три рівні дій."),
@@ -2242,7 +2575,7 @@ const planned: Module[] = [
 ];
 
 /* ---- assembled, ordered, and indexed ------------------------------------ */
-export const MODULES: Module[] = [...planned, m6, m7, m8, m9, m10, m11, m12, m13, m14, m15].sort((a, b) => a.order - b.order);
+export const MODULES: Module[] = [...planned, m6, m7, m8, m9, m10, m11, m12, m13, m14, m15, m16, m17].sort((a, b) => a.order - b.order);
 
 export function sectionById(id: string): Section | undefined {
   return SECTIONS.find((s) => s.id === id);
