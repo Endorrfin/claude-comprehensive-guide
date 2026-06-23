@@ -465,3 +465,43 @@ Footer: **"Vasyl Krupka · Senior Fullstack Engineer"** + 🇺🇦. Dark is prim
   shapes; ids/orders/seeAlso valid). Workspace holds source only (built into scratch outDir to dodge the
   sandbox unlink/`emptyOutDir` limit; `node_modules` untouched).
   **Next (S5): Ch.12 Skills + ★ Progressive Disclosure; Ch.13 Building skills; Ch.14 Plugins/marketplaces.**
+- **2026-06-23 · S5a Skills — concepts & using them (M12)** — DONE. **Scoped to M12 only** (one golden
+  module + one signature sim) per the user's quality-over-speed cadence — like S4a was M10 alone; **M13
+  Building skills + M14 Plugins deferred to S5b** (user chose "M12 only, go deepest"). Web-verified every
+  fact first against four authoritative pages: the Anthropic engineering blog "Equipping agents for the
+  real world with Agent Skills" (anatomy + progressive disclosure + code execution), the **Agent Skills
+  API docs overview** (the canonical 3-level token table + field constraints + where-skills-run matrix),
+  and the Help-Center "What are skills?" + "Using Skills in Claude". **M12** fully authored to golden
+  quality (5 topics: what a Skill is · SKILL.md anatomy · progressive disclosure & token cost [hosts the
+  sim] · pre-built skills & where they run · installing/adding skills) with mental model, 5 key points,
+  3 pitfalls, 3 interview Q&A (senior/senior/staff), 4 sources. Built the **5th signature interactive
+  ★ Progressive Disclosure** (`ProgressiveDisclosureSim` + `progressiveDisclosure.css`): pick a task
+  (fill-PDF / summarize-PDF / build-deck / general) → step through L1 metadata (always, ~100 tok/skill)
+  → match → L2 read SKILL.md via bash (<5k) → L3 read only the file the task needs + run scripts (code
+  never enters context, only output); a live **context bar vs a "load every folder up front" naive bar**
+  with a running **saved-%**, plus an **Installed-skills stepper (4→44)** that shows fifty skills barely
+  move the budget. Deterministic, bilingual, reduced-motion-gated autoplay + bar transitions, ARIA. New
+  `SkillAnatomy` figure (folder tree + exploded SKILL.md: frontmatter=L1 / body=L2 / bundled files & a
+  bash-run script=L3). Registered 1 sim + 1 figure in `registry.tsx`; removed the m12 stub; spliced m12
+  into `MODULES` (m12 already in SIGNATURE_SIMS).
+  **Correctness notes / user-rule-8 challenges & version drift caught:** (1) **UI label** — the current
+  claude.ai/desktop path is **Settings > Capabilities** (Help-Center, updated today); the API doc's
+  "Settings > Features" is stale. Content uses Capabilities. (2) **Plan availability disagreement** — the
+  newest Help article ("Using Skills", updated today) + the API overview say custom-skill upload is
+  **Pro/Max/Team/Enterprise + code execution**, but the older "What are skills?" article also lists
+  **Free**. Authored the conservative paid-plan + code-execution gating; flagging the Free-vs-paid drift
+  here for re-check. (3) Curriculum said pre-built skills "run on claude.ai/API/Bedrock/Foundry" — verified
+  and refined to **claude.ai · Claude API · Claude Platform on AWS · Microsoft Foundry** (Code = custom
+  only). (4) Fresh facts the curriculum lacked: the **Skills Directory** (partner skills — Notion/Figma/
+  Atlassian — paired with their MCP connectors) and the **agentskills.io open standard** (Dec 2025);
+  both woven in. **Verified (linux arm64 native bindings — `@rolldown/binding-linux-arm64-gnu` +
+  `lightningcss-linux-arm64-gnu` @ matching versions — installed in native `/tmp` and reached via
+  `NODE_PATH`; built into a fresh `_ci/dist_ci_*` outDir to dodge the sandbox unlink/`emptyOutDir`
+  limit):** `tsc --noEmit` clean (strict · noUnusedLocals/Parameters) · `vite build` OK (**50 modules**,
+  JS ≈149 kB gzip, CSS ≈7.2 kB gzip, 205 ms, relative `./assets`) · data-integrity **ALL PASS** (28
+  modules · **8 authored**; m12 ★ in SIGNATURE_SIMS, 5 topics; progressive-disclosure sim + skill-anatomy
+  figure resolve; **915 bilingual values** non-empty; table/compare shapes; ids/orders/seeAlso valid).
+  Workspace holds **source only** — `node_modules` untouched (linux bindings live in `/tmp`); throwaway
+  build + the data-integrity script consolidated into the git-ignored `_ci/` folder (sandbox can't unlink
+  on the mounted FS — **safe to delete `_ci/` on your Mac**).
+  **Next (S5b): Ch.13 Building your own skills; Ch.14 Plugins & marketplaces.**

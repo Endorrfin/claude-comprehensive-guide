@@ -1380,6 +1380,251 @@ const m11: Module = {
 };
 
 /* ======================================================================
+   M12 · Skills — concepts & using them  — authored (★ Progressive Disclosure)
+   ====================================================================== */
+const m12: Module = {
+  id: "m12",
+  section: "s3",
+  order: 12,
+  level: "senior",
+  title: L("Skills — concepts & using them", "Skills — концепції та використання"),
+  tagline: L(
+    "Package your expertise into a folder Claude loads only when it's relevant — so one Skill or fifty cost almost nothing until the moment they're used.",
+    "Запакуй свою експертизу в теку, яку Claude вантажить лише за потреби — тож один Skill чи пʼятдесят коштують майже нічого, поки їх не використають.",
+  ),
+  readMins: 13,
+  mentalModel: L(
+    "A Skill is a folder of expertise Claude opens like an onboarding guide: it always sees the cover (name + description), reads the page (SKILL.md) only when your task matches, and runs the bundled scripts without ever loading their code.",
+    "Skill — це тека з експертизою, яку Claude відкриває як онбординг-гайд: обкладинку (name + description) він бачить завжди, сторінку (SKILL.md) читає лише коли задача підходить, а вкладені скрипти запускає, ніколи не завантажуючи їхній код.",
+  ),
+  topics: [
+    {
+      id: "t1",
+      title: L("What a Skill is", "Що таке Skill"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "An **Agent Skill** is an organized **folder of instructions, scripts and resources** that Claude discovers and loads **dynamically** to do a specialized task better. Anthropic introduced Skills in **October 2025** and published the format as an **open standard** at **agentskills.io** in December 2025, so the same skill works across tools that adopt it.\n\nThe best mental image is **onboarding a new hire**: instead of re-explaining your process every time, you capture it once in a folder and Claude reads it when the moment calls for it. That's the key difference from a **prompt** (a one-off instruction inside a single conversation): a Skill is **reusable** and **on-demand** — author it once, and Claude uses it **automatically** whenever a task matches, **everywhere across Claude**.",
+            "**Agent Skill** — це впорядкована **тека з інструкціями, скриптами та ресурсами**, яку Claude виявляє й вантажить **динамічно**, щоб краще виконати спеціалізовану задачу. Anthropic представила Skills у **жовтні 2025** і опублікувала формат як **відкритий стандарт** на **agentskills.io** в грудні 2025, тож той самий skill працює в інструментах, що його підтримують.\n\nНайкращий образ — **онбординг нового співробітника**: замість пояснювати свій процес щоразу, ти фіксуєш його один раз у теці, і Claude читає її, коли настає момент. Це і є ключова відмінність від **prompt** (разової інструкції в межах однієї розмови): Skill **багаторазовий** і **on-demand** — напиши раз, і Claude використовує його **автоматично**, щойно задача підходить, **усюди в Claude**.",
+          ),
+        },
+        {
+          kind: "table",
+          head: [L("Kind", "Вид"), L("Who makes it", "Хто створює"), L("Example", "Приклад")],
+          rows: [
+            [L("Anthropic", "Anthropic"), L("Built in by Anthropic", "Вбудовані Anthropic"), L("pptx · xlsx · docx · pdf document skills", "Document-skills pptx · xlsx · docx · pdf")],
+            [L("Custom", "Custom"), L("You or your organization", "Ти або твоя організація"), L("Brand guidelines, JIRA conventions, data workflows", "Brand guidelines, конвенції JIRA, data workflows")],
+            [L("Org-provisioned", "Org-provisioned"), L("Team / Enterprise Owners", "Owners на Team / Enterprise"), L("Approved workflows pushed to every member", "Затверджені workflows для кожного учасника")],
+            [L("Partner (Directory)", "Partner (Directory)"), L("Partners, via the Skills Directory", "Партнери, через Skills Directory"), L("Notion · Figma · Atlassian — paired with their MCP connectors", "Notion · Figma · Atlassian — у парі з їхніми MCP connectors")],
+          ],
+        },
+        {
+          kind: "table",
+          head: [L("Capability", "Можливість"), L("What it gives Claude", "Що дає Claude"), L("When it loads", "Коли вантажиться")],
+          rows: [
+            [L("Skill", "Skill"), L("Procedural know-how — how to do a task", "Процедурне знання — як зробити задачу"), L("On demand, when the description matches — everywhere", "On-demand, коли підходить description — усюди")],
+            [L("Project", "Project"), L("Static background knowledge & files", "Статичні фонові знання й файли"), L("Always, but only inside that one project", "Завжди, але лише в межах одного project")],
+            [L("MCP / connector", "MCP / connector"), L("Access to external tools & data", "Доступ до зовнішніх tools і даних"), L("When you enable it in a chat", "Коли вмикаєш у чаті")],
+            [L("Custom instructions", "Custom instructions"), L("Broad style & behaviour preferences", "Загальні стиль і поведінка"), L("Always, across all chats", "Завжди, в усіх чатах")],
+          ],
+          caption: L("Skills and MCP pair well: MCP gives Claude the tools; a Skill teaches it how to use them.", "Skills і MCP добре поєднуються: MCP дає Claude інструменти; Skill вчить, як ними користуватися."),
+        },
+        {
+          kind: "callout",
+          tone: "tip",
+          title: L("No coding required (until you want it)", "Код не потрібен (поки сам не захочеш)"),
+          md: L(
+            "A simple Skill is just **Markdown** — anyone can write one. When a step needs to be **deterministic** (parsing a file, validating data), you can attach an **executable script** and Claude will run it instead of improvising. Start with words; add code only where reliability demands it.",
+            "Простий Skill — це лише **Markdown**, його напише будь-хто. Коли крок має бути **детермінованим** (розбір файлу, валідація даних), можна додати **виконуваний скрипт**, і Claude запустить його замість імпровізації. Починай зі слів; додавай код лише там, де потрібна надійність.",
+          ),
+        },
+      ],
+    },
+    {
+      id: "t2",
+      title: L("SKILL.md anatomy", "Анатомія SKILL.md"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "At its simplest, a Skill is a **directory containing a `SKILL.md` file**. That file must open with **YAML frontmatter** carrying two **required** fields — **`name`** and **`description`** — followed by the **body**: the procedural knowledge (workflows, best practices, examples) Claude follows once the Skill is active.\n\nWhen one file gets unwieldy, you **bundle extra files** in the folder and reference them by name from `SKILL.md`. Those linked files — reference docs, schemas, templates and scripts — are loaded later and only when needed, which keeps the core lean.",
+            "У найпростішому вигляді Skill — це **тека з файлом `SKILL.md`**. Цей файл має починатися з **YAML frontmatter** із двома **обовʼязковими** полями — **`name`** і **`description`** — за якими йде **body**: процедурне знання (workflows, найкращі практики, приклади), якому Claude слідує, коли Skill активний.\n\nКоли один файл стає завеликим, ти **додаєш у теку інші файли** й посилаєшся на них за назвою із `SKILL.md`. Ці повʼязані файли — довідки, схеми, шаблони й скрипти — вантажаться пізніше й лише за потреби, тримаючи ядро компактним.",
+          ),
+        },
+        { kind: "figure", fig: "skill-anatomy", caption: L("Frontmatter (name + description) is the only part always in context. The body loads when your task matches; bundled files load only when that file is needed.", "Frontmatter (name + description) — єдине, що завжди в context. Body вантажиться, коли задача підходить; вкладені файли — лише коли цей файл потрібен.") },
+        {
+          kind: "code",
+          lang: "markdown",
+          code: "---\nname: brand-style\ndescription: Apply ACME brand guidelines — colors, fonts, tone — to documents\n  and decks. Use whenever the user creates or edits a document, slide deck,\n  or marketing copy for ACME.\n---\n\n# ACME Brand Style\n\n## Quick start\n1. Use the palette in COLORS.md and the voice rules in VOICE.md.\n2. Headline font: Fraunces. Body font: Inter.\n\n## When writing copy\nKeep sentences short and active. For the full voice guide, read VOICE.md.",
+          note: L(
+            "The frontmatter is the trigger and the body is the playbook; `COLORS.md` and `VOICE.md` are bundled files Claude opens only when it actually needs them.",
+            "Frontmatter — це тригер, а body — інструкція; `COLORS.md` і `VOICE.md` — вкладені файли, які Claude відкриває лише коли вони справді потрібні.",
+          ),
+        },
+        {
+          kind: "table",
+          head: [L("Field", "Поле"), L("Rules", "Правила"), L("Why it matters", "Чому це важливо")],
+          rows: [
+            [L("`name`", "`name`"), L("≤ 64 chars · lowercase, numbers, hyphens · no XML · not “claude”/“anthropic” · matches the folder", "≤ 64 символів · малі літери, цифри, дефіси · без XML · не «claude»/«anthropic» · збігається з текою"), L("It's the Skill's id — keep it clean and discoverable.", "Це id Skill — тримай його чистим і впізнаваним.")],
+            [L("`description`", "`description`"), L("Non-empty · ≤ 1024 chars · no XML · says **what** it does **and when** to use it", "Непорожнє · ≤ 1024 символів · без XML · каже **що** робить **і коли** використовувати"), L("This is the trigger — Claude reads it to decide whether to load the Skill.", "Це тригер — Claude читає його, щоб вирішити, чи вантажити Skill.")],
+          ],
+        },
+        {
+          kind: "callout",
+          tone: "senior",
+          title: L("The description is the trigger — write it for Claude", "Description — це тригер; пиши його для Claude"),
+          md: L(
+            "Besides the name, the `description` is the **only** part of a Skill that's **always** in context. Claude has nothing else to go on when deciding whether to fire the Skill, so spell out **what it does and the situations that should activate it** — “Use when the user…”. A vague description is the number-one reason a Skill silently never triggers.",
+            "Окрім name, `description` — **єдина** частина Skill, що **завжди** в context. Claude більше ні на що не спирається, вирішуючи, чи запускати Skill, тож чітко опиши **що він робить і в яких ситуаціях активується** — «Use when the user…». Розмитий description — головна причина, чому Skill мовчки не спрацьовує.",
+          ),
+        },
+      ],
+    },
+    {
+      id: "t3",
+      title: L("Progressive disclosure & token cost", "Progressive disclosure і вартість у токенах"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "**Progressive disclosure** is the design principle that makes Skills scale. Claude runs inside a **code-execution VM** with a **filesystem** and **bash**, so a Skill lives on disk and Claude pulls pieces into context **in stages, only as the task needs them** — exactly like consulting a manual's table of contents, then one chapter, then one appendix.\n\nThis has two big consequences. You can **install many Skills** for almost no cost, because only their ~100-token metadata is ever pre-loaded. And you can **bundle effectively unbounded reference material**, because a file sitting on disk costs **zero tokens** until Claude actually reads it. Step through the three levels below.",
+            "**Progressive disclosure** — це принцип дизайну, що дозволяє Skills масштабуватися. Claude працює всередині **VM з виконанням коду**, де є **файлова система** й **bash**, тож Skill лежить на диску, а Claude витягує частини в context **поетапно, лише коли задача цього потребує** — як звіряєшся зі змістом книги, потім з одним розділом, потім з одним додатком.\n\nЦе має два великі наслідки. Можна **встановити багато Skills** майже безкоштовно, бо наперед завантажується лише їхня ~100-токенна metadata. І можна **вкладати практично безмежний довідковий матеріал**, бо файл на диску коштує **нуль токенів**, поки Claude його не прочитає. Прокрути три рівні нижче.",
+          ),
+        },
+        { kind: "sim", sim: "progressive-disclosure" },
+        {
+          kind: "table",
+          head: [L("Level", "Рівень"), L("When it loads", "Коли вантажиться"), L("Token cost", "Вартість у токенах"), L("What", "Що")],
+          rows: [
+            [L("L1 · Metadata", "L1 · Metadata"), L("Always — at startup, in the system prompt", "Завжди — на старті, у системному prompt"), L("~100 / skill", "~100 / skill"), L("`name` + `description` from the frontmatter", "`name` + `description` із frontmatter")],
+            [L("L2 · Instructions", "L2 · Instructions"), L("When the task matches the description", "Коли задача підходить під description"), L("Under 5k", "До 5k"), L("The SKILL.md body — workflows & guidance", "Body SKILL.md — workflows і поради")],
+            [L("L3+ · Resources & code", "L3+ · Resources і code"), L("Only as needed, read via bash", "Лише за потреби, читається через bash"), L("Effectively unlimited", "Практично безмежно"), L("Bundled docs (read on demand) & scripts (run via bash; code never enters context)", "Вкладені доки (читаються за потреби) і скрипти (запуск через bash; код не входить у context)")],
+          ],
+        },
+        {
+          kind: "callout",
+          tone: "tip",
+          title: L("Scripts run via bash — the code never enters context", "Скрипти йдуть через bash — код не входить у context"),
+          md: L(
+            "When a Skill bundles a script, Claude **executes it via bash and receives only its output** — the script's source never occupies the window. That makes bundled code both **cheaper** (a few tokens of output instead of hundreds of lines) and **more reliable** (deterministic execution instead of the model re-deriving logic). It's why “install 50 Skills” barely moves the budget.",
+            "Коли Skill містить скрипт, Claude **запускає його через bash і отримує лише вивід** — вихідний код ніколи не займає вікно. Це робить вкладений код **дешевшим** (кілька токенів виводу замість сотень рядків) і **надійнішим** (детермінований запуск замість того, щоб модель щоразу виводила логіку наново). Саме тому «встанови 50 Skills» майже не зрушує бюджет.",
+          ),
+        },
+      ],
+    },
+    {
+      id: "t4",
+      title: L("Pre-built skills & where they run", "Готові skills і де вони працюють"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "Anthropic ships **pre-built Skills for the everyday document formats** — **PowerPoint, Excel, Word and PDF**. On claude.ai they work **behind the scenes**: ask for “a Q3 deck” and Claude reaches for the `pptx` skill on its own, no setup or invocation needed. Anthropic also publishes **open-source Skills** in its public repository for you to study or adapt.\n\nSkills are available across Claude's surfaces, but each surface differs in **what it supports and what its sandbox can do** — most importantly **network access**, which is full in Claude Code, absent in the API sandbox, and configurable on claude.ai.",
+            "Anthropic постачає **готові Skills для щоденних форматів документів** — **PowerPoint, Excel, Word і PDF**. На claude.ai вони працюють **за лаштунками**: попроси «презентацію за Q3», і Claude сам візьме skill `pptx`, без налаштувань і явного виклику. Anthropic також публікує **open-source Skills** у своєму публічному репозиторії — щоб вивчати чи адаптувати.\n\nSkills доступні на різних поверхнях Claude, але кожна відрізняється тим, **що підтримує і що вміє її пісочниця** — найперше **доступ до мережі**, який повний у Claude Code, відсутній у пісочниці API і налаштовуваний на claude.ai.",
+          ),
+        },
+        {
+          kind: "table",
+          head: [L("Skill", "Skill"), L("`skill_id`", "`skill_id`"), L("What Claude can do", "Що вміє Claude")],
+          rows: [
+            [L("PowerPoint", "PowerPoint"), L("`pptx`", "`pptx`"), L("Create presentations, edit slides, analyze decks", "Створювати презентації, редагувати слайди, аналізувати деки")],
+            [L("Excel", "Excel"), L("`xlsx`", "`xlsx`"), L("Build spreadsheets, analyze data, generate reports & charts", "Будувати таблиці, аналізувати дані, робити звіти й графіки")],
+            [L("Word", "Word"), L("`docx`", "`docx`"), L("Create and edit formatted documents", "Створювати й редагувати форматовані документи")],
+            [L("PDF", "PDF"), L("`pdf`", "`pdf`"), L("Generate formatted PDFs; extract text/tables; fill forms", "Робити форматовані PDF; витягати текст/таблиці; заповнювати форми")],
+          ],
+        },
+        {
+          kind: "table",
+          head: [L("Surface", "Поверхня"), L("Pre-built", "Готові"), L("Custom", "Custom"), L("Sandbox note", "Про пісочницю")],
+          rows: [
+            [L("claude.ai / Desktop", "claude.ai / Desktop"), L("Yes — automatic", "Так — автоматично"), L("Yes — ZIP in Settings > Capabilities", "Так — ZIP у Settings > Capabilities"), L("Per-user; network access varies", "На користувача; доступ до мережі різний")],
+            [L("Claude API", "Claude API"), L("Yes — by `skill_id`", "Так — за `skill_id`"), L("Yes — Skills API, workspace-wide", "Так — Skills API, на весь workspace"), L("No network, no package installs", "Без мережі, без встановлення пакетів")],
+            [L("Claude Code", "Claude Code"), L("—", "—"), L("Yes — a folder in `~/.claude/skills`", "Так — тека в `~/.claude/skills`"), L("Full network; share via plugins", "Повна мережа; ділишся через plugins")],
+            [L("AWS & Microsoft Foundry", "AWS і Microsoft Foundry"), L("Yes", "Так"), L("Yes — via the Skills API", "Так — через Skills API"), L("Inherit the API's behaviour", "Успадковують поведінку API")],
+          ],
+        },
+        {
+          kind: "callout",
+          tone: "senior",
+          title: L("Custom Skills don't sync across surfaces", "Custom Skills не синхронізуються між поверхнями")
+          ,
+          md: L(
+            "A Skill you upload to **claude.ai** is **not** automatically on the **API** or in **Claude Code** — each surface is managed separately. Sharing scope differs too: on **claude.ai** a custom Skill is **per-user** (Team/Enterprise Owners can provision org-wide); on the **API** it's **workspace-wide**; in **Code** it's personal or project-based and can be shared via **plugins**.",
+            "Skill, який ти завантажив на **claude.ai**, **не** зʼявляється автоматично в **API** чи **Claude Code** — кожна поверхня керується окремо. Обсяг доступу теж різний: на **claude.ai** custom Skill — **на користувача** (Owners на Team/Enterprise можуть розкотити на всю організацію); в **API** — **на весь workspace**; у **Code** — особистий або проєктний, і ним можна ділитися через **plugins**.",
+          ),
+        },
+      ],
+    },
+    {
+      id: "t5",
+      title: L("Installing / adding skills", "Встановлення / додавання skills"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "On **claude.ai and the desktop app**, Skills live in **Settings > Capabilities**. First enable **Code execution and file creation** (Skills need the VM), then toggle the built-in Skills you want and click **Upload skill** to add your own as a **ZIP of the skill folder**. Custom upload is available on **Pro, Max, Team and Enterprise** plans. You can also pull partner Skills from the **Skills Directory** via the **“+” → Browse skills**: download the package (usually from GitHub) and upload the ZIP.\n\nThe other surfaces install differently — a **filesystem folder** in Claude Code, or an **API upload** keyed by `skill_id` — but the authoring format is identical, which is the whole point of the open standard.",
+            "На **claude.ai і в десктоп-застосунку** Skills живуть у **Settings > Capabilities**. Спершу увімкни **Code execution and file creation** (Skills потребують VM), потім перемкни потрібні вбудовані Skills і натисни **Upload skill**, щоб додати свій як **ZIP теки skill**. Завантаження custom доступне на планах **Pro, Max, Team і Enterprise**. Можна також узяти партнерські Skills зі **Skills Directory** через **«+» → Browse skills**: завантаж пакет (зазвичай із GitHub) і залий ZIP.\n\nІнші поверхні встановлюють інакше — **тека у файловій системі** в Claude Code або **завантаження через API** за `skill_id` — але формат авторингу однаковий, і в цьому весь сенс відкритого стандарту.",
+          ),
+        },
+        {
+          kind: "table",
+          head: [L("Surface", "Поверхня"), L("How to add a custom Skill", "Як додати custom Skill")],
+          rows: [
+            [L("claude.ai / Desktop", "claude.ai / Desktop"), L("Settings > Capabilities → enable code execution → **Upload skill** (ZIP of the folder)", "Settings > Capabilities → увімкни code execution → **Upload skill** (ZIP теки)")],
+            [L("Skills Directory", "Skills Directory"), L("“+” → Browse skills → download the package → upload the ZIP", "«+» → Browse skills → завантаж пакет → залий ZIP")],
+            [L("Claude Code", "Claude Code"), L("Drop a folder with SKILL.md in `~/.claude/skills/` (personal) or `.claude/skills/` (project)", "Поклади теку з SKILL.md у `~/.claude/skills/` (особисто) чи `.claude/skills/` (проєкт)")],
+            [L("Claude API", "Claude API"), L("Upload via the `/v1/skills` endpoints, then reference its `skill_id`", "Залий через `/v1/skills`, потім посилайся на `skill_id`")],
+          ],
+        },
+        {
+          kind: "callout",
+          tone: "security",
+          title: L("Treat a Skill like installing software", "Стався до Skill як до встановлення ПЗ"),
+          md: L(
+            "A Skill ships **instructions and runnable code**, so a malicious one can drive Claude to **exfiltrate data** or **misuse tools** — the main risks are **prompt injection** and **data leakage**. Install Skills **only from sources you trust** (yourself or Anthropic). Before using an unfamiliar Skill, **read every bundled file**, watch for **unexpected network calls** or instructions that fetch untrusted content, and check what access Claude will have when it runs.",
+            "Skill постачає **інструкції й виконуваний код**, тож зловмисний може змусити Claude **викрасти дані** чи **зловжити tools** — головні ризики це **prompt injection** і **витік даних**. Встановлюй Skills **лише з довірених джерел** (свої або від Anthropic). Перш ніж використати незнайомий Skill, **прочитай кожен вкладений файл**, шукай **несподівані мережеві виклики** чи інструкції, що тягнуть недовірений контент, і перевір, який доступ матиме Claude під час запуску.",
+          ),
+        },
+        {
+          kind: "callout",
+          tone: "warn",
+          title: L("If a Skill won't trigger or won't upload", "Якщо Skill не спрацьовує або не завантажується"),
+          md: L(
+            "**Not triggering?** Confirm it's toggled **on**, make the `description` clearly state **when** to use it, or just ask explicitly (“use my brand-style skill”). **Upload failing?** The usual culprits: the **folder name doesn't match the skill name**, a **missing `SKILL.md`**, **invalid characters** in name/description, or a **ZIP over the size limit**. And remember the Skills section only appears once **code execution** is enabled.",
+            "**Не тригериться?** Переконайся, що він **увімкнений**, зроби так, щоб `description` чітко казав **коли** використовувати, або попроси явно («use my brand-style skill»). **Не завантажується?** Звичні причини: **назва теки не збігається з назвою skill**, **відсутній `SKILL.md`**, **недопустимі символи** в name/description або **ZIP перевищує ліміт**. І памʼятай: секція Skills зʼявляється лише коли ввімкнено **code execution**.",
+          ),
+        },
+      ],
+    },
+  ],
+  keyPoints: [
+    L("A Skill is a folder (a SKILL.md plus optional scripts & resources) of procedural expertise Claude loads dynamically — author once, used automatically, and it works everywhere across Claude.", "Skill — це тека (SKILL.md плюс опційні скрипти й ресурси) з процедурною експертизою, яку Claude вантажить динамічно — напиши раз, використовується автоматично, і працює всюди в Claude."),
+    L("SKILL.md opens with YAML frontmatter: name (≤64 chars, lowercase/hyphens, not “claude”/“anthropic”) + description (≤1024 chars, what it does AND when). The description is the trigger.", "SKILL.md починається з YAML frontmatter: name (≤64 символів, малі/дефіси, не «claude»/«anthropic») + description (≤1024 символів, що робить І коли). Description — це тригер."),
+    L("Progressive disclosure loads in three levels: L1 metadata always (~100 tok/skill), L2 the SKILL.md body only when triggered (<5k tok), L3 bundled files & scripts only as needed (effectively unlimited).", "Progressive disclosure вантажить у три рівні: L1 metadata завжди (~100 ток/skill), L2 body SKILL.md лише коли тригериться (<5k ток), L3 вкладені файли й скрипти лише за потреби (практично безмежно)."),
+    L("Claude reads files via bash in a code-execution VM, so script code never enters context (only its output) and unused files cost zero — fifty installed Skills are nearly as cheap as one.", "Claude читає файли через bash у VM з виконанням коду, тож код скрипта не входить у context (лише вивід), а невикористані файли коштують нуль — пʼятдесят встановлених Skills майже такі ж дешеві, як один."),
+    L("Pre-built pptx/xlsx/docx/pdf Skills work automatically; add your own in Settings > Capabilities (ZIP) on paid plans with code execution. Custom Skills don't sync across surfaces and should come only from trusted sources.", "Готові pptx/xlsx/docx/pdf Skills працюють автоматично; свої додавай у Settings > Capabilities (ZIP) на платних планах із code execution. Custom Skills не синхронізуються між поверхнями і мають бути лише з довірених джерел."),
+  ],
+  pitfalls: [
+    { title: L("A vague description, so the Skill never fires", "Розмитий description — Skill не спрацьовує"), body: L("Claude decides purely from name + description. If it doesn't say what the Skill does AND the situations that should activate it, Claude won't trigger it. Be specific and test with varied prompts.", "Claude вирішує лише за name + description. Якщо там не сказано, що Skill робить І в яких ситуаціях активується, Claude його не запустить. Будь конкретним і тестуй різними запитами.") },
+    { title: L("Treating a Skill like a Project or a prompt", "Плутати Skill із Project чи prompt"), body: L("A Project holds static, always-loaded knowledge for one project; a prompt is a one-off instruction. A Skill is a reusable, on-demand procedure that loads only when relevant and works everywhere. Put facts in a Project, procedures in a Skill.", "Project тримає статичні, завжди завантажені знання для одного проєкту; prompt — разова інструкція. Skill — багаторазова процедура on-demand, що вантажиться лише за потреби й працює всюди. Факти — у Project, процедури — у Skill.") },
+    { title: L("Installing Skills from untrusted sources", "Встановлення Skills із недовірених джерел"), body: L("A Skill ships instructions and runnable code, so a malicious one can exfiltrate data or misuse tools via prompt injection. Audit every bundled file before use and install only from sources you trust.", "Skill постачає інструкції й виконуваний код, тож зловмисний може викрасти дані чи зловжити tools через prompt injection. Перевіряй кожен вкладений файл перед використанням і став лише з довірених джерел.") },
+  ],
+  interview: [
+    { q: L("What is an Agent Skill, and how does it differ from a prompt or a Project?", "Що таке Agent Skill і чим він відрізняється від prompt чи Project?"), a: L("A Skill is a folder (SKILL.md + optional scripts/resources) of procedural expertise Claude discovers and loads on demand. A prompt is a one-off, conversation-level instruction; a Project supplies static background knowledge that's always loaded inside that project. A Skill is reusable, loads only when its description matches the task, and works everywhere across Claude — create once, used automatically.", "Skill — це тека (SKILL.md + опційні скрипти/ресурси) з процедурною експертизою, яку Claude виявляє й вантажить on-demand. Prompt — разова інструкція в межах розмови; Project дає статичні фонові знання, завжди завантажені в цьому проєкті. Skill багаторазовий, вантажиться лише коли його description підходить під задачу, і працює всюди в Claude — створи раз, використовується автоматично."), level: "senior" },
+    { q: L("Explain progressive disclosure and why it matters for token cost.", "Поясни progressive disclosure і чому це важливо для вартості в токенах."), a: L("Skills load in three levels: name+description metadata always in the system prompt (~100 tok/skill), the SKILL.md body only when the task triggers it (<5k tok), and bundled files/scripts only as needed (effectively unlimited). Because Claude reads files via bash in a code-execution VM, unused content costs zero tokens and script code never enters context — only its output. So you can install many Skills and bundle huge references without bloating the window.", "Skills вантажаться у три рівні: metadata name+description завжди в системному prompt (~100 ток/skill), body SKILL.md лише коли задача його тригерить (<5k ток), а вкладені файли/скрипти — лише за потреби (практично безмежно). Оскільки Claude читає файли через bash у VM з виконанням коду, невикористаний контент коштує нуль токенів, а код скрипта не входить у context — лише його вивід. Тож можна встановити багато Skills і вкласти величезні довідки, не роздуваючи вікно."), level: "senior" },
+    { q: L("You're rolling Skills out to a team and securing them — what do you watch for?", "Ти розгортаєш Skills для команди й убезпечуєш їх — на що звертаєш увагу?"), a: L("Triggering: every Skill's description must state what it does and when to use it; test with varied prompts. Distribution: on Team/Enterprise, Owners provision Skills org-wide in Admin > Capabilities; otherwise custom Skills are per-user and don't sync across surfaces (claude.ai, API and Code are separate). Security: Skills run instructions + code, so audit untrusted ones for unexpected network calls or tool misuse (prompt injection, data exfiltration), install only from trusted sources, and remember the sandbox's network access varies by surface.", "Тригер: description кожного Skill має казати, що він робить і коли використовувати; тестуй різними запитами. Поширення: на Team/Enterprise Owners розкочують Skills на всю організацію в Admin > Capabilities; інакше custom Skills — на користувача й не синхронізуються між поверхнями (claude.ai, API і Code окремі). Безпека: Skills виконують інструкції + код, тож перевіряй недовірені на несподівані мережеві виклики чи зловживання tools (prompt injection, витік даних), став лише з довірених джерел і памʼятай, що доступ пісочниці до мережі різниться за поверхнею."), level: "staff" },
+  ],
+  seeAlso: ["m13", "m14", "m10", "m11", "m7"],
+  sources: [
+    { title: "Equipping agents for the real world with Agent Skills — Anthropic Engineering", url: "https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills" },
+    { title: "Agent Skills — Claude Docs (overview)", url: "https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview" },
+    { title: "What are skills? — Claude Help Center", url: "https://support.claude.com/en/articles/12512176-what-are-skills" },
+    { title: "Using Skills in Claude — Claude Help Center", url: "https://support.claude.com/en/articles/12512180-use-skills-in-claude" },
+  ],
+};
+
+/* ======================================================================
    Planned modules (topics carry over from CURRICULUM.md; bodies fill in)
    ====================================================================== */
 const planned: Module[] = [
@@ -1446,18 +1691,6 @@ const planned: Module[] = [
   // Section II  (m6 · m7 · m8 · m9 · m10 are fully authored above)
 
   // Section III  (m11 is fully authored above)
-  mod("m12", "s3", 12, "senior",
-    L("Skills — concepts & using them", "Skills — концепції та використання"),
-    L("SKILL.md anatomy, pre-built skills and progressive disclosure.", "Анатомія SKILL.md, готові skills і progressive disclosure."),
-    L("A Skill is a folder of expertise Claude opens only when relevant.", "Skill — це тека з експертизою, яку Claude відкриває лише за потреби."),
-    9,
-    [
-      ["What a Skill is", "Що таке Skill"],
-      ["SKILL.md anatomy", "Анатомія SKILL.md"],
-      ["Progressive disclosure & token cost", "Progressive disclosure і вартість у токенах"],
-      ["Pre-built skills & where they run", "Готові skills і де вони працюють"],
-      ["Installing / adding skills", "Встановлення / додавання skills"],
-    ], ["m13", "m14", "m10"]),
   mod("m13", "s3", 13, "senior",
     L("Building your own skills", "Створення власних skills"),
     L("Authoring basic → advanced, scripts, resources and testing.", "Створення від базових до просунутих: scripts, resources, тестування."),
@@ -1634,7 +1867,7 @@ const planned: Module[] = [
 ];
 
 /* ---- assembled, ordered, and indexed ------------------------------------ */
-export const MODULES: Module[] = [...planned, m6, m7, m8, m9, m10, m11, m15].sort((a, b) => a.order - b.order);
+export const MODULES: Module[] = [...planned, m6, m7, m8, m9, m10, m11, m12, m15].sort((a, b) => a.order - b.order);
 
 export function sectionById(id: string): Section | undefined {
   return SECTIONS.find((s) => s.id === id);
