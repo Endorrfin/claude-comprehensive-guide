@@ -8,6 +8,8 @@ import { ProgressiveDisclosureSim } from "../components/sims/ProgressiveDisclosu
 import { CoworkArchitecture } from "../components/figures/CoworkArchitecture";
 import { McpArchitecture } from "../components/figures/McpArchitecture";
 import { SkillAnatomy } from "../components/figures/SkillAnatomy";
+import { SkillBuildPipeline } from "../components/figures/SkillBuildPipeline";
+import { PluginBundle } from "../components/figures/PluginBundle";
 import { ProjectWorkspace } from "../components/figures/ProjectWorkspace";
 import { ChatArtifactPanel } from "../components/figures/ChatArtifactPanel";
 import { LiveArtifactFlow } from "../components/figures/LiveArtifactFlow";
@@ -32,4 +34,6 @@ export const FIGURES: Record<string, React.FC> = {
   "context-window": ContextWindow,
   "mcp-architecture": McpArchitecture,
   "skill-anatomy": SkillAnatomy,
+  "skill-build-pipeline": SkillBuildPipeline,
+  "plugin-bundle": PluginBundle,
 };

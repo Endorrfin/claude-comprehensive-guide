@@ -505,3 +505,44 @@ Footer: **"Vasyl Krupka · Senior Fullstack Engineer"** + 🇺🇦. Dark is prim
   build + the data-integrity script consolidated into the git-ignored `_ci/` folder (sandbox can't unlink
   on the mounted FS — **safe to delete `_ci/` on your Mac**).
   **Next (S5b): Ch.13 Building your own skills; Ch.14 Plugins & marketplaces.**
+- **2026-06-23 · S5b Building skills + Plugins (M13–M14)** — DONE. **Stacked on the S5a branch**
+  (`s5-skills-progressive-disclosure`, which holds M12 but isn't merged to `main` yet) so Section III
+  (M11–M14) builds coherently and `registry.tsx` merges without conflict. *(Branching note for the user
+  below.)* Web-verified every fact first: skill authoring (`init_skill.py` scaffold; `scripts/` +
+  `references/` + `assets/`; SKILL.md < ~500 lines, ToC for big refs, variant files; `${CLAUDE_SKILL_DIR}`),
+  description craft (what+when, third person, ~1024 chars, deliberately **“pushy”** because models
+  **under-trigger**; tune with should-/should-not near-miss prompts), testing (baseline compare in a
+  **fresh session**, with vs without; the **`skill-creator`** plugin's evals/grading/benchmark/blind-A-B/
+  description-tuning loop), packaging (`package_skill.py` → **`.skill`** ZIP; scopes claude.ai/Code/
+  plugin/managed; open standard doesn't sync across surfaces), and plugins (a bundle = **skills + agents +
+  commands + hooks + MCP** via `.claude-plugin/plugin.json`; a **marketplace** = git repo +
+  `marketplace.json`; `/plugin marketplace add` → `/plugin install name@market`; the **“Will install”**
+  review since v2.1.145; `claude-plugins-official` built in; Cowork installs from claude.com/plugins).
+  **M13** fully authored (5 topics: basic recipe · scripts & resources · descriptions that trigger · test
+  & iterate · package & share) + new **`SkillBuildPipeline`** figure (draft→bundle→describe→test→share,
+  with an iterate loop), 2 SKILL.md code examples, a weak-vs-strong description **compare**, a scripts/
+  refs/assets **table**, 5 key points, 3 pitfalls, 3 interview Q&A, 5 sources. **M14** fully authored
+  (4 topics: what a plugin bundles · installing & marketplaces · the role plugins · building & sharing) +
+  new **`PluginBundle`** figure (manifest over 5 component chips → marketplace → install → host), a
+  skill-vs-plugin **compare**, a components **table**, the **exact 11** Cowork role plugins **table**, an
+  install-flow table, a plugin.json tree **code** block, 5 key points, 3 pitfalls, 3 interview Q&A, 4
+  sources. Registered both figures in `registry.tsx`; removed the m13/m14 stubs; spliced both into
+  `MODULES`. **Correctness notes / user-rule-8:** (1) pinned the **exact 11** open-source role plugins
+  from the official `anthropics/knowledge-work-plugins` repo (productivity · sales · customer-support ·
+  product-management · marketing · legal · finance · data · enterprise-search · bio-research ·
+  cowork-plugin-management) rather than the vague “11 role plugins”; (2) a plugin bundles **five** kinds
+  of extension — added **skills** as the fifth alongside the curriculum's “subagents/commands/hooks/MCP”,
+  and noted Claude Code also bundles **LSP servers**; (3) captured the modern fact that **custom commands
+  merged into skills** (a `.claude/commands/x.md` and a `skills/x/SKILL.md` both make `/x`). **Verified
+  (linux arm64 native bindings `@rolldown/binding-linux-arm64-gnu@1.0.3` + `lightningcss-linux-arm64-gnu@1.32.0`
+  installed in `/tmp` and reached via `NODE_PATH`; built into a fresh `/tmp` outDir to dodge the sandbox
+  unlink/`emptyOutDir` limit):** `tsc --noEmit` clean (strict · noUnusedLocals/Parameters) · `vite build`
+  OK (**52 modules**, JS ≈168 kB gzip, CSS ≈7.18 kB gzip, 191 ms, relative `./assets`) · data-integrity
+  **ALL PASS** (28 modules · 123 topics · **10 authored**; m13 5 topics, m14 4 topics; skill-build-pipeline
+  + plugin-bundle figures resolve; all 6 sim refs registered; **1078 bilingual values** non-empty;
+  ids/orders/seeAlso valid; SIGNATURE_SIMS intact). Workspace holds **source only** — `node_modules`
+  untouched (linux bindings live in `/tmp`). *(Sandbox housekeeping: renamed a stale `.git/index.lock` →
+  `.git/_index.lock.removeme` since the mounted FS blocks unlink — **safe to delete on your Mac**; git is
+  unblocked.)* **Branching:** S5b sits on top of S5a — merge order should be **s5 (M12) → then s5b**, or
+  simply merge **s5b** (it contains M12 + M13 + M14). **Next (S6): Ch.16 Files/outputs; Ch.17 Scheduled
+  tasks (+timeline); Ch.18 Computer use (+3-tiers) — M15 already golden.**
