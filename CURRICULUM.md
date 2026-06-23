@@ -78,6 +78,13 @@ type Block =
 
 ## D. The modules
 
+> **Build status (updated 2026-06-23, through S6).** Authored ✅ = M6, M7, M8, M9, M10, M11, M12, M13,
+> M14, M15, M16, M17, M18 (**13 / 28**). Sections **II & III complete**; Section **IV** done through M18
+> (**M19 pending**). Sections I, V, VI are navigable skeletons (planned topics only). This file is the
+> **seed plan**; where verification refined a topic, the authored content + the correction note live in
+> `concepts.ts` and `CLAUDE.md` §14 (e.g. M17 "cron-style timing" → preset cadences + the awake rule;
+> M18's two distinct "tiers" — *acting* connector→browser→screen vs *access* View/Click/Full).
+
 ### Section I · Foundations & first steps  `[beginner]`  — the on-ramp (skippable for pros)
 
 **M1 · What is Claude**
@@ -201,21 +208,21 @@ type Block =
 - 15.5 Cowork vs Claude Code vs plain chat
 - Visuals: `[sim ★]` The Agent Loop · `[diagram]` Cowork architecture · `[compare]` agent vs chat · `[mental-model]` "an assistant working at your desk"
 
-**M16 · Files, folders & outputs**
+**M16 · Files, folders & outputs**  ✅ authored (S6a)
 - 16.1 Selecting & granting folders
 - 16.2 Reading vs writing — scratchpad vs your folder
 - 16.3 Deliverables (docx/xlsx/pptx/pdf) & presenting files
 - 16.4 Safety — deletes, overwrites, boundaries
 - Visuals: `[diagram]` file flow (uploads · outputs · your folder) · `[table]` output types · `[callout]` delete/overwrite safety
 
-**M17 · Scheduled tasks**
+**M17 · Scheduled tasks**  ✅ authored (S6a) — incl. light Schedule-Timeline interactive
 - 17.1 What scheduling is — cadence vs one-off
 - 17.2 Creating a recurring task — briefings, digests
 - 17.3 Cron-style timing & examples
 - 17.4 Managing & debugging schedules
 - Visuals: `[timeline]` schedule timeline (light animation) · `[table]` cadence patterns · `[compare]` one-off vs recurring · `[mental-model]`
 
-**M18 · Computer use**
+**M18 · Computer use**  ✅ authored (S6b)
 - 18.1 When Claude drives your screen
 - 18.2 The 3 tiers — connector → browser → computer use
 - 18.3 Granting apps & tiers (read / click / full)

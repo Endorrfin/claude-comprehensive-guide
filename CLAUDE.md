@@ -290,6 +290,22 @@ Footer: **"Vasyl Krupka · Senior Fullstack Engineer"** + 🇺🇦. Dark is prim
   on Opus 4.8/4.7 & Sonnet 4.6. Batch −50%, prompt caching −90% cached input.
 - **Cowork:** desktop agent (3rd tab in Claude Desktop); local file read/write; scheduled tasks; MCP
   connectors; plugins (11 open-source role plugins); computer use; mobile; **Windows GA 2026-02-10**.
+  - **Files/outputs (M16, verified S6):** reads/writes **only folders you grant**; code/shell run in an
+    **isolated VM** (scratchpad = temporary; your folder persists); deliverables **docx/xlsx/pptx/pdf**
+    via the pre-built skills, **30 MB/file**; **deletion gate** requires explicit Allow **in both
+    permission modes** (*Ask before acting* / *Act without asking*); Global instructions (Settings→Cowork)
+    + per-folder instructions. Cowork itself = **paid plans only**; code-execution/file-creation = all plans incl. Free.
+  - **Scheduled tasks (M17, verified S6):** create via the **`/schedule` skill** or the **Scheduled page**;
+    cadences are **presets** (hourly · daily · weekly · weekdays · manual) — **no raw-cron textbox** (cron is
+    the underlying model; `/schedule` reads natural language); one-off = `fireAt`. **Runs only while the
+    computer is awake + Desktop open** → missed runs **skip then catch up once on wake** (shown in history).
+    Each run = its own Cowork session. Paid plans only.
+  - **Computer use (M18, verified S6):** **research preview, Pro/Max ONLY** (not Team/Enterprise), Desktop
+    macOS/Windows, **off by default** (Settings→General; macOS also needs Accessibility + Screen Recording).
+    **Three tiers of acting** (precise-first): connector → browser (Claude in Chrome) → screen. **Per-app
+    access tiers** (fixed by category): **View only** (browsers, trading platforms) · **Click only**
+    (terminals, IDEs) · **Full control** (everything else). **No sandbox**; screenshots see the screen;
+    trading/crypto **blocked by default**; per-app approval (30 min in Dispatch); cross-app link trap.
 - **Skills:** `SKILL.md` (YAML frontmatter: name+description) + scripts/resources; pre-built pptx/xlsx/
   docx/pdf; create in Code, upload via API, or add in claude.ai settings; run on claude.ai/API/Bedrock/Foundry.
 - **Claude Code:** subagents (Task tool, own context), **agent teams** (git-coordinated; launched
@@ -308,20 +324,25 @@ Footer: **"Vasyl Krupka · Senior Fullstack Engineer"** + 🇺🇦. Dark is prim
 > Pattern (from the gold standard): **lock a golden standard first**, then batch. Each session ends with
 > typecheck + build + (after Pages is live) a push to confirm deploy. Bilingual = author EN then UA per chapter.
 
-- **S0 · Planning** *(this session)* — agree stack/structure/scope; write this `CLAUDE.md`; task list.
+> **Progress (2026-06-23): S0–S6 ✅ done** — 13 / 28 modules authored (M6–M18); Sections **II & III
+> complete**, Section **IV** done through **M18** (M19 pending). 6 of 7 signature sims built (Agent Loop,
+> Prompt Anatomy, Token Budget, MCP Flow, Progressive Disclosure; + light Schedule-Timeline). **Next: S7
+> (Section V) — M19, M20 Chrome, M21 Excel/PowerPoint.** Beginner block (M1–M5) still slated for S9.
+
+- **S0 · Planning** ✅ — agree stack/structure/scope; write this `CLAUDE.md`; task list.
   **Status: drafted, awaiting user approval before S1.**
-- **S1 · Scaffold + golden chapter** — Vite/React 19/TS app; Claude-dark theme; hash router; i18n
+- **S1 · Scaffold + golden chapter** ✅ — Vite/React 19/TS app; Claude-dark theme; hash router; i18n
   (EN/UA toggle); layout (TopBar+search+lang, Sidebar, Footer); deploy workflow; `.gitignore`;
   favicon/footer; finalize bilingual `concepts.ts` schema (Module/Topic per `CURRICULUM.md` §C);
   **Ecosystem-Map landing** + **full sidebar menu showing all 6 sections / 28 modules / topics as a
   navigable skeleton** (bodies may stub) so the user can run it and see design + menu + navigation;
   **golden module fully built + hero sim — confirmed: M15 Cowork mental model + The Agent Loop**
   (the centerpiece). Verify build + first Pages deploy.
-- **S2 · Prompting & workspace** — Ch.6 Prompting mastery + **Prompt Anatomy**; Ch.7 Projects.
-- **S3 · Artifacts** — Ch.8 Artifacts; Ch.9 Live Artifacts (embed a tiny live demo).
-- **S4 · Context + Connectors** — Ch.10 Context/token mgmt + **Token Budget**; Ch.11 Connectors & MCP + **MCP Flow**.
-- **S5 · Skills & plugins** — Ch.12 Skills + **Progressive Disclosure**; Ch.13 Building skills; Ch.14 Plugins/marketplaces.
-- **S6 · Cowork core** — Ch.15 (if not golden) + Ch.16 Files/outputs; Ch.17 Scheduled tasks (+timeline); Ch.18 Computer use (+3-tiers).
+- **S2 · Prompting & workspace** ✅ — Ch.6 Prompting mastery + **Prompt Anatomy**; Ch.7 Projects.
+- **S3 · Artifacts** ✅ — Ch.8 Artifacts; Ch.9 Live Artifacts (embed a tiny live demo).
+- **S4 · Context + Connectors** ✅ — Ch.10 Context/token mgmt + **Token Budget**; Ch.11 Connectors & MCP + **MCP Flow**.
+- **S5 · Skills & plugins** ✅ — Ch.12 Skills + **Progressive Disclosure**; Ch.13 Building skills; Ch.14 Plugins/marketplaces.
+- **S6 · Cowork core** ✅ — Ch.16 Files/outputs; Ch.17 Scheduled tasks (+timeline); Ch.18 Computer use (+3-tiers). *(M15 was the S1 golden.)*
 - **S7 · Cowork advanced + tools** — Ch.19 Cowork projects/connectors/plugins/mobile; Ch.20 Claude in Chrome; Ch.21 Excel/PowerPoint.
 - **S8 · Claude Code & agentic** — Ch.22 Code essentials; Ch.23 Sub-agents/teams/worktrees + **Sub-agent Fan-out**; Ch.24 hooks/slash/advanced patterns.
 - **S9 · Beginner block** — Ch.1–5 (what is Claude, interface, prompting basics, attachments/styles, memory/search) — reuses components built above.
