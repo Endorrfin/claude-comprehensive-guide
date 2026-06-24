@@ -345,13 +345,14 @@ Footer: **"Vasyl Krupka · Senior Fullstack Engineer"** + 🇺🇦. Dark is prim
 > Pattern (from the gold standard): **lock a golden standard first**, then batch. Each session ends with
 > typecheck + build + (after Pages is live) a push to confirm deploy. Bilingual = author EN then UA per chapter.
 
-> **Progress (2026-06-23): S0–S9 ✅ done** — 24 / 28 modules authored (M1–M24); Sections **I, II, III, IV & V
-> complete** (I = M1–M5, the beginner block, authored in S9). 6 of 7 signature sims built (Agent Loop, Prompt
-> Anatomy, Token Budget, MCP Flow, Progressive Disclosure, ★ Sub-agent Fan-out [S8]) + 2 light interactives
-> (Schedule-Timeline M17, Browser-Agent-Loop M20) + 6 new Section-I figures (claude-mental-model,
-> where-claude-lives, interface-map, prompt-flow, style-pipeline, memory-across-sessions); **only ★ Tool
-> Picker (M26) remains**, slated for S10. **Next: S10 — mastery + polish** (Section VI M25–M28 + Tool Picker,
-> perf incl. the deferred code-splitting/lazy-loading). Only Section **VI (M25–M28)** is still a skeleton.
+> **Progress (2026-06-23): S0–S9 ✅ done; S10a ✅ done** — **27 / 28 modules authored (M1–M27)**; Sections
+> **I, II, III, IV & V complete + Section VI M25–M27** (S10a). **All 7 signature sims built** — Agent Loop,
+> Prompt Anatomy, Token Budget, MCP Flow, Progressive Disclosure, ★ Sub-agent Fan-out [S8], **★ Tool Picker
+> [S10a, the last one]** — + 2 light interactives (Schedule-Timeline M17, Browser-Agent-Loop M20). **Only M28
+> (mental-models gallery + glossary + cheat-sheet + flashcards) remains** — it is the revision layer + study
+> surfaces (new `glossary.ts`, the `#/mental-models` / `#/glossary` pages, flashcards), deferred to **S10b**
+> together with the perf (code-splitting/lazy-loading) + bilingual-QA sweep. The `#/decide` route is now live
+> (Tool Picker). **Next: S10b — M28 + polish.**
 
 - **S0 · Planning** ✅ — agree stack/structure/scope; write this `CLAUDE.md`; task list.
   **Status: drafted, awaiting user approval before S1.**
@@ -370,7 +371,8 @@ Footer: **"Vasyl Krupka · Senior Fullstack Engineer"** + 🇺🇦. Dark is prim
 - **S7 · Cowork advanced + tools** ✅ — Ch.19 Cowork projects/connectors/plugins/mobile; Ch.20 Claude in Chrome (+ light Browser-Agent-Loop); Ch.21 Excel/PowerPoint.
 - **S8 · Claude Code & agentic** ✅ — Ch.22 Code essentials; Ch.23 Sub-agents/teams/worktrees + **Sub-agent Fan-out**; Ch.24 hooks/slash/advanced patterns.
 - **S9 · Beginner block** — Ch.1–5 (what is Claude, interface, prompting basics, attachments/styles, memory/search) — reuses components built above.
-- **S10 · Mastery + polish** — Ch.25 Security; Ch.26 Choosing the right tool + **Tool Picker**; Ch.27 Ecosystem map polish; Ch.28 Mental models + glossary; global search, flashcards, mobile/a11y/**perf incl. code-splitting / lazy-loading** *(decided 2026-06-23 with user: keep the single Vite bundle through S8/S9; introduce route-/sim-level lazy-loading here as a polish step — the bundle is ~805 kB / 243 kB gzip after S8 and will keep growing)*, **bilingual QA**. *(web-search to confirm latest facts.)*
+- **S10a · Mastery (teaching close)** ✅ — Ch.25 Security; Ch.26 Choosing the right tool + ★ **Tool Picker** (last signature sim, also the live `#/decide` page); Ch.27 Ecosystem map. *(Scoped with user 2026-06-23: M25–M27 + Tool Picker now; M28 + polish → S10b, because M28 is study-UI + new datasets, a different kind of build.)*
+- **S10b · Revision layer + polish** — Ch.28 Mental models gallery + glossary (new `glossary.ts`) + cheat-sheet + flashcards; wire `#/mental-models` & `#/glossary`; global search; mobile/a11y/**perf incl. code-splitting / lazy-loading** *(bundle ~986 kB / 296 kB gzip after S10a — past Vite's >500 kB note; introduce route-/sim-level lazy-loading here)*; **bilingual QA**. *(web-search to confirm latest facts.)*
 - **S11–S12 · Buffer** — extra "maximal" interactives, full UA pass, final QA; optional PDF/LinkedIn pack.
 
 ## 14. Status / progress log
@@ -788,3 +790,46 @@ Footer: **"Vasyl Krupka · Senior Fullstack Engineer"** + 🇺🇦. Dark is prim
   on your Mac**.)*
   **Next (S10): Section VI — M25 Security; M26 Choosing the right tool + ★ Tool Picker (last signature sim);
   M27 Ecosystem map; M28 Mental models + glossary; plus perf (code-splitting/lazy-loading) & bilingual QA.**
+- **2026-06-23 · S10a Mastery — Security + Tool-choice + Ecosystem (M25–M27 + ★ Tool Picker)** — DONE.
+  **Scope locked with user**: M25–M27 + the **last signature interactive (★ Tool Picker)** this session; **M28
+  (mental-models gallery + glossary + cheat-sheet + flashcards) + perf/QA deferred to S10b** — the user asked
+  for my recommendation and I argued the natural seam is *teaching* (M25–M27) vs the *revision layer* (M28 =
+  study-UI + new datasets, a different build that shouldn't be rushed at a marathon's tail). Web-verified facts
+  first via **2 parallel research agents** (M25 security posture; M26/M27 surface capabilities) over the Help
+  Center + Anthropic engineering/research. **M25 Security** (5 topics: permissions/least-privilege · prompt
+  injection · link safety & data boundaries · financial/human-in-the-loop · a practical checklist) + new
+  **`TrustBoundaries`** figure (the two-condition model: an injection needs the READ gate AND the ACT gate —
+  close either). **M26 Choosing the right tool** (4 topics) + the **7th & final signature sim ★ Tool Picker**
+  (`ToolPickerSim` + `toolPicker.css` + new **`decide.ts`** data/scoring): answer 3 facets (what the work
+  touches · autonomy · plan) → the 7 surfaces rank live (deterministic; `where` dominates ×10, autonomy
+  tie-breaks, paid surfaces gated+tagged on Free); powers **both** the M26 sim block **and** the now-live
+  **`#/decide`** page (new `DecidePage`, replaced the StubPage) + new **`ToolMatrix`** figure. **M27 Ecosystem
+  map** (3 topics) + new **`EcosystemLayers`** figure (models → apps → context → capabilities → orchestration,
+  security cross-cutting). Registered 1 sim + 3 figures in `registry.tsx`; spliced m25/m26/m27 into `MODULES`,
+  removed them from `planned` (only m28 stub left). Added a **`.callout.security`** style (red boundary accent —
+  it was used 17× in content but never styled; marked `/* CHANGED (S10a) */`).
+  **Correctness notes / user-rule-8 challenges & drift caught:** (1) **Access-tier names belong to Claude Code
+  Desktop**, not the Cowork computer-use article — the Cowork page only documents per-app allow/deny + blocked
+  categories; M25 attributes *View only / Click only / Full control* to "the desktop computer-use engine" and
+  cross-links M18 rather than overclaiming it's Cowork-specific (the §12 S6b framing is looser than the source).
+  (2) **Injection-robustness % is model+date-specific** — the "~1% attack success" figure is **Opus 4.5, Nov
+  2025 testing**; M25 cites it with that attribution + Anthropic's own "still meaningful risk; no browser agent
+  is immune," and does NOT pin a number to the current flagship (the §12 "Opus 4.7 ~0.1%" could not be
+  re-confirmed — flagged). (3) **Excel/PPT are GA on all paid plans** (no beta), **Sonnet 4.6 is the Free/Pro
+  default**, **Free = 1 custom connector** — folded into the M26 matrix/Tool Picker gating. (4) Skipped the
+  contested Auto-Mode 0.4%/17% classifier numbers (rejected as fake-precision back in S8) and taught the
+  qualitative point instead. **Verified** (linux arm64 bindings `@rolldown/binding-linux-arm64-gnu@1.0.3` +
+  `lightningcss-linux-arm64-gnu@1.32.0` in `/tmp` via `NODE_PATH`; data-integrity via `node
+  --experimental-strip-types`; built into a fresh `/tmp` outDir to dodge the sandbox unlink/`emptyOutDir`
+  limit): `tsc --noEmit` clean (strict · noUnusedLocals/Parameters) · `vite build` OK (**79 modules**, JS
+  ≈986 kB / 296 kB gzip, CSS ≈46.9 kB / 8.45 kB gzip, 239 ms, relative `./assets`) · data-integrity **ALL PASS**
+  (28 modules · **27 authored**; m26 ★ in SIGNATURE_SIMS with the `tool-picker` block; 10 sim + 26 figure keys,
+  every ref resolves incl. trust-boundaries/tool-matrix/ecosystem-layers; **2324 bilingual values** non-empty;
+  table widths == head [the check caught one 3-vs-4 Chrome row → fixed], compare 3-tuples, callout tones valid;
+  Tool Picker scoring spot-checks pass — files→Cowork, code→Code, web→Chrome[gated on Free], app/free→Connector,
+  expertise→Skill). No ESLint config exists; the lint gate is TypeScript strict (passed). Workspace holds
+  **source only** — `node_modules` untouched; build + check artifacts live only in `/tmp`. *(Sandbox
+  housekeeping: renamed the stale `.git/index.lock` → `.git/_index.lock.removeme` — mounted FS blocks unlink —
+  **safe to delete on your Mac**.)*
+  **Next (S10b): M28 mental-models gallery + glossary (`glossary.ts`) + cheat-sheet + flashcards; wire
+  `#/mental-models` & `#/glossary`; then perf (code-splitting/lazy-loading) + bilingual QA.**

@@ -8,6 +8,7 @@ import { ProgressiveDisclosureSim } from "../components/sims/ProgressiveDisclosu
 import { ScheduleTimelineSim } from "../components/sims/ScheduleTimelineSim";
 import { BrowserAgentLoopSim } from "../components/sims/BrowserAgentLoopSim";
 import { SubAgentFanoutSim } from "../components/sims/SubAgentFanoutSim";
+import { ToolPickerSim } from "../components/sims/ToolPickerSim";
 import { CoworkArchitecture } from "../components/figures/CoworkArchitecture";
 import { CodeArchitecture } from "../components/figures/CodeArchitecture";
 import { AgentScales } from "../components/figures/AgentScales";
@@ -31,6 +32,9 @@ import { InterfaceMap } from "../components/figures/InterfaceMap";
 import { PromptFlow } from "../components/figures/PromptFlow";
 import { StylePipeline } from "../components/figures/StylePipeline";
 import { MemoryAcrossSessions } from "../components/figures/MemoryAcrossSessions";
+import { TrustBoundaries } from "../components/figures/TrustBoundaries";
+import { ToolMatrix } from "../components/figures/ToolMatrix";
+import { EcosystemLayers } from "../components/figures/EcosystemLayers";
 
 /** Interactive widgets, referenced by key from concepts.ts blocks (kind: 'sim'). */
 export const SIMS: Record<string, React.FC> = {
@@ -43,6 +47,7 @@ export const SIMS: Record<string, React.FC> = {
   "schedule-timeline": ScheduleTimelineSim,
   "browser-agent-loop": BrowserAgentLoopSim,
   "sub-agent-fanout": SubAgentFanoutSim,
+  "tool-picker": ToolPickerSim,
 };
 
 /** Static diagrams, referenced by key from concepts.ts blocks (kind: 'figure'). */
@@ -70,4 +75,7 @@ export const FIGURES: Record<string, React.FC> = {
   "skill-anatomy": SkillAnatomy,
   "skill-build-pipeline": SkillBuildPipeline,
   "plugin-bundle": PluginBundle,
+  "trust-boundaries": TrustBoundaries,
+  "tool-matrix": ToolMatrix,
+  "ecosystem-layers": EcosystemLayers,
 };

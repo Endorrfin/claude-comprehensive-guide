@@ -8,6 +8,7 @@ import { Footer } from "./components/layout/Footer";
 import { EcosystemMap } from "./components/map/EcosystemMap";
 import { ModulePage } from "./components/chapter/ModulePage";
 import { StubPage } from "./components/pages/StubPage";
+import { DecidePage } from "./components/pages/DecidePage";
 import type { Level } from "./data/types";
 
 type Filter = Level | "all";
@@ -58,15 +59,7 @@ export default function App(): React.ReactElement {
                 }}
               />
             ) : null}
-            {route.name === "decide" ? (
-              <StubPage
-                title={UI.nav.decide}
-                note={{
-                  en: "The Tool Picker decision widget — built in a later session.",
-                  uk: "Tool Picker — інтерактивний вибір інструмента — у наступній сесії.",
-                }}
-              />
-            ) : null}
+            {route.name === "decide" ? <DecidePage /> : null}
           </main>
         </div>
       )}

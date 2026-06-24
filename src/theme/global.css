@@ -500,6 +500,15 @@
 .callout.senior .ttl {
   color: var(--sem-micro);
 }
+/* CHANGED (S10a): the "security" tone was used in content but never styled —
+   give it the red permission-boundary accent so security callouts read as such. */
+.callout.security {
+  border-left-color: var(--sem-warn);
+  background: rgba(248, 113, 113, 0.05);
+}
+.callout.security .ttl {
+  color: var(--sem-warn);
+}
 
 /* code */
 .code {

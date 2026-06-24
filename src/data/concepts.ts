@@ -3040,40 +3040,7 @@ const planned: Module[] = [
 
   // Section V (m20 · m21 are fully authored above; m22 · m23 · m24 authored below)
 
-  // Section VI
-  mod("m25", "s6", 25, "senior",
-    L("Security & safe agent use", "Безпека та безпечне використання агентів"),
-    L("Permissions, prompt injection, link safety, financial actions.", "Дозволи, prompt injection, безпека посилань, фінансові дії."),
-    L("Treat tool output as untrusted; grant least privilege.", "Стався до виводу інструментів як до недовіреного; давай least privilege."),
-    8,
-    [
-      ["Permissions & least privilege", "Дозволи та least privilege"],
-      ["Prompt injection & untrusted content", "Prompt injection і недовірений контент"],
-      ["Link safety & data boundaries", "Безпека посилань і межі даних"],
-      ["Financial actions & human-in-the-loop", "Фінансові дії та human-in-the-loop"],
-      ["A practical safety checklist", "Практичний чеклист безпеки"],
-    ], ["m11", "m18", "m26"]),
-  mod("m26", "s6", 26, "senior",
-    L("Choosing the right tool", "Вибір правильного інструмента"),
-    L("Decision guides: Cowork vs Code vs Chrome vs Excel vs connector vs skill.", "Гайди вибору: Cowork vs Code vs Chrome vs Excel vs connector vs skill."),
-    L("Match the task to the surface.", "Підбирай поверхню під задачу."),
-    7,
-    [
-      ["The decision model: task → tool", "Модель рішення: задача → інструмент"],
-      ["The tools compared", "Порівняння інструментів"],
-      ["Cost / speed / control trade-offs", "Баланс вартість / швидкість / контроль"],
-      ["Worked scenarios", "Розібрані сценарії"],
-    ], ["m15", "m22", "m27"]),
-  mod("m27", "s6", 27, "senior",
-    L("The ecosystem map", "Мапа екосистеми"),
-    L("How it all composes: models → apps → context → capabilities → orchestration.", "Як усе складається: моделі → застосунки → context → можливості → оркестрація."),
-    L("Models → apps → context → capabilities → orchestration.", "Моделі → застосунки → context → можливості → оркестрація."),
-    7,
-    [
-      ["The layers", "Шари"],
-      ["How the pieces compose", "Як складаються частини"],
-      ["The one-picture overview", "Огляд однією картиною"],
-    ], ["m1", "m26", "m28"]),
+  // Section VI — m25 · m26 · m27 fully authored below (S10a); m28 stays a planned stub
   mod("m28", "s6", 28, "middle",
     L("Mental models gallery + glossary", "Галерея mental models + глосарій"),
     L("The pictures and terms to recall from memory.", "Картини й терміни, які треба памʼятати."),
@@ -3586,6 +3553,581 @@ const m24: Module = {
     { title: "Slash commands — Claude Code Docs", url: "https://code.claude.com/docs/en/slash-commands" },
     { title: "Output styles — Claude Code Docs", url: "https://code.claude.com/docs/en/output-styles" },
     { title: "A harness for every task: dynamic workflows in Claude Code — Claude", url: "https://claude.com/blog/a-harness-for-every-task-dynamic-workflows-in-claude-code" },
+  ],
+};
+
+/* ======================================================================
+   M25 · Security & safe agent use — fully authored (S10a)
+   ====================================================================== */
+const m25: Module = {
+  id: "m25",
+  section: "s6",
+  order: 25,
+  level: "senior",
+  title: L("Security & safe agent use", "Безпека та безпечне використання агентів"),
+  tagline: L(
+    "An agent reads from an untrusted world and acts on your trusted one — security is keeping those two facts from meeting in a way that hurts you.",
+    "Agent читає з недовіреного світу і діє у твоєму довіреному — безпека в тому, щоб ці два факти не зустрілися так, що зашкодять тобі.",
+  ),
+  readMins: 9,
+  mentalModel: L(
+    "Treat everything the agent reads from outside as untrusted, and give it the least power that still does the job — an attack needs both to land.",
+    "Стався до всього, що agent читає ззовні, як до недовіреного, і давай йому найменше прав, яких вистачає для задачі — атаці потрібні обидва, щоб спрацювати.",
+  ),
+  topics: [
+    {
+      id: "t1",
+      title: L("Permissions & least privilege", "Дозволи та least privilege"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "Every agent surface ships with a permission model, and they share one shape: a choice between **asking first** and **acting freely**, plus hard gates that never open without you. In Cowork and Claude in Chrome the two modes are **Ask before acting** (Claude pauses for approval) and **Act without asking** (it runs to the end). Anthropic is explicit that **Act without asking** raises your exposure — use it only when you are supervising, on trusted files and sites, and able to stop Claude.",
+            "Кожна поверхня-agent має модель дозволів, і всі вони однієї форми: вибір між **спитати спершу** і **діяти вільно**, плюс жорсткі gate, що не відкриваються без тебе. У Cowork і Claude in Chrome два режими — **Ask before acting** (Claude робить паузу для підтвердження) і **Act without asking** (працює до кінця). Anthropic прямо каже: **Act without asking** підвищує ризик — вмикай лише коли наглядаєш, на довірених файлах і сайтах, і можеш зупинити Claude.",
+          ),
+        },
+        {
+          kind: "compare",
+          a: L("Ask before acting", "Ask before acting"),
+          b: L("Act without asking", "Act without asking"),
+          rows: [
+            [L("Posture", "Поведінка"), L("Pauses for approval before each action", "Пауза для підтвердження перед кожною дією"), L("Runs to the end without pausing", "Працює до кінця без пауз")],
+            [L("Best for", "Найкраще для"), L("The open web, others’ content, money, anything irreversible", "Відкритий веб, чужий контент, гроші, будь-що незворотне"), L("Trusted files & sites, tedious reversible work you watch", "Довірені файли й сайти, рутинна зворотна робота під наглядом")],
+            [L("Injection risk", "Ризик injection"), L("Lower — you gate each step", "Нижчий — ти контролюєш кожен крок"), L("Higher — Anthropic flags it explicitly", "Вищий — Anthropic прямо попереджає")],
+            [L("Always-ask gates", "Завжди-питати gate"), L("Delete · purchase · credentials · permissions", "Видалення · покупка · креденшели · дозволи"), L("Same gates still hold", "Ті самі gate лишаються")],
+          ],
+        },
+        {
+          kind: "prose",
+          md: L(
+            "Underneath the mode, surfaces separate **read tools** (see content — read an inbox, take a screenshot) from **write tools** (change the world — send an invite, delete a file, run a command). Write tools get the scrutiny. And some actions are gated in **both** modes: Cowork requires an explicit **Allow** before permanently deleting any file; Claude in Chrome always asks before purchases, permanent deletion, creating accounts, or changing permission settings — even with **Always allow** on a site.",
+            "Під режимом поверхні розрізняють **read tools** (бачити контент — прочитати інбокс, зробити скриншот) і **write tools** (міняти світ — надіслати запрошення, видалити файл, виконати команду). Саме write tools під пильним наглядом. А деякі дії під gate в **обох** режимах: Cowork вимагає явного **Allow** перед остаточним видаленням будь-якого файлу; Claude in Chrome завжди питає перед покупками, остаточним видаленням, створенням акаунтів чи зміною налаштувань дозволів — навіть із **Always allow** на сайті.",
+          ),
+        },
+        {
+          kind: "callout",
+          tone: "security",
+          title: L("Red lines that hold in every mode", "Червоні лінії, що тримаються в усіх режимах"),
+          md: L(
+            "Financial transactions, permanent deletion, credential entry, and changing security settings always require you — in both **Ask** and **Act** modes. Never design a workflow that assumes they will be automated away.",
+            "Фінансові транзакції, остаточне видалення, введення креденшелів і зміна налаштувань безпеки завжди потребують тебе — і в **Ask**, і в **Act**. Ніколи не будуй workflow, який припускає, що вони стануть автоматичними.",
+          ),
+        },
+        {
+          kind: "prose",
+          md: L(
+            "**Least privilege** is the through-line: grant the *smallest* scope that still does the job. A dedicated working folder, not your home directory. The OAuth scopes a connector actually needs, not all of them. View-only where viewing is enough. The desktop computer-use engine documents this as fixed **access tiers** by app category — **browsers and trading platforms are View only, terminals and IDEs are Click only, everything else is Full control** — caps you cannot widen (see M18).",
+            "**Least privilege** — наскрізна ідея: давай *найменший* scope, якого вистачає. Окрема робоча тека, а не домашня директорія. Лише ті OAuth-scope, які connector справді потребує, а не всі. View-only там, де досить перегляду. Десктопний движок computer use фіксує це як **access tiers** за категорією застосунку — **браузери й трейдингові платформи = View only, термінали та IDE = Click only, решта = Full control** — межі, які не можна розширити (див. M18).",
+          ),
+        },
+        {
+          kind: "table",
+          head: [L("Control", "Контроль"), L("What it means", "Що це означає"), L("Example", "Приклад")],
+          rows: [
+            [L("Two modes", "Два режими"), L("Ask before acting vs Act without asking", "Ask before acting vs Act without asking"), L("Pause per step, or run autonomously", "Пауза на крок, або автономний запуск")],
+            [L("Read vs write tools", "Read vs write tools"), L("Seeing content vs changing the world", "Бачити контент vs міняти світ"), L("Read an inbox vs send an email", "Прочитати інбокс vs надіслати лист")],
+            [L("Always-ask gates", "Завжди-питати gate"), L("Actions never automated, in either mode", "Дії, що ніколи не автоматичні, у будь-якому режимі"), L("Permanent delete · purchase · credentials", "Остаточне видалення · покупка · креденшели")],
+            [L("Access tiers", "Access tiers"), L("Per-app caps fixed by category (desktop computer use)", "Межі на застосунок за категорією (desktop computer use)"), L("Browsers = View only · terminals/IDEs = Click only", "Браузери = View only · термінали/IDE = Click only")],
+            [L("Least privilege", "Least privilege"), L("Grant the smallest scope that works", "Давай найменший робочий scope"), L("A dedicated folder, not your home dir", "Окрема тека, а не домашня директорія")],
+          ],
+        },
+      ],
+    },
+    {
+      id: "t2",
+      title: L("Prompt injection & untrusted content", "Prompt injection і недовірений контент"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "The signature risk of an agent isn’t that it turns evil — it’s that it stays **helpful to whoever it’s reading**. When Claude reads a web page, an email, or a tool’s output, that text sits *outside your trust boundary* and may be **crafted by an attacker** to hijack the agent. That is **prompt injection**: instructions smuggled into content, dressed up as data.",
+            "Головний ризик agent — не в тому, що він стає злим, а в тому, що він лишається **корисним тому, кого читає**. Коли Claude читає веб-сторінку, лист чи вивід інструмента, цей текст лежить *поза твоєю межею довіри* і може бути **створений зловмисником**, щоб перехопити agent. Це **prompt injection**: інструкції, протягнуті в контент під виглядом даних.",
+          ),
+        },
+        { kind: "figure", fig: "trust-boundaries", caption: L("An injection only harms you if it crosses both gates: Claude reads attacker-controlled text AND can act on your data. Close either gate and it fails.", "Injection шкодить лише якщо проходить обидва gate: Claude читає контрольований атакою текст І може діяти з твоїми даними. Закрий будь-який gate — і атака провалюється.") },
+        {
+          kind: "prose",
+          md: L(
+            "The useful part: an injection only hurts you if **two** things are both true — Claude can **read** the attacker’s text **and** can **act** in a way that compromises you. Break either link and the attack collapses. That’s why *untrusted input + powerful action* is the dangerous pairing, and why least privilege (closing the act side) and trusted sources (closing the read side) are the whole game.",
+            "Корисна частина: injection шкодить лише якщо **обидва** факти правдиві — Claude може **прочитати** текст атаки **і** може **діяти** так, що шкодить тобі. Розірви будь-яку ланку — і атака розсипається. Тому *недовірений ввід + потужна дія* — небезпечна пара, і тому least privilege (закриває бік дії) і довірені джерела (закривають бік читання) — це вся суть.",
+          ),
+        },
+        {
+          kind: "prose",
+          md: L(
+            "Anthropic defends this in layers: the model is **trained** to refuse instructions embedded in content even when they look authoritative or urgent; **classifiers** scan untrusted content entering the window for hidden text and manipulation; and constant red-teaming (internal and public challenges) keeps probing. Claude in Chrome lists **completing instructions from emails or web content** as a flatly prohibited action, and computer use runs extra on-screen injection scanners.",
+            "Anthropic захищається шарами: модель **навчена** відмовлятися від інструкцій, вшитих у контент, навіть коли вони мають авторитетний чи терміновий вигляд; **класифікатори** сканують недовірений контент, що входить у вікно, на прихований текст і маніпуляції; і постійний red-teaming (внутрішні й публічні челенджі) усе пробує на міцність. Claude in Chrome відносить **виконання інструкцій із листів чи веб-контенту** до прямо заборонених дій, а computer use запускає додаткові сканери injection на екрані.",
+          ),
+        },
+        {
+          kind: "callout",
+          tone: "warn",
+          title: L("Defenses lower the odds; they don’t zero them", "Захист знижує шанси, але не до нуля"),
+          md: L(
+            "Anthropic’s own figure: against an adaptive attacker, current browser defenses cut attack success to about **1%** (Claude Opus 4.5, Nov 2025 testing) — and they stress it is *still meaningful risk; no browser agent is immune*. You are the last layer: watch what the agent reads and where it goes.",
+            "Цифра від самої Anthropic: проти адаптивного атакувальника поточний захист браузера знижує успіх атаки до приблизно **1%** (Claude Opus 4.5, тестування лист. 2025) — і вони наголошують: це *все ще суттєвий ризик; жоден браузерний agent не є невразливим*. Ти — останній шар: стеж, що agent читає і куди йде.",
+          ),
+        },
+        {
+          kind: "prose",
+          md: L(
+            "Practical tells that an injection is in progress: the agent visits a site you never asked for, suddenly wants a write or permission the task didn’t need, or announces an urgent new instruction it just discovered. Stop it and inspect.",
+            "Практичні ознаки, що injection триває: agent заходить на сайт, якого ти не просив, раптом хоче write чи дозвіл, не потрібний задачі, або оголошує термінову нову інструкцію, яку «щойно знайшов». Зупини й перевір.",
+          ),
+        },
+      ],
+    },
+    {
+      id: "t3",
+      title: L("Link safety & data boundaries", "Безпека посилань і межі даних"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "Two boundaries to hold: which **links** the agent follows, and which **data** it can reach. Both are about closing the read and act sides before an attacker can use them.",
+            "Дві межі, які треба тримати: яким **посиланням** agent іде і яких **даних** він дістає. Обидві — про закриття боку читання й боку дії, перш ніж атакувальник ними скористається.",
+          ),
+        },
+        {
+          kind: "prose",
+          md: L(
+            "**Links:** treat links in emails, messages, and unknown documents as suspicious by default — that’s exactly where injected instructions hide. See the full URL before following it. Claude in Chrome hard-blocks whole categories — **banking, investment/trading platforms, crypto exchanges, adult content, and pirated-content sites** — and admits the blocklist is incomplete. Beware the **cross-app link trap**: a link clicked in your mail app can open in Chrome even if you never granted Chrome — the link opens even when Claude can’t see the result.",
+            "**Посилання:** стався до посилань у листах, повідомленнях і незнайомих документах як до підозрілих за замовчуванням — саме там ховаються вшиті інструкції. Дивись повний URL, перш ніж іти. Claude in Chrome жорстко блокує цілі категорії — **банкінг, інвестиційні/трейдингові платформи, крипто-біржі, контент 18+ і піратські сайти** — і визнає, що блок-лист неповний. Стережися **cross-app link trap**: посилання, клікнуте в поштовому застосунку, може відкритися в Chrome, навіть якщо ти не давав доступ до Chrome — посилання відкриється, навіть коли Claude не бачить результат.",
+          ),
+        },
+        {
+          kind: "prose",
+          md: L(
+            "**Data:** Cowork reaches only the **folders you grant** (use a dedicated one, keep backups), and its **network access is restricted by default** — web fetch runs server-side, limited to search results and URLs you’ve shared. Memory deliberately **excludes passwords, financial, and health details**. Computer use has **no sandbox** and screenshots see whatever is on screen — close sensitive apps first and never grant banking, health, or government apps. Connectors inherit **only the permissions you already have** and use OAuth tokens **scoped to you**; review the scopes and deny anything unnecessary.",
+            "**Дані:** Cowork дістає лише **надані теки** (виділи окрему, тримай бекапи), а **доступ до мережі обмежений за замовчуванням** — web fetch працює на сервері, обмежений результатами пошуку й URL, якими ти поділився. Memory свідомо **виключає паролі, фінансові й медичні дані**. Computer use **без sandbox**, і скриншоти бачать усе на екрані — закрий чутливі застосунки заздалегідь і ніколи не давай доступ до банкінгу, здоровʼя чи держпослуг. Connectors успадковують **лише наявні в тебе права** й використовують OAuth-токени, **обмежені тобою**; переглянь scope і відмов у зайвому.",
+          ),
+        },
+        {
+          kind: "table",
+          head: [L("Boundary", "Межа"), L("The rule", "Правило"), L("Your move", "Твій крок")],
+          rows: [
+            [L("Local files", "Локальні файли"), L("Cowork reaches only folders you grant", "Cowork дістає лише надані теки"), L("Use a dedicated working folder; keep backups", "Виділи робочу теку; тримай бекапи")],
+            [L("Network egress", "Вихід у мережу"), L("Restricted by default; web fetch is server-side", "Обмежений за замовчуванням; web fetch на сервері"), L("Extend only to sites you trust", "Розширюй лише на довірені сайти")],
+            [L("Memory", "Memory"), L("Excludes passwords, financial & health data", "Виключає паролі, фінанси й медичні дані"), L("Review and edit what’s stored", "Переглядай і редагуй збережене")],
+            [L("Computer-use screen", "Екран computer use"), L("No sandbox; screenshots see everything", "Без sandbox; скриншоти бачать усе"), L("Close sensitive apps before granting", "Закрий чутливі застосунки перед доступом")],
+            [L("Connector scopes", "Scope конекторів"), L("Inherits your perms; OAuth scoped to you", "Успадковує твої права; OAuth обмежений тобою"), L("Review scopes; deny the unnecessary", "Переглянь scope; відмов у зайвому")],
+            [L("Local MCP & plugins", "Локальні MCP і plugins"), L("Run with full local permissions", "Працюють із повними локальними правами"), L("Vet the source before installing", "Перевір джерело перед встановленням")],
+          ],
+        },
+        {
+          kind: "callout",
+          tone: "senior",
+          title: L("Containment over trust", "Контейнмент важливіший за довіру"),
+          md: L(
+            "Anthropic’s framing: *supervise what the agent is able to do* — sandboxes, VMs, egress limits, scoped grants — not only what it does. The **Connectors Directory is a listing, not a security audit**, and local MCP servers and plugins run with full local permissions, like any program you install. The strongest control is the access you never grant.",
+            "Формулювання Anthropic: *наглядай за тим, що agent здатний зробити* — sandbox, VM, ліміти egress, обмежені гранти — а не лише за тим, що він робить. **Connectors Directory — це каталог, а не аудит безпеки**, а локальні MCP-сервери й plugins працюють із повними локальними правами, як будь-яка встановлена програма. Найсильніший контроль — це доступ, який ти ніколи не давав.",
+          ),
+        },
+      ],
+    },
+    {
+      id: "t4",
+      title: L("Financial actions & human-in-the-loop", "Фінансові дії та human-in-the-loop"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "Money is the one place to be absolute: **never let an agent execute a trade, move funds, or place an order on your behalf.** Anthropic builds this in — Claude in Chrome flatly **prohibits executing financial trades or investment transactions** (and giving investment advice); computer use **blocks investment/trading platforms and crypto apps by default**; purchases and transfers always require your explicit approval in **both** permission modes. But the training guardrails *aren’t absolute* — Anthropic itself says don’t rely on them instead of simply **not granting** access to sensitive financial apps.",
+            "Гроші — єдине місце, де треба бути категоричним: **ніколи не дозволяй agent виконати угоду, переказати кошти чи розмістити ордер за тебе.** Anthropic вбудовує це — Claude in Chrome прямо **забороняє виконання фінансових угод чи інвестиційних транзакцій** (і надання інвестпорад); computer use **блокує інвестиційні/трейдингові платформи й крипто-застосунки за замовчуванням**; покупки й перекази завжди потребують твого явного дозволу в **обох** режимах. Але навчені guardrails *не абсолютні* — Anthropic сама каже: не покладайся на них замість того, щоб просто **не давати** доступ до чутливих фінансових застосунків.",
+          ),
+        },
+        {
+          kind: "callout",
+          tone: "security",
+          title: L("You remain responsible", "Відповідальність лишається на тобі"),
+          md: L(
+            "Across every surface Anthropic is clear: you own the outcome of what the agent does, including any purchase or transaction. Keep a human in the loop on anything irreversible — money, deletion, sending, publishing.",
+            "На кожній поверхні Anthropic чітко каже: ти відповідаєш за результат дій agent, включно з будь-якою покупкою чи транзакцією. Тримай людину в циклі на будь-чому незворотному — гроші, видалення, надсилання, публікація.",
+          ),
+        },
+        {
+          kind: "prose",
+          md: L(
+            "The safe pattern is **propose-then-confirm**: let the agent draft the order, fill the form, prepare the transfer — and you press the final button. You keep the judgment; it keeps the typing.",
+            "Безпечний патерн — **запропонуй, потім підтвердь**: нехай agent складе ордер, заповнить форму, підготує переказ — а фінальну кнопку тиснеш ти. Рішення лишається за тобою; набір — за ним.",
+          ),
+        },
+      ],
+    },
+    {
+      id: "t5",
+      title: L("A practical safety checklist", "Практичний чеклист безпеки"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "Putting it together — a checklist you can actually run before and during agent work. Each line closes a read gate, an act gate, or both.",
+            "Збираємо разом — чеклист, який реально пройти до і під час роботи agent. Кожен рядок закриває gate читання, gate дії або обидва.",
+          ),
+        },
+        {
+          kind: "table",
+          head: [L("Do this", "Зроби це"), L("Because", "Бо")],
+          rows: [
+            [L("Work in a dedicated folder with backups", "Працюй в окремій теці з бекапами"), L("Limits the blast radius if something goes wrong", "Обмежує радіус ураження, якщо щось піде не так")],
+            [L("Grant the least scope (folders, OAuth, view-only)", "Давай найменший scope (теки, OAuth, view-only)"), L("Closes the act side of injection", "Закриває бік дії injection")],
+            [L("Stay on trusted files & sites", "Лишайся на довірених файлах і сайтах"), L("Closes the read side of injection", "Закриває бік читання injection")],
+            [L("Supervise ‘Act without asking’", "Наглядай за ‘Act without asking’"), L("Autonomy raises exposure", "Автономність підвищує ризик")],
+            [L("Close sensitive apps before computer use", "Закрий чутливі застосунки перед computer use"), L("Screenshots have no sandbox", "Скриншоти не мають sandbox")],
+            [L("Verify links before following them", "Перевіряй посилання перед переходом"), L("Links carry injected instructions", "Посилання несуть вшиті інструкції")],
+            [L("Keep money & health out of reach", "Тримай гроші й здоровʼя поза досяжністю"), L("Guardrails aren’t absolute", "Guardrails не абсолютні")],
+            [L("Vet plugins/MCP and their permissions", "Перевіряй plugins/MCP та їхні дозволи"), L("Local ones run with full local rights", "Локальні працюють із повними правами")],
+            [L("Orgs: use admin controls", "Організації: використовуй адмін-контролі"), L("Org settings → Capabilities, Chrome allow/blocklists, OpenTelemetry", "Org settings → Capabilities, Chrome allow/blocklists, OpenTelemetry")],
+          ],
+        },
+        {
+          kind: "callout",
+          tone: "tip",
+          title: L("Match the leash to the task", "Підбирай повідець під задачу"),
+          md: L(
+            "Tedious, reversible work on trusted data → loosen up (Act without asking). Anything reaching the open web, other people’s content, or money → tighten (Ask before acting, and supervise).",
+            "Рутинна, зворотна робота з довіреними даними → послаб (Act without asking). Будь-що, що дістає відкритий веб, чужий контент чи гроші → затягни (Ask before acting, і наглядай).",
+          ),
+        },
+      ],
+    },
+  ],
+  keyPoints: [
+    L("An agent reads from an untrusted world and acts on your trusted one — prompt injection needs **both**; least privilege + trusted sources break the link.", "Agent читає з недовіреного світу й діє у твоєму довіреному — prompt injection потребує **обох**; least privilege + довірені джерела рвуть ланцюг."),
+    L("Two modes everywhere — Ask before acting vs Act without asking; some gates (delete, purchase, credentials, permissions) hold in **both**.", "Два режими всюди — Ask before acting vs Act without asking; деякі gate (видалення, покупка, креденшели, дозволи) тримаються в **обох**."),
+    L("Defenses (training, classifiers, red-teaming) lower injection odds to low-but-nonzero (~1%, Opus 4.5) — you are the last layer.", "Захист (навчання, класифікатори, red-teaming) знижує шанси injection до низьких-але-ненульових (~1%, Opus 4.5) — ти останній шар."),
+    L("Data boundaries are your strongest control: granted folders only, restricted egress, scoped OAuth, no sandbox for computer use, local MCP/plugins run with full rights.", "Межі даних — твій найсильніший контроль: лише надані теки, обмежений egress, scoped OAuth, без sandbox для computer use, локальні MCP/plugins з повними правами."),
+    L("Never let an agent move money — propose-then-confirm; you remain responsible for every action it takes.", "Ніколи не давай agent рухати гроші — запропонуй-потім-підтвердь; ти відповідаєш за кожну його дію."),
+  ],
+  pitfalls: [
+    { title: L("Running ‘Act without asking’ everywhere", "Скрізь ‘Act without asking’"), body: L("Convenient until the agent reads a poisoned page; reserve it for trusted, reversible, supervised work.", "Зручно, доки agent не прочитає отруєну сторінку; лиши це для довіреної, зворотної роботи під наглядом.") },
+    { title: L("Trusting the Directory as a security check", "Довіряти Directory як перевірці безпеки"), body: L("It’s a listing, not an audit; vet connectors/plugins and their scopes yourself — local ones run with full local rights.", "Це каталог, а не аудит; перевіряй connectors/plugins і їхні scope сам — локальні працюють із повними правами.") },
+    { title: L("Assuming guardrails are absolute", "Вважати guardrails абсолютними"), body: L("Model-level blocks on trades and deletes are best-effort, not guarantees; the real control is the access you never grant.", "Блоки на рівні моделі для угод і видалень — best-effort, не гарантія; справжній контроль — доступ, який ти не дав.") },
+  ],
+  interview: [
+    { q: L("Why is ‘untrusted input + powerful action’ the dangerous combination, and how do you defuse it?", "Чому ‘недовірений ввід + потужна дія’ — небезпечна комбінація, і як її знешкодити?"), a: L("An injection only lands if the agent can both read attacker text and act harmfully. Defuse it by closing one side: trusted sources + classifiers close reading; least privilege + human-in-the-loop close acting.", "Injection спрацьовує лише якщо agent може і прочитати текст атаки, і шкідливо діяти. Знешкодь, закривши один бік: довірені джерела + класифікатори закривають читання; least privilege + human-in-the-loop закривають дію."), level: "senior" },
+    { q: L("A teammate wants Claude in Chrome on ‘Act without asking’ to scrape a public forum into a sheet daily. Risk? What would you change?", "Колега хоче Claude in Chrome на ‘Act without asking’ щодня збирати публічний форум у таблицю. Ризик? Що змінив би?"), a: L("User-generated content is a prime injection vector and autonomous mode maximizes exposure. Switch to Ask before acting, restrict to the specific domains, keep it away from anything sensitive, and review each run’s history.", "Користувацький контент — головний вектор injection, а автономний режим максимізує ризик. Перемкни на Ask before acting, обмеж конкретними доменами, тримай подалі від чутливого й переглядай історію кожного запуску."), level: "senior" },
+    { q: L("How do you reason about connector vs plugin/MCP trust?", "Як міркувати про довіру до connector vs plugin/MCP?"), a: L("The Directory is a listing, not an audit. A remote connector inherits only your permissions and uses OAuth scoped to you — review and deny scopes. A local MCP server or plugin runs with full local permissions, so vet the source and prefer the least scope.", "Directory — каталог, не аудит. Remote connector успадковує лише твої права й використовує OAuth, обмежений тобою — переглядай і відмовляй у scope. Локальний MCP-сервер чи plugin працює з повними локальними правами, тож перевіряй джерело й обирай найменший scope."), level: "staff" },
+  ],
+  seeAlso: ["m11", "m18", "m20", "m26"],
+  sources: [
+    { title: "Use Claude Cowork safely — Help Center", url: "https://support.claude.com/en/articles/13364135-use-claude-cowork-safely" },
+    { title: "Let Claude use your computer in Cowork — Help Center", url: "https://support.claude.com/en/articles/14128542-let-claude-use-your-computer-in-cowork" },
+    { title: "Claude in Chrome Permissions Guide — Help Center", url: "https://support.claude.com/en/articles/12902446-claude-in-chrome-permissions-guide" },
+    { title: "Using Claude in Chrome safely — Help Center", url: "https://support.claude.com/en/articles/12902428-using-claude-in-chrome-safely" },
+    { title: "Mitigating the risk of prompt injections in browser use — Anthropic", url: "https://www.anthropic.com/research/prompt-injection-defenses" },
+    { title: "How we contain Claude across products — Anthropic", url: "https://www.anthropic.com/engineering/how-we-contain-claude" },
+  ],
+};
+
+/* ======================================================================
+   M26 · Choosing the right tool — fully authored (S10a) · ★ Tool Picker
+   ====================================================================== */
+const m26: Module = {
+  id: "m26",
+  section: "s6",
+  order: 26,
+  level: "senior",
+  title: L("Choosing the right tool", "Вибір правильного інструмента"),
+  tagline: L(
+    "Same model, many doorways. The skill is matching the task to the surface — and knowing when two of them overlap.",
+    "Та сама модель, багато дверей. Майстерність — підібрати поверхню під задачу і знати, де дві з них перетинаються.",
+  ),
+  readMins: 8,
+  mentalModel: L(
+    "One model family, many surfaces. Pick by what the work touches and how much autonomy it needs; reach for the most precise tool that covers the job.",
+    "Одна сімʼя моделей, багато поверхонь. Обирай за тим, чого торкається робота і скільки автономії треба; бери найточніший інструмент, що покриває задачу.",
+  ),
+  topics: [
+    {
+      id: "t1",
+      title: L("The decision model: task → tool", "Модель рішення: задача → інструмент"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "By now you’ve met every surface. The meta-skill is choosing among them fast. Three questions decide almost every case: **what does the work touch?** (your words, your files, the web, a codebase, Office, another app, or a reusable procedure), **how much autonomy does it need?** (one reply, a multi-step task, or a recurring job), and **what plan are you on?** (several surfaces are paid-only). Answer those and the surface is usually obvious.",
+            "До цього моменту ти зустрів кожну поверхню. Мета-навичка — швидко обирати між ними. Три питання вирішують майже все: **чого торкається робота?** (твої слова, твої файли, веб, кодова база, Office, інший застосунок чи повторюваний процес), **скільки автономії треба?** (одна відповідь, багатокрокова задача чи повторюване завдання), і **на якому ти плані?** (кілька поверхонь лише платні). Відповідай — і поверхня зазвичай очевидна.",
+          ),
+        },
+        { kind: "figure", fig: "tool-matrix", caption: L("The surfaces placed by what the work touches (your words → apps & web → files & systems) and how much autonomy it needs (one reply → an agent).", "Поверхні розміщені за тим, чого торкається робота (твої слова → застосунки й веб → файли й системи) і скільки автономії треба (одна відповідь → agent).") },
+        {
+          kind: "prose",
+          md: L(
+            "A heuristic from the security chapter applies here too: **reach for the most precise tool that covers the job.** A connector beats the browser beats computer use; a Skill you wrote beats re-explaining a procedure every time. Precision is faster, cheaper, and safer.",
+            "Евристика з розділу про безпеку працює й тут: **бери найточніший інструмент, що покриває задачу.** Connector кращий за браузер, браузер — за computer use; написаний тобою Skill кращий за повторне пояснення процесу щоразу. Точність — швидше, дешевше й безпечніше.",
+          ),
+        },
+      ],
+    },
+    {
+      id: "t2",
+      title: L("The tools compared", "Порівняння інструментів"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "Here is the whole field on one page — then an interactive way to pick.",
+            "Ось усе поле на одній сторінці — а далі інтерактивний спосіб обрати.",
+          ),
+        },
+        {
+          kind: "table",
+          head: [L("Surface", "Поверхня"), L("Best for", "Найкраще для"), L("Key limit", "Головне обмеження"), L("Plan", "План")],
+          rows: [
+            [L("Chat + Artifacts", "Chat + Artifacts"), L("A one-off answer, draft, chart or mini-app", "Разова відповідь, чернетка, графік чи mini-app"), L("No reach into your files/apps unless you add them", "Не дістає файлів/застосунків, доки не додаси"), L("All (incl. Free)", "Усі (вкл. Free)")],
+            [L("Cowork", "Cowork"), L("Multi-step work on local files; deliverables; schedules", "Багатокрокова робота з локальними файлами; результати; розклади"), L("Desktop only; folders you grant; app must stay open", "Лише desktop; надані теки; застосунок має бути відкритий"), L("Paid", "Платний")],
+            [L("Claude Code", "Claude Code"), L("Software in a real repo + shell", "Код у реальному репо + shell"), L("Runs your real environment, not a sandbox", "Працює у твоєму реальному середовищі, не sandbox"), L("Paid", "Платний")],
+            [L("Claude in Chrome", "Claude in Chrome"), L("Web actions on sites with no connector", "Дії в вебі на сайтах без connector"), L("Beta, Chrome only; Pro = Haiku 4.5", "Beta, лише Chrome; Pro = Haiku 4.5"), L("Paid", "Платний")],
+            [L("Excel / PowerPoint", "Excel / PowerPoint"), L("Editing the open workbook or deck in place", "Редагування відкритої книги чи деки на місці"), L("Microsoft 365 only; no macros/VBA", "Лише Microsoft 365; без macros/VBA"), L("Paid", "Платний")],
+            [L("Connector / MCP", "Connector / MCP"), L("Live, permissioned data & actions in another app", "Живі дані й дії з дозволами в іншому застосунку"), L("Brings data in — doesn’t run procedures; Free = 1 custom", "Приносить дані — не виконує процедур; Free = 1 custom"), L("All (Free limited)", "Усі (Free обмежено)")],
+            [L("Skill", "Skill"), L("A reusable procedure or output format", "Повторюваний процес чи формат виводу"), L("Know-how, not an integration — pair with a connector", "Експертиза, не інтеграція — поєднай із connector"), L("All (incl. Free)", "Усі (вкл. Free)")],
+          ],
+        },
+        { kind: "sim", sim: "tool-picker" },
+        {
+          kind: "prose",
+          md: L(
+            "The picker ranks by the same logic: *what it touches* dominates, autonomy breaks ties, and your plan gates the paid surfaces — they still appear, clearly tagged, so you can see what an upgrade buys.",
+            "Picker ранжує за тією ж логікою: *чого торкається* — головне, автономія розводить нічиї, а твій план обмежує платні поверхні — вони все одно зʼявляються з позначкою, щоб ти бачив, що дає апгрейд.",
+          ),
+        },
+      ],
+    },
+    {
+      id: "t3",
+      title: L("Cost / speed / control trade-offs", "Баланс вартість / швидкість / контроль"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "Once you’ve picked a surface, three more levers tune it. **Model:** Opus 4.8 for hard reasoning and agentic coding, Sonnet 4.6 for the balanced default (it’s the default on Free and Pro), Haiku 4.5 for speed and volume. **Cost:** prompt caching cuts cached input ~90% and Batch ~50% — lean on them for repeat or bulk work (see M10). **Control:** a sandbox (Cowork’s code VM, an Artifact) is safer for untrusted or experimental work; your real shell (Claude Code) is more powerful but unforgiving.",
+            "Коли поверхню обрано, її налаштовують три важелі. **Модель:** Opus 4.8 для складних міркувань і agentic coding, Sonnet 4.6 — збалансований дефолт (за замовчуванням на Free і Pro), Haiku 4.5 — швидкість і обсяг. **Вартість:** prompt caching зрізає кешований ввід на ~90%, Batch — на ~50%; спирайся на них для повторюваної чи масової роботи (див. M10). **Контроль:** sandbox (code-VM Cowork, Artifact) безпечніший для недовіреної чи експериментальної роботи; твій реальний shell (Claude Code) потужніший, але невибачливий.",
+          ),
+        },
+        {
+          kind: "compare",
+          a: L("Sandboxed surface", "Поверхня в sandbox"),
+          b: L("Real-environment surface", "Поверхня в реальному середовищі"),
+          rows: [
+            [L("Examples", "Приклади"), L("Cowork code VM · an Artifact", "Code-VM Cowork · Artifact"), L("Claude Code in your shell", "Claude Code у твоєму shell")],
+            [L("Power", "Потужність"), L("Bounded — isolated from your system", "Обмежена — ізольована від системи"), L("Full — your real files, tools, commands", "Повна — твої реальні файли, інструменти, команди")],
+            [L("Blast radius", "Радіус ураження"), L("Small — contained by the sandbox", "Малий — стримується sandbox"), L("Large — guarded only by permissions", "Великий — захищений лише permissions")],
+            [L("Use when", "Коли використовувати"), L("Untrusted input, experiments, deliverables", "Недовірений ввід, експерименти, результати"), L("Trusted repo work you’re ready to supervise", "Довірена робота з репо під наглядом")],
+          ],
+        },
+        {
+          kind: "prose",
+          md: L(
+            "More autonomy isn’t free either: it trades your oversight for speed, and (with sub-agents or teams) trades tokens for wall-clock time. Match the leash to the stakes.",
+            "Більше автономії теж не безкоштовне: вона міняє твій нагляд на швидкість, а (із sub-agents чи teams) — токени на час. Підбирай повідець під ставки.",
+          ),
+        },
+      ],
+    },
+    {
+      id: "t4",
+      title: L("Worked scenarios", "Розібрані сценарії"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "Seven quick calls to calibrate the model in your head.",
+            "Сім швидких рішень, щоб відкалібрувати модель у голові.",
+          ),
+        },
+        {
+          kind: "table",
+          head: [L("Task", "Задача"), L("Best surface", "Найкраща поверхня"), L("Why", "Чому")],
+          rows: [
+            [L("Turn this messy CSV in my Downloads into a clean report", "Перетвори цей CSV у Downloads на чистий звіт"), L("Cowork", "Cowork"), L("Local files, multi-step, a deliverable", "Локальні файли, багато кроків, результат")],
+            [L("Draft a function and explain the approach", "Напиши функцію й поясни підхід"), L("Chat + Artifacts", "Chat + Artifacts"), L("A reply plus runnable code, nothing on disk", "Відповідь і код, що запускається, нічого на диску")],
+            [L("Refactor this module and run the tests", "Зроби рефактор модуля й запусти тести"), L("Claude Code", "Claude Code"), L("A real repo and shell", "Реальний репозиторій і shell")],
+            [L("Update the Q3 model, keep formulas intact", "Онови модель Q3, не ламаючи формули"), L("Claude for Excel", "Claude for Excel"), L("The open workbook, dependency-safe", "Відкрита книга, безпечно для залежностей")],
+            [L("Every morning, summarize my unread Gmail", "Щоранку підсумовуй непрочитаний Gmail"), L("Connector + scheduled task", "Connector + scheduled task"), L("Data via the connector, cadence via the schedule", "Дані через connector, періодичність через розклад")],
+            [L("Fill this form on a vendor site with no API", "Заповни форму на сайті без API"), L("Claude in Chrome", "Claude in Chrome"), L("Web work where no connector exists", "Робота в вебі, де немає connector")],
+            [L("Apply our brand format to every deck I make", "Застосовуй наш формат до кожної деки"), L("Skill", "Skill"), L("A reusable procedure, loaded when relevant", "Повторюваний процес, що вантажиться за потреби")],
+          ],
+        },
+        {
+          kind: "callout",
+          tone: "tip",
+          title: L("When two overlap, prefer precision + the smallest blast radius", "Коли дві перетинаються — обирай точність + найменший радіус"),
+          md: L(
+            "Pulling Slack messages → a connector, not the browser. A one-off chart → an Artifact, not Cowork. Editing a live workbook → the Excel add-in, not a regenerated file. The narrower tool is usually the right one.",
+            "Дістати повідомлення Slack → connector, не браузер. Разовий графік → Artifact, не Cowork. Редагувати живу книгу → Excel add-in, не перегенерований файл. Вужчий інструмент зазвичай і є правильним.",
+          ),
+        },
+      ],
+    },
+  ],
+  keyPoints: [
+    L("Three questions pick the surface: what the work touches · how much autonomy · your plan.", "Три питання обирають поверхню: чого торкається робота · скільки автономії · твій план."),
+    L("Reach for the most precise tool that covers the job (connector > browser > computer use; a Skill > re-explaining).", "Бери найточніший інструмент, що покриває задачу (connector > браузер > computer use; Skill > повторне пояснення)."),
+    L("Files & deliverables → Cowork; a real repo → Claude Code; the web with no API → Chrome; Office in place → Excel/PPT; another app’s data → a connector; a reusable procedure → a Skill; a one-off answer → Chat + Artifacts.", "Файли й результати → Cowork; реальне репо → Claude Code; веб без API → Chrome; Office на місці → Excel/PPT; дані іншого застосунку → connector; повторюваний процес → Skill; разова відповідь → Chat + Artifacts."),
+    L("Recurring work = a connector (or surface) for the data + a schedule for the cadence.", "Повторювана робота = connector (чи поверхня) для даних + розклад для періодичності."),
+    L("Several surfaces are paid-only; on Free, Chat + Artifacts (incl. file creation) and web connectors carry most of the load.", "Кілька поверхонь лише платні; на Free Chat + Artifacts (вкл. створення файлів) і web connectors тягнуть основне."),
+  ],
+  pitfalls: [
+    { title: L("Reaching for the browser (or computer use) when a connector exists", "Хапатися за браузер (чи computer use), коли є connector"), body: L("Slower, broader, riskier — use the precise tool; fall through to the browser only when no connector covers the app.", "Повільніше, ширше, ризикованіше — бери точний інструмент; переходь до браузера лише коли жоден connector не покриває застосунок.") },
+    { title: L("Using Cowork for a one-off answer, or Chat for work in your files", "Cowork для разової відповіді, або Chat для роботи у файлах"), body: L("Match the medium: a quick answer or mini-app is Chat + Artifacts; multi-step work on your files is Cowork.", "Підбирай середовище: швидка відповідь чи mini-app — Chat + Artifacts; багатокрокова робота з файлами — Cowork.") },
+    { title: L("Forgetting plan gates", "Забути про обмеження плану"), body: L("Cowork, Code, Chrome and the Office add-ins are paid; check availability before recommending one to a Free user.", "Cowork, Code, Chrome і Office-add-ins платні; перевір доступність, перш ніж радити їх користувачу Free.") },
+  ],
+  interview: [
+    { q: L("Cowork vs Claude Code — same engine; when each?", "Cowork vs Claude Code — той самий движок; коли який?"), a: L("Both run the agent loop. Claude Code works your real repo and shell (software engineering, real commits); Cowork works folders you grant in a sandbox (knowledge work, deliverables, schedules) with no terminal.", "Обидва виконують agent loop. Claude Code працює з твоїм реальним репо й shell (інженерія, реальні commit); Cowork працює з наданими теками в sandbox (knowledge work, результати, розклади) без терміналу."), level: "senior" },
+    { q: L("A connector and Claude in Chrome can both read Gmail. Which, and why?", "І connector, і Claude in Chrome можуть читати Gmail. Який і чому?"), a: L("The connector — it’s API-precise, scope-bounded, faster, and a smaller injection surface. The browser is the fallback only when no connector exists for the app.", "Connector — він точний на рівні API, обмежений scope, швидший і з меншою поверхнею injection. Браузер — резерв лише коли для застосунку немає connector."), level: "senior" },
+    { q: L("Where do Skills fit against connectors?", "Як Skills співвідносяться з connectors?"), a: L("They’re orthogonal: a Skill is reusable know-how or a format Claude runs in its VM; a connector is live access to an external app. Compose them — a Skill that formats the data a connector fetched.", "Вони ортогональні: Skill — це повторювана експертиза чи формат, який Claude виконує у своїй VM; connector — живий доступ до зовнішнього застосунку. Поєднуй їх — Skill форматує дані, які дістав connector."), level: "senior" },
+  ],
+  seeAlso: ["m15", "m22", "m11", "m27"],
+  sources: [
+    { title: "Models overview — Claude Platform docs", url: "https://platform.claude.com/docs/en/about-claude/models/overview" },
+    { title: "Get started with Claude Cowork — Help Center", url: "https://support.claude.com/en/articles/13345190-get-started-with-claude-cowork" },
+    { title: "Claude Code — Anthropic", url: "https://claude.com/product/claude-code" },
+    { title: "Get started with Claude in Chrome — Help Center", url: "https://support.claude.com/en/articles/12012173-get-started-with-claude-in-chrome" },
+    { title: "Use connectors to extend Claude’s capabilities — Help Center", url: "https://support.claude.com/en/articles/11176164-use-connectors-to-extend-claude-s-capabilities" },
+  ],
+};
+
+/* ======================================================================
+   M27 · The ecosystem map — fully authored (S10a)
+   ====================================================================== */
+const m27: Module = {
+  id: "m27",
+  section: "s6",
+  order: 27,
+  level: "senior",
+  title: L("The ecosystem map", "Мапа екосистеми"),
+  tagline: L(
+    "Five layers, one picture — how models, surfaces, context, capabilities and orchestration compose into everything in this guide.",
+    "Пʼять шарів, одна картина — як моделі, поверхні, context, можливості й оркестрація складаються в усе з цього гайду.",
+  ),
+  readMins: 7,
+  mentalModel: L(
+    "One model family, reached through many surfaces, grounded by context, extended by capabilities, scaled by orchestration — wrapped in security.",
+    "Одна сімʼя моделей, доступна через багато поверхонь, заземлена context, розширена можливостями, масштабована оркестрацією — і загорнута в безпеку.",
+  ),
+  topics: [
+    {
+      id: "t1",
+      title: L("The layers", "Шари"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "Everything in this guide stacks into five layers. At the bottom, the **models** — Opus 4.8, Sonnet 4.6, Haiku 4.5 — the raw intelligence. You reach them through **apps / surfaces** — Chat, Cowork, Claude Code, Claude in Chrome, the Office add-ins. What makes the answers *yours* is **context** — the window, Projects, Memory. What lets Claude *do* things is **capabilities** — Connectors/MCP, Skills, Artifacts, computer use. And what makes it *scale* is **orchestration** — sub-agents, agent teams, hooks, scheduled tasks.",
+            "Усе в цьому гайді складається в пʼять шарів. Внизу — **моделі** (Opus 4.8, Sonnet 4.6, Haiku 4.5), сирий інтелект. Ти дістаєш їх через **застосунки / поверхні** — Chat, Cowork, Claude Code, Claude in Chrome, Office-add-ins. Те, що робить відповіді *твоїми*, — **context** (вікно, Projects, Memory). Те, що дозволяє Claude *діяти*, — **можливості** (Connectors/MCP, Skills, Artifacts, computer use). А те, що дає *масштаб*, — **оркестрація** (sub-agents, agent teams, hooks, scheduled tasks).",
+          ),
+        },
+        { kind: "figure", fig: "ecosystem-layers", caption: L("A request flows up the stack: a model, reached through a surface, grounded by context, extended by capabilities, scaled by orchestration.", "Запит іде вгору стеком: модель, доступна через поверхню, заземлена context, розширена можливостями, масштабована оркестрацією.") },
+        {
+          kind: "table",
+          head: [L("Layer", "Шар"), L("What it is", "Що це"), L("Examples", "Приклади"), L("In this guide", "У гайді")],
+          rows: [
+            [L("Models", "Моделі"), L("The raw intelligence", "Сирий інтелект"), L("Opus 4.8 · Sonnet 4.6 · Haiku 4.5", "Opus 4.8 · Sonnet 4.6 · Haiku 4.5"), L("M1", "M1")],
+            [L("Apps / surfaces", "Застосунки / поверхні"), L("Where you meet the model", "Де ти зустрічаєш модель"), L("Chat · Cowork · Code · Chrome · Office", "Chat · Cowork · Code · Chrome · Office"), L("M2 · M15 · M20–M22", "M2 · M15 · M20–M22")],
+            [L("Context", "Context"), L("What grounds the answer in your world", "Що заземлює відповідь у твоєму світі"), L("Context window · Projects · Memory", "Context window · Projects · Memory"), L("M5 · M7 · M10", "M5 · M7 · M10")],
+            [L("Capabilities", "Можливості"), L("What lets Claude act & extend", "Що дозволяє Claude діяти й розширюватися"), L("Connectors/MCP · Skills · Artifacts · computer use", "Connectors/MCP · Skills · Artifacts · computer use"), L("M8 · M11 · M12 · M18", "M8 · M11 · M12 · M18")],
+            [L("Orchestration", "Оркестрація"), L("What scales one agent into many", "Що масштабує один agent у багато"), L("Sub-agents · teams · hooks · schedules", "Sub-agents · teams · hooks · розклади"), L("M17 · M23 · M24", "M17 · M23 · M24")],
+          ],
+        },
+      ],
+    },
+    {
+      id: "t2",
+      title: L("How the pieces compose", "Як складаються частини"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "The layers aren’t a menu you pick one item from — every real task threads through several. Trace three.",
+            "Шари — не меню, з якого береш один пункт: кожна реальна задача проходить крізь кілька. Простежимо три.",
+          ),
+        },
+        {
+          kind: "prose",
+          md: L(
+            "**“Summarize my unread email every morning.”** Orchestration (a scheduled task) wakes Cowork (surface), which calls the Gmail connector (capability) over Sonnet (model, chosen for cost), grounded by your project instructions (context), and writes a digest file. Five layers, one sentence.",
+            "**«Щоранку підсумовуй непрочитану пошту.»** Оркестрація (scheduled task) будить Cowork (поверхня), що викликає Gmail-connector (можливість) поверх Sonnet (модель, обрана за вартість), заземлена твоїми project-інструкціями (context), і пише файл-дайджест. Пʼять шарів, одне речення.",
+          ),
+        },
+        {
+          kind: "prose",
+          md: L(
+            "**“Understand this unfamiliar repo, then fix the failing test.”** Claude Code (surface) on Opus (model) fans out **sub-agents** (orchestration) to map the codebase into a clean context (capability + context), then edits your real files and runs tests behind permissions — security cutting across all of it.",
+            "**«Розберись у незнайомому репо, потім полагодь зламаний тест.»** Claude Code (поверхня) на Opus (модель) розгалужує **sub-agents** (оркестрація), щоб скласти карту коду в чистий context (можливість + context), потім редагує твої реальні файли й запускає тести під permissions — і безпека пронизує все це.",
+          ),
+        },
+        {
+          kind: "prose",
+          md: L(
+            "**“Build me a budget I can keep using.”** Chat (surface) emits a **live Artifact** (capability) that holds state and calls a connector — context persists inside the artifact, and no other layers are needed. Small task, two layers.",
+            "**«Зроби бюджет, яким я зможу користуватися далі.»** Chat (поверхня) видає **live Artifact** (можливість), що тримає стан і викликає connector — context живе всередині artifact, інші шари не потрібні. Мала задача, два шари.",
+          ),
+        },
+        {
+          kind: "callout",
+          tone: "senior",
+          title: L("Security is the layer that wraps the rest", "Безпека — шар, що загортає решту"),
+          md: L(
+            "It isn’t a row in the stack — it cuts across all of them: permissions on surfaces, scopes on capabilities, trust boundaries on context. Read every composition through it (see M25).",
+            "Це не рядок у стеку — вона пронизує всі: permissions на поверхнях, scope на можливостях, межі довіри на context. Читай кожну композицію крізь неї (див. M25).",
+          ),
+        },
+      ],
+    },
+    {
+      id: "t3",
+      title: L("The one-picture overview", "Огляд однією картиною"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "The landing **Ecosystem Map** is this same picture, made clickable — each node opens the module that explains it. Use it two ways: top-down (start from the model and follow a task outward) or by jumping straight to whichever node you need.",
+            "Стартова **Ecosystem Map** — це та сама картина, але клікабельна: кожен вузол відкриває модуль, що його пояснює. Користуйся двома способами: згори вниз (почни з моделі й веди задачу назовні) або стрибай одразу до потрібного вузла.",
+          ),
+        },
+        {
+          kind: "callout",
+          tone: "tip",
+          title: L("Open the interactive map", "Відкрий інтерактивну мапу"),
+          md: L(
+            "The clickable overview lives at **[the Map](#/map)** — the same five layers, as a navigable picture you can start any session from.",
+            "Клікабельний огляд — на **[Мапі](#/map)** — ті самі пʼять шарів як навігована картина, з якої можна почати будь-яку сесію.",
+          ),
+        },
+        {
+          kind: "prose",
+          md: L(
+            "If you remember one thing from this guide, remember the shape: **one model family, many surfaces, grounded by context, extended by capabilities, scaled by orchestration, wrapped in security.** Everything else is detail you can look up.",
+            "Якщо запамʼятати з гайду одне — запамʼятай форму: **одна сімʼя моделей, багато поверхонь, заземлена context, розширена можливостями, масштабована оркестрацією, загорнута в безпеку.** Решта — деталі, які можна подивитися.",
+          ),
+        },
+      ],
+    },
+  ],
+  keyPoints: [
+    L("Five layers: models → apps/surfaces → context → capabilities → orchestration — with security cutting across all of them.", "Пʼять шарів: моделі → застосунки/поверхні → context → можливості → оркестрація — і безпека пронизує всі."),
+    L("Models are the engine; surfaces are the doorways — same intelligence, different reach.", "Моделі — двигун; поверхні — двері: той самий інтелект, різний доступ."),
+    L("Context (window/Projects/Memory) makes answers yours; capabilities (connectors/skills/artifacts/computer use) let Claude act.", "Context (вікно/Projects/Memory) робить відповіді твоїми; можливості (connectors/skills/artifacts/computer use) дають Claude діяти."),
+    L("Orchestration (sub-agents/teams/hooks/schedules) scales one agent into many.", "Оркестрація (sub-agents/teams/hooks/розклади) масштабує один agent у багато."),
+    L("Every real task threads several layers — the skill is composing them.", "Кожна реальна задача проходить кілька шарів — майстерність у тому, щоб їх скомпонувати."),
+  ],
+  pitfalls: [
+    { title: L("Treating surfaces as different ‘Claudes’", "Сприймати поверхні як різні ‘Claude’"), body: L("It’s one model family behind every door — Chat, Cowork, Code and Chrome differ in reach and context, not in who’s answering.", "За кожними дверима — одна сімʼя моделей; Chat, Cowork, Code і Chrome різняться доступом і context, а не тим, хто відповідає.") },
+    { title: L("Confusing capabilities with context", "Плутати можливості з context"), body: L("A connector fetches (capability); Memory and Projects retain (context). One reaches out, the other remembers.", "Connector дістає (можливість); Memory і Projects утримують (context). Один тягнеться назовні, інший памʼятає.") },
+    { title: L("Reaching for orchestration too early", "Хапатися за оркестрацію зарано"), body: L("Most tasks are one surface plus one capability; fan out to sub-agents or teams only when the work is genuinely parallel.", "Більшість задач — одна поверхня плюс одна можливість; розгалужуйся в sub-agents чи teams лише коли робота справді паралельна.") },
+  ],
+  interview: [
+    { q: L("Lay out the Claude stack in layers.", "Розклади стек Claude по шарах."), a: L("Models (Opus/Sonnet/Haiku) → apps/surfaces (Chat, Cowork, Code, Chrome, Office) → context (window, Projects, Memory) → capabilities (connectors/MCP, Skills, Artifacts, computer use) → orchestration (sub-agents, teams, hooks, schedules), with security cutting across all of them.", "Моделі (Opus/Sonnet/Haiku) → застосунки/поверхні (Chat, Cowork, Code, Chrome, Office) → context (вікно, Projects, Memory) → можливості (connectors/MCP, Skills, Artifacts, computer use) → оркестрація (sub-agents, teams, hooks, розклади), і безпека пронизує всі."), level: "senior" },
+    { q: L("Where’s the line between context and capabilities?", "Де межа між context і можливостями?"), a: L("Context grounds — the window, Projects and Memory hold what Claude knows. Capabilities extend — connectors, skills, artifacts and computer use are what Claude can do. Knowing vs doing.", "Context заземлює — вікно, Projects і Memory тримають те, що Claude знає. Можливості розширюють — connectors, skills, artifacts і computer use — це те, що Claude може робити. Знати vs діяти."), level: "senior" },
+    { q: L("Walk a recurring briefing through the stack.", "Проведи повторюваний брифінг крізь стек."), a: L("A schedule (orchestration) triggers Cowork (surface) on Sonnet (model); it calls a connector (capability) for the data, grounded by project instructions (context), and writes a file — security gating the connector’s scope and the file write.", "Розклад (оркестрація) запускає Cowork (поверхня) на Sonnet (модель); він викликає connector (можливість) за даними, заземлений project-інструкціями (context), і пише файл — безпека контролює scope конектора й запис файлу."), level: "senior" },
+  ],
+  seeAlso: ["m1", "m26", "m25", "m28"],
+  sources: [
+    { title: "Models overview — Claude Platform docs", url: "https://platform.claude.com/docs/en/about-claude/models/overview" },
+    { title: "Get started with Claude Cowork — Help Center", url: "https://support.claude.com/en/articles/13345190-get-started-with-claude-cowork" },
+    { title: "Use connectors to extend Claude’s capabilities — Help Center", url: "https://support.claude.com/en/articles/11176164-use-connectors-to-extend-claude-s-capabilities" },
+    { title: "Claude Code — Anthropic", url: "https://claude.com/product/claude-code" },
   ],
 };
 
@@ -4255,7 +4797,7 @@ const m5: Module = {
 
 
 /* ---- assembled, ordered, and indexed ------------------------------------ */
-export const MODULES: Module[] = [...planned, m1, m2, m3, m4, m5, m6, m7, m8, m9, m10, m11, m12, m13, m14, m15, m16, m17, m18, m19, m20, m21, m22, m23, m24].sort((a, b) => a.order - b.order);
+export const MODULES: Module[] = [...planned, m1, m2, m3, m4, m5, m6, m7, m8, m9, m10, m11, m12, m13, m14, m15, m16, m17, m18, m19, m20, m21, m22, m23, m24, m25, m26, m27].sort((a, b) => a.order - b.order);
 
 export function sectionById(id: string): Section | undefined {
   return SECTIONS.find((s) => s.id === id);
