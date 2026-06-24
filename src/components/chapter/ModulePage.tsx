@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
 import { useLang } from "../../i18n/LangContext";
 import { UI } from "../../i18n/ui";
-import { moduleById, sectionById, prevNext, isAuthored, SIGNATURE_SIMS } from "../../data/concepts";
+import { moduleById, isAuthored } from "../../data/concepts";
+import { sectionById, prevNext, SIGNATURE_SIMS } from "../../data/meta";
 import { Block } from "./Block";
 import { Md } from "./Md";
 import { go } from "../../lib/hashRouter";

@@ -1,0 +1,1730 @@
+{
+  "sections": [
+    {
+      "id": "s1",
+      "name": {
+        "en": "Foundations & first steps",
+        "uk": "Основи та перші кроки"
+      },
+      "accent": "var(--grp-1)",
+      "blurb": {
+        "en": "The beginner on-ramp — what Claude is and how to talk to it.",
+        "uk": "Вступ для новачків — що таке Claude і як з ним працювати."
+      }
+    },
+    {
+      "id": "s2",
+      "name": {
+        "en": "Prompting & the persistent workspace",
+        "uk": "Prompting і персистентний workspace"
+      },
+      "accent": "var(--grp-2)",
+      "blurb": {
+        "en": "Prompt well; make Projects, Artifacts and Memory work for you.",
+        "uk": "Пиши якісні prompt; зроби Projects, Artifacts і Memory корисними."
+      }
+    },
+    {
+      "id": "s3",
+      "name": {
+        "en": "Extending Claude",
+        "uk": "Розширення Claude"
+      },
+      "accent": "var(--grp-3)",
+      "blurb": {
+        "en": "Connectors/MCP, Skills and Plugins — give Claude new powers.",
+        "uk": "Connectors/MCP, Skills і Plugins — нові можливості для Claude."
+      }
+    },
+    {
+      "id": "s4",
+      "name": {
+        "en": "Cowork — your desktop agent",
+        "uk": "Cowork — твій desktop-агент"
+      },
+      "accent": "var(--grp-4)",
+      "blurb": {
+        "en": "The product-heavy crown: Claude that works your files for you.",
+        "uk": "Серце продуктової частини: Claude, що працює з твоїми файлами."
+      }
+    },
+    {
+      "id": "s5",
+      "name": {
+        "en": "Claude in your tools & code",
+        "uk": "Claude у твоїх інструментах і коді"
+      },
+      "accent": "var(--grp-5)",
+      "blurb": {
+        "en": "Chrome, Excel/PowerPoint, Claude Code and agentic engineering.",
+        "uk": "Chrome, Excel/PowerPoint, Claude Code та agentic engineering."
+      }
+    },
+    {
+      "id": "s6",
+      "name": {
+        "en": "Mastery",
+        "uk": "Майстерність"
+      },
+      "accent": "var(--grp-6)",
+      "blurb": {
+        "en": "Security, choosing the right tool, and the whole picture.",
+        "uk": "Безпека, вибір інструмента і повна картина."
+      }
+    }
+  ],
+  "signatureSims": [
+    "m10",
+    "m11",
+    "m12",
+    "m15",
+    "m23",
+    "m26",
+    "m6"
+  ],
+  "modules": [
+    {
+      "id": "m1",
+      "section": "s1",
+      "order": 1,
+      "level": "beginner",
+      "title": {
+        "en": "What is Claude",
+        "uk": "Що таке Claude"
+      },
+      "tagline": {
+        "en": "An AI assistant you talk to in plain language — it reasons over what's in front of it and, when given tools, gets real work done.",
+        "uk": "AI-асистент, з яким говориш звичайною мовою — він міркує над тим, що перед ним, а з інструментами виконує реальну роботу."
+      },
+      "mentalModel": {
+        "en": "Claude reads everything in its context window, reasons, and (when you allow it) uses tools to act — assistant + context + tools.",
+        "uk": "Claude читає все у своєму context window, міркує і (коли дозволяєш) користується інструментами, щоб діяти — асистент + context + інструменти."
+      },
+      "readMins": 7,
+      "topics": [
+        {
+          "id": "t1",
+          "title": {
+            "en": "The mental model: assistant + context + tools",
+            "uk": "Ментальна модель: асистент + context + інструменти"
+          }
+        },
+        {
+          "id": "t2",
+          "title": {
+            "en": "The model family: Opus, Sonnet, Haiku",
+            "uk": "Сімейство моделей: Opus, Sonnet, Haiku"
+          }
+        },
+        {
+          "id": "t3",
+          "title": {
+            "en": "Where Claude lives",
+            "uk": "Де живе Claude"
+          }
+        },
+        {
+          "id": "t4",
+          "title": {
+            "en": "Plans & access",
+            "uk": "Плани та доступ"
+          }
+        },
+        {
+          "id": "t5",
+          "title": {
+            "en": "What Claude can & can't do",
+            "uk": "Що Claude вміє і чого ні"
+          }
+        }
+      ],
+      "seeAlso": [
+        "m2",
+        "m3",
+        "m27"
+      ],
+      "authored": true
+    },
+    {
+      "id": "m2",
+      "section": "s1",
+      "order": 2,
+      "level": "beginner",
+      "title": {
+        "en": "Interface & settings tour",
+        "uk": "Інтерфейс і огляд налаштувань"
+      },
+      "tagline": {
+        "en": "A quick tour so nothing in the Claude UI is a mystery — the message box, the model menu, and the settings that matter.",
+        "uk": "Швидкий тур, щоб у UI Claude не лишилось загадок — поле вводу, меню моделі та налаштування, що мають значення."
+      },
+      "mentalModel": {
+        "en": "Two places to know: the chat (composer + sidebar) where you work, and Settings where you shape how Claude behaves and what it remembers.",
+        "uk": "Два місця, які варто знати: чат (composer + sidebar), де ти працюєш, і Settings, де ти формуєш поведінку Claude і те, що він памʼятає."
+      },
+      "readMins": 7,
+      "topics": [
+        {
+          "id": "t1",
+          "title": {
+            "en": "Chat layout & the message box",
+            "uk": "Розкладка чату й поле вводу"
+          }
+        },
+        {
+          "id": "t2",
+          "title": {
+            "en": "Choosing model, effort & thinking",
+            "uk": "Вибір моделі, effort і thinking"
+          }
+        },
+        {
+          "id": "t3",
+          "title": {
+            "en": "Settings: profile, appearance, voice, language",
+            "uk": "Settings: профіль, вигляд, voice, мова"
+          }
+        },
+        {
+          "id": "t4",
+          "title": {
+            "en": "Privacy, data controls & billing",
+            "uk": "Приватність, дані та білінг"
+          }
+        },
+        {
+          "id": "t5",
+          "title": {
+            "en": "Organizing chats, Incognito & getting around",
+            "uk": "Організація чатів, Incognito та навігація"
+          }
+        }
+      ],
+      "seeAlso": [
+        "m1",
+        "m3",
+        "m5"
+      ],
+      "authored": true
+    },
+    {
+      "id": "m3",
+      "section": "s1",
+      "order": 3,
+      "level": "beginner",
+      "title": {
+        "en": "Talking to Claude — prompting basics",
+        "uk": "Спілкування з Claude — основи prompting"
+      },
+      "tagline": {
+        "en": "How a request becomes a result — say what you want, give the context, and iterate.",
+        "uk": "Як запит стає результатом — скажи, що хочеш, дай context і ітеруй."
+      },
+      "mentalModel": {
+        "en": "Everything Claude knows in a chat lives in its context window — so a good prompt puts the right things in the window and says clearly what to do with them.",
+        "uk": "Усе, що Claude знає в чаті, лежить у його context window — тож хороший prompt кладе у вікно потрібне й чітко каже, що з цим робити."
+      },
+      "readMins": 7,
+      "topics": [
+        {
+          "id": "t1",
+          "title": {
+            "en": "What a prompt is & how Claude reads it",
+            "uk": "Що таке prompt і як Claude його читає"
+          }
+        },
+        {
+          "id": "t2",
+          "title": {
+            "en": "Context: what Claude knows in a chat",
+            "uk": "Context: що Claude знає в чаті"
+          }
+        },
+        {
+          "id": "t3",
+          "title": {
+            "en": "Being specific: task, format, constraints",
+            "uk": "Конкретика: задача, формат, обмеження"
+          }
+        },
+        {
+          "id": "t4",
+          "title": {
+            "en": "Iterating & follow-ups",
+            "uk": "Ітерації та уточнення"
+          }
+        },
+        {
+          "id": "t5",
+          "title": {
+            "en": "Common beginner mistakes",
+            "uk": "Типові помилки новачків"
+          }
+        }
+      ],
+      "seeAlso": [
+        "m6",
+        "m1",
+        "m5"
+      ],
+      "authored": true
+    },
+    {
+      "id": "m4",
+      "section": "s1",
+      "order": 4,
+      "level": "beginner",
+      "title": {
+        "en": "Attachments, writing styles & voice",
+        "uk": "Вкладення, writing styles і голос"
+      },
+      "tagline": {
+        "en": "Bring your material in — files, images and your voice — and shape the voice that comes out.",
+        "uk": "Принось свій матеріал — файли, зображення й голос — і формуй голос на виході."
+      },
+      "mentalModel": {
+        "en": "Inputs in (files, images, voice), style out — you control both what Claude sees and how it sounds.",
+        "uk": "Входи (файли, зображення, голос), стиль на виході — ти керуєш і тим, що Claude бачить, і тим, як він звучить."
+      },
+      "readMins": 7,
+      "topics": [
+        {
+          "id": "t1",
+          "title": {
+            "en": "Attaching files & images",
+            "uk": "Додавання файлів і зображень"
+          }
+        },
+        {
+          "id": "t2",
+          "title": {
+            "en": "Writing styles: preset & custom",
+            "uk": "Writing styles: готові та власні"
+          }
+        },
+        {
+          "id": "t3",
+          "title": {
+            "en": "Voice input & talking to Claude",
+            "uk": "Голосовий ввід і розмова з Claude"
+          }
+        },
+        {
+          "id": "t4",
+          "title": {
+            "en": "Output formats: markdown, tables & artifacts",
+            "uk": "Формати виводу: markdown, таблиці та artifacts"
+          }
+        }
+      ],
+      "seeAlso": [
+        "m3",
+        "m8",
+        "m12"
+      ],
+      "authored": true
+    },
+    {
+      "id": "m5",
+      "section": "s1",
+      "order": 5,
+      "level": "beginner",
+      "title": {
+        "en": "Memory & chat search",
+        "uk": "Memory і пошук чатів"
+      },
+      "tagline": {
+        "en": "How Claude carries context across chats — what Memory stores, how to control it, and how to find past conversations.",
+        "uk": "Як Claude переносить context між чатами — що зберігає Memory, як ним керувати і як знаходити минулі розмови."
+      },
+      "mentalModel": {
+        "en": "Memory = a durable summary that survives across chats (which you can edit); chat search = pulling a specific past conversation back in on demand.",
+        "uk": "Memory = тривкий підсумок, що живе між чатами (його можна редагувати); chat search = підтягування конкретної минулої розмови на вимогу."
+      },
+      "readMins": 7,
+      "topics": [
+        {
+          "id": "t1",
+          "title": {
+            "en": "What Memory is & what it stores",
+            "uk": "Що таке Memory і що він зберігає"
+          }
+        },
+        {
+          "id": "t2",
+          "title": {
+            "en": "Global vs project memory",
+            "uk": "Global проти project memory"
+          }
+        },
+        {
+          "id": "t3",
+          "title": {
+            "en": "Controlling memory: view, edit, forget",
+            "uk": "Керування memory: перегляд, редагування, forget"
+          }
+        },
+        {
+          "id": "t4",
+          "title": {
+            "en": "Importing memories & finding past chats",
+            "uk": "Імпорт memories та пошук минулих чатів"
+          }
+        }
+      ],
+      "seeAlso": [
+        "m7",
+        "m2",
+        "m10"
+      ],
+      "authored": true
+    },
+    {
+      "id": "m6",
+      "section": "s2",
+      "order": 6,
+      "level": "middle",
+      "title": {
+        "en": "Prompting mastery",
+        "uk": "Майстерність prompting"
+      },
+      "tagline": {
+        "en": "Structure beats wishing: assemble a prompt from parts — role, context, task, format, examples — and the answer stops being a lottery.",
+        "uk": "Структура краща за надію: збери prompt із частин — role, context, task, format, examples — і відповідь перестає бути лотереєю."
+      },
+      "mentalModel": {
+        "en": "Treat Claude like a brilliant new colleague: huge skill, zero context on your task. A great prompt supplies the context, the goal, and the shape of the answer.",
+        "uk": "Стався до Claude як до блискучого нового колеги: величезні навички, нуль контексту про твою задачу. Гарний prompt дає контекст, мету і форму відповіді."
+      },
+      "readMins": 12,
+      "topics": [
+        {
+          "id": "t1",
+          "title": {
+            "en": "Anatomy of a great prompt",
+            "uk": "Анатомія чудового prompt"
+          }
+        },
+        {
+          "id": "t2",
+          "title": {
+            "en": "GCAO & structured templates",
+            "uk": "GCAO і структуровані шаблони"
+          }
+        },
+        {
+          "id": "t3",
+          "title": {
+            "en": "Patterns: few-shot, step-by-step, self-critique",
+            "uk": "Патерни: few-shot, step-by-step, self-critique"
+          }
+        },
+        {
+          "id": "t4",
+          "title": {
+            "en": "Constraints, schemas & XML tags",
+            "uk": "Constraints, schemas і XML tags"
+          }
+        },
+        {
+          "id": "t5",
+          "title": {
+            "en": "Anti-patterns & debugging a prompt",
+            "uk": "Анти-патерни і дебаг prompt"
+          }
+        }
+      ],
+      "seeAlso": [
+        "m3",
+        "m10",
+        "m7",
+        "m12"
+      ],
+      "authored": true
+    },
+    {
+      "id": "m7",
+      "section": "s2",
+      "order": 7,
+      "level": "middle",
+      "title": {
+        "en": "Projects",
+        "uk": "Projects"
+      },
+      "tagline": {
+        "en": "A walled workspace with its own chats, knowledge and instructions — so Claude already knows the background before you type.",
+        "uk": "Огороджений workspace з власними чатами, knowledge та instructions — щоб Claude знав бекґраунд ще до твого повідомлення."
+      },
+      "mentalModel": {
+        "en": "A Project is a room with its own memory, files and house rules: you walk in and Claude already has the context.",
+        "uk": "Project — це кімната з власною пам'яттю, файлами й правилами: ти заходиш, а Claude уже має контекст."
+      },
+      "readMins": 9,
+      "topics": [
+        {
+          "id": "t1",
+          "title": {
+            "en": "What a Project is",
+            "uk": "Що таке Project"
+          }
+        },
+        {
+          "id": "t2",
+          "title": {
+            "en": "Project instructions",
+            "uk": "Project instructions"
+          }
+        },
+        {
+          "id": "t3",
+          "title": {
+            "en": "Project knowledge & the context wall",
+            "uk": "Project knowledge і context wall"
+          }
+        },
+        {
+          "id": "t4",
+          "title": {
+            "en": "Skills & connectors in a project",
+            "uk": "Skills і connectors у project"
+          }
+        },
+        {
+          "id": "t5",
+          "title": {
+            "en": "Project vs plain chat",
+            "uk": "Project vs звичайний чат"
+          }
+        }
+      ],
+      "seeAlso": [
+        "m10",
+        "m12",
+        "m5",
+        "m15"
+      ],
+      "authored": true
+    },
+    {
+      "id": "m8",
+      "section": "s2",
+      "order": 8,
+      "level": "middle",
+      "title": {
+        "en": "Artifacts",
+        "uk": "Artifacts"
+      },
+      "tagline": {
+        "en": "When an answer is something you'll keep, edit, or run, Claude lifts it out of the chat into its own window — editable, versioned, shareable.",
+        "uk": "Коли відповідь — це те, що ти збережеш, відредагуєш чи запустиш, Claude виносить її з чату в окреме вікно — редаговане, з версіями, готове ділитись."
+      },
+      "mentalModel": {
+        "en": "The chat is the workshop; the artifact is the thing you're building — a document or app that lives beside the conversation and outlives any single turn.",
+        "uk": "Чат — це майстерня; artifact — те, що ти будуєш: документ чи застосунок, який живе поруч із розмовою і переживає будь-який окремий хід."
+      },
+      "readMins": 9,
+      "topics": [
+        {
+          "id": "t1",
+          "title": {
+            "en": "What artifacts are",
+            "uk": "Що таке artifacts"
+          }
+        },
+        {
+          "id": "t2",
+          "title": {
+            "en": "Types: documents, code, mini-apps, diagrams",
+            "uk": "Типи: документи, код, mini-apps, діаграми"
+          }
+        },
+        {
+          "id": "t3",
+          "title": {
+            "en": "Inline visualizations & data analytics",
+            "uk": "Візуалізації та аналітика"
+          }
+        },
+        {
+          "id": "t4",
+          "title": {
+            "en": "Editing, versioning & sharing",
+            "uk": "Редагування, версії та поширення"
+          }
+        }
+      ],
+      "seeAlso": [
+        "m9",
+        "m4",
+        "m12",
+        "m22"
+      ],
+      "authored": true
+    },
+    {
+      "id": "m9",
+      "section": "s2",
+      "order": 9,
+      "level": "senior",
+      "title": {
+        "en": "Live Artifacts",
+        "uk": "Live Artifacts"
+      },
+      "tagline": {
+        "en": "Give an artifact memory and a connection to the world and it stops being a one-shot output — it becomes a small app you return to.",
+        "uk": "Дай artifact пам'ять і зв'язок зі світом — і він перестає бути одноразовим виводом, стаючи маленьким застосунком, до якого вертаєшся."
+      },
+      "mentalModel": {
+        "en": "A static artifact is a printout; a live artifact is a running program — it remembers state, calls the model from inside itself, and reaches your tools.",
+        "uk": "Статичний artifact — це роздруківка; live artifact — програма, що працює: пам'ятає стан, викликає модель зсередини себе й дістає твої інструменти."
+      },
+      "readMins": 10,
+      "topics": [
+        {
+          "id": "t1",
+          "title": {
+            "en": "Stateful artifacts: persistent storage",
+            "uk": "Stateful artifacts: persistent storage"
+          }
+        },
+        {
+          "id": "t2",
+          "title": {
+            "en": "Connected: Claude API + MCP",
+            "uk": "Connected: Claude API + MCP"
+          }
+        },
+        {
+          "id": "t3",
+          "title": {
+            "en": "Building a mini-tool you return to",
+            "uk": "Створення mini-tool, до якого вертаєшся"
+          }
+        },
+        {
+          "id": "t4",
+          "title": {
+            "en": "Limits, safety & cost",
+            "uk": "Обмеження, безпека та вартість"
+          }
+        }
+      ],
+      "seeAlso": [
+        "m8",
+        "m11",
+        "m12",
+        "m25"
+      ],
+      "authored": true
+    },
+    {
+      "id": "m10",
+      "section": "s2",
+      "order": 10,
+      "level": "senior",
+      "title": {
+        "en": "Context & token management",
+        "uk": "Управління context і токенами"
+      },
+      "tagline": {
+        "en": "Everything Claude can see at once shares one finite budget — and so does the answer. Learn what fills it, what gets cut, and how to pay less for the same context.",
+        "uk": "Усе, що Claude бачить одночасно, ділить один скінченний бюджет — і відповідь теж. Дізнайся, що його заповнює, що обрізається і як платити менше за той самий контекст."
+      },
+      "mentalModel": {
+        "en": "The context window is a finite desk. Everything Claude works with has to fit on it — including room to write the answer. Your job is to choose what's on the desk.",
+        "uk": "Context window — це скінченний стіл. Усе, з чим працює Claude, має на ньому вміститися — включно з місцем, щоб написати відповідь. Твоя задача — обирати, що лежить на столі."
+      },
+      "readMins": 12,
+      "topics": [
+        {
+          "id": "t1",
+          "title": {
+            "en": "The context window: what fills it",
+            "uk": "Context window: що його заповнює"
+          }
+        },
+        {
+          "id": "t2",
+          "title": {
+            "en": "Tokens 101",
+            "uk": "Tokens 101"
+          }
+        },
+        {
+          "id": "t3",
+          "title": {
+            "en": "Truncation: protecting the signal",
+            "uk": "Truncation: як зберегти сигнал"
+          }
+        },
+        {
+          "id": "t4",
+          "title": {
+            "en": "Cost levers: caching, batch, model choice",
+            "uk": "Важелі вартості: caching, batch, вибір моделі"
+          }
+        },
+        {
+          "id": "t5",
+          "title": {
+            "en": "Strategies: projects, skills, summaries",
+            "uk": "Стратегії: projects, skills, summaries"
+          }
+        }
+      ],
+      "seeAlso": [
+        "m7",
+        "m11",
+        "m12",
+        "m6"
+      ],
+      "authored": true
+    },
+    {
+      "id": "m11",
+      "section": "s3",
+      "order": 11,
+      "level": "senior",
+      "title": {
+        "en": "Connectors & MCP",
+        "uk": "Connectors і MCP"
+      },
+      "tagline": {
+        "en": "Give Claude new powers by plugging it into your apps through one open protocol — and stay in control of exactly what each connection can touch.",
+        "uk": "Дай Claude нові можливості, під'єднавши його до твоїх застосунків через один відкритий протокол — і контролюй, що саме може чіпати кожне з'єднання."
+      },
+      "mentalModel": {
+        "en": "MCP is a USB-C port for AI: one open protocol so any Claude app can plug into any tool. A connector is just an MCP server made one-click — and you decide what each plug may touch.",
+        "uk": "MCP — це USB-C порт для AI: один відкритий протокол, щоб будь-який застосунок Claude під'єднувався до будь-якого інструмента. Connector — це MCP server у «один клік», і ти вирішуєш, що кожен роз'єм може чіпати."
+      },
+      "readMins": 13,
+      "topics": [
+        {
+          "id": "t1",
+          "title": {
+            "en": "What MCP is",
+            "uk": "Що таке MCP"
+          }
+        },
+        {
+          "id": "t2",
+          "title": {
+            "en": "The Connectors Directory",
+            "uk": "Connectors Directory"
+          }
+        },
+        {
+          "id": "t3",
+          "title": {
+            "en": "Remote vs local servers",
+            "uk": "Remote vs local сервери"
+          }
+        },
+        {
+          "id": "t4",
+          "title": {
+            "en": "OAuth & permission scopes",
+            "uk": "OAuth і scopes дозволів"
+          }
+        },
+        {
+          "id": "t5",
+          "title": {
+            "en": "Walkthroughs — Notion · Gmail · Calendar",
+            "uk": "Розбори — Notion · Gmail · Calendar"
+          }
+        }
+      ],
+      "seeAlso": [
+        "m12",
+        "m9",
+        "m25",
+        "m19"
+      ],
+      "authored": true
+    },
+    {
+      "id": "m12",
+      "section": "s3",
+      "order": 12,
+      "level": "senior",
+      "title": {
+        "en": "Skills — concepts & using them",
+        "uk": "Skills — концепції та використання"
+      },
+      "tagline": {
+        "en": "Package your expertise into a folder Claude loads only when it's relevant — so one Skill or fifty cost almost nothing until the moment they're used.",
+        "uk": "Запакуй свою експертизу в теку, яку Claude вантажить лише за потреби — тож один Skill чи пʼятдесят коштують майже нічого, поки їх не використають."
+      },
+      "mentalModel": {
+        "en": "A Skill is a folder of expertise Claude opens like an onboarding guide: it always sees the cover (name + description), reads the page (SKILL.md) only when your task matches, and runs the bundled scripts without ever loading their code.",
+        "uk": "Skill — це тека з експертизою, яку Claude відкриває як онбординг-гайд: обкладинку (name + description) він бачить завжди, сторінку (SKILL.md) читає лише коли задача підходить, а вкладені скрипти запускає, ніколи не завантажуючи їхній код."
+      },
+      "readMins": 13,
+      "topics": [
+        {
+          "id": "t1",
+          "title": {
+            "en": "What a Skill is",
+            "uk": "Що таке Skill"
+          }
+        },
+        {
+          "id": "t2",
+          "title": {
+            "en": "SKILL.md anatomy",
+            "uk": "Анатомія SKILL.md"
+          }
+        },
+        {
+          "id": "t3",
+          "title": {
+            "en": "Progressive disclosure & token cost",
+            "uk": "Progressive disclosure і вартість у токенах"
+          }
+        },
+        {
+          "id": "t4",
+          "title": {
+            "en": "Pre-built skills & where they run",
+            "uk": "Готові skills і де вони працюють"
+          }
+        },
+        {
+          "id": "t5",
+          "title": {
+            "en": "Installing / adding skills",
+            "uk": "Встановлення / додавання skills"
+          }
+        }
+      ],
+      "seeAlso": [
+        "m13",
+        "m14",
+        "m10",
+        "m11",
+        "m7"
+      ],
+      "authored": true
+    },
+    {
+      "id": "m13",
+      "section": "s3",
+      "order": 13,
+      "level": "senior",
+      "title": {
+        "en": "Building your own skills",
+        "uk": "Створення власних skills"
+      },
+      "tagline": {
+        "en": "Turn a workflow you keep re-explaining into a folder Claude loads on its own — then prove it works by running real tasks with and without it.",
+        "uk": "Перетвори процес, який щоразу пояснюєш заново, на теку, яку Claude вантажить сам — і доведи, що вона працює, прогнавши реальні задачі з нею і без неї."
+      },
+      "mentalModel": {
+        "en": "Authoring a Skill is writing a runbook for a sharp colleague: state plainly when to reach for it and what to do, push the heavy detail into files they open only when needed, and trust it only after it passes real tasks in a fresh session.",
+        "uk": "Створити Skill — це написати runbook для тямущого колеги: чітко скажи, коли його брати і що робити, винеси важкі деталі у файли, які відкривають лише за потреби, і довіряй йому лише після того, як він пройде реальні задачі в новій сесії."
+      },
+      "readMins": 12,
+      "topics": [
+        {
+          "id": "t1",
+          "title": {
+            "en": "Author a basic skill (the recipe)",
+            "uk": "Створення базового skill (рецепт)"
+          }
+        },
+        {
+          "id": "t2",
+          "title": {
+            "en": "Add scripts & resources",
+            "uk": "Додавання scripts і resources"
+          }
+        },
+        {
+          "id": "t3",
+          "title": {
+            "en": "Write a description that triggers",
+            "uk": "Description, що тригериться"
+          }
+        },
+        {
+          "id": "t4",
+          "title": {
+            "en": "Test & iterate",
+            "uk": "Тестування та ітерації"
+          }
+        },
+        {
+          "id": "t5",
+          "title": {
+            "en": "Package & share",
+            "uk": "Пакування та поширення"
+          }
+        }
+      ],
+      "seeAlso": [
+        "m12",
+        "m14",
+        "m11",
+        "m24"
+      ],
+      "authored": true
+    },
+    {
+      "id": "m14",
+      "section": "s3",
+      "order": 14,
+      "level": "senior",
+      "title": {
+        "en": "Plugins & marketplaces",
+        "uk": "Plugins і marketplaces"
+      },
+      "tagline": {
+        "en": "Bundle the skills, commands, sub-agents, hooks and connectors for a whole job into one install — and distribute them through a marketplace.",
+        "uk": "Зведи skills, commands, sub-agents, hooks і connectors для цілої ролі в одну інсталяцію — і поширюй їх через marketplace."
+      },
+      "mentalModel": {
+        "en": "A plugin is a “role in a box”: one folder, defined by a plugin.json manifest, that bundles many extensions at once. A marketplace is the app store — a git repo — you install it from.",
+        "uk": "Plugin — це “роль у коробці”: одна тека, описана маніфестом plugin.json, що зводить багато розширень разом. Marketplace — це застосунковий магазин (git repo), звідки ти його ставиш."
+      },
+      "readMins": 10,
+      "topics": [
+        {
+          "id": "t1",
+          "title": {
+            "en": "What a plugin bundles",
+            "uk": "Що містить plugin"
+          }
+        },
+        {
+          "id": "t2",
+          "title": {
+            "en": "Installing plugins & marketplaces",
+            "uk": "Встановлення plugins і marketplaces"
+          }
+        },
+        {
+          "id": "t3",
+          "title": {
+            "en": "The role plugins (Cowork)",
+            "uk": "Рольові plugins (Cowork)"
+          }
+        },
+        {
+          "id": "t4",
+          "title": {
+            "en": "Building & sharing a plugin",
+            "uk": "Створення та поширення plugin"
+          }
+        }
+      ],
+      "seeAlso": [
+        "m13",
+        "m11",
+        "m24",
+        "m19"
+      ],
+      "authored": true
+    },
+    {
+      "id": "m15",
+      "section": "s4",
+      "order": 15,
+      "level": "middle",
+      "title": {
+        "en": "Cowork mental model & setup",
+        "uk": "Cowork: ментальна модель і налаштування"
+      },
+      "tagline": {
+        "en": "The third tab in Claude Desktop, where Claude stops chatting and starts working — on your files, with your tools.",
+        "uk": "Третя вкладка в Claude Desktop, де Claude перестає лише відповідати і починає працювати — з твоїми файлами та інструментами."
+      },
+      "mentalModel": {
+        "en": "An assistant working at your desk: it thinks, acts with a tool, observes the result, and repeats — until the job is done.",
+        "uk": "Асистент, що працює за твоїм столом: думає, діє інструментом, дивиться на результат і повторює — поки задачу не виконано."
+      },
+      "readMins": 8,
+      "topics": [
+        {
+          "id": "t1",
+          "title": {
+            "en": "What Cowork is",
+            "uk": "Що таке Cowork"
+          }
+        },
+        {
+          "id": "t2",
+          "title": {
+            "en": "The Agent Loop",
+            "uk": "The Agent Loop"
+          }
+        },
+        {
+          "id": "t3",
+          "title": {
+            "en": "Local files & the workspace folder",
+            "uk": "Локальні файли та робоча тека"
+          }
+        },
+        {
+          "id": "t4",
+          "title": {
+            "en": "Setup & your first task",
+            "uk": "Налаштування і перша задача"
+          }
+        },
+        {
+          "id": "t5",
+          "title": {
+            "en": "Cowork vs Claude Code vs plain chat",
+            "uk": "Cowork vs Claude Code vs звичайний chat"
+          }
+        }
+      ],
+      "seeAlso": [
+        "m16",
+        "m17",
+        "m18",
+        "m22",
+        "m26"
+      ],
+      "authored": true
+    },
+    {
+      "id": "m16",
+      "section": "s4",
+      "order": 16,
+      "level": "middle",
+      "title": {
+        "en": "Files, folders & outputs",
+        "uk": "Файли, теки та outputs"
+      },
+      "tagline": {
+        "en": "Cowork's real power is files: it reads the folder you grant, builds in a throwaway sandbox, and writes finished deliverables back — with a permission gate on anything destructive.",
+        "uk": "Справжня сила Cowork — це файли: він читає надану теку, працює в одноразовому sandbox і записує готові результати назад — із дозвільним gate на будь-що руйнівне."
+      },
+      "mentalModel": {
+        "en": "Three places, one that lasts: chat uploads and the sandbox are scratch — only the folder you grant persists, so that's where finished work lands.",
+        "uk": "Три місця, одне залишається: chat-uploads і sandbox — чернетка; зберігається лише надана тека, тож саме туди потрапляє готова робота."
+      },
+      "readMins": 9,
+      "topics": [
+        {
+          "id": "t1",
+          "title": {
+            "en": "Selecting & granting folders",
+            "uk": "Вибір і надання тек"
+          }
+        },
+        {
+          "id": "t2",
+          "title": {
+            "en": "Reading vs writing — scratchpad vs your folder",
+            "uk": "Читання vs запис — scratchpad vs твоя тека"
+          }
+        },
+        {
+          "id": "t3",
+          "title": {
+            "en": "Deliverables & presenting files",
+            "uk": "Результати та показ файлів"
+          }
+        },
+        {
+          "id": "t4",
+          "title": {
+            "en": "Safety — deletes, overwrites, boundaries",
+            "uk": "Безпека — видалення, перезапис, межі"
+          }
+        }
+      ],
+      "seeAlso": [
+        "m15",
+        "m17",
+        "m12",
+        "m25"
+      ],
+      "authored": true
+    },
+    {
+      "id": "m17",
+      "section": "s4",
+      "order": 17,
+      "level": "middle",
+      "title": {
+        "en": "Scheduled tasks",
+        "uk": "Заплановані задачі"
+      },
+      "tagline": {
+        "en": "Describe a job once; Claude runs it on your cadence — a morning briefing, a weekly report — and leaves the finished file waiting for you.",
+        "uk": "Опиши задачу один раз; Claude виконує її за твоїм розкладом — ранковий briefing, тижневий звіт — і лишає готовий файл на тебе."
+      },
+      "mentalModel": {
+        "en": "A standing order, not a reminder: each run is a fresh Cowork session that does the work and writes the output — but only while your machine is awake and Desktop is open.",
+        "uk": "Постійне доручення, а не нагадування: кожен запуск — нова сесія Cowork, що робить роботу й пише результат — але лише поки компʼютер увімкнений і Desktop відкритий."
+      },
+      "readMins": 9,
+      "topics": [
+        {
+          "id": "t1",
+          "title": {
+            "en": "What scheduling is — cadence vs one-off",
+            "uk": "Що таке планування — cadence vs одноразово"
+          }
+        },
+        {
+          "id": "t2",
+          "title": {
+            "en": "Creating a recurring task",
+            "uk": "Створення періодичної задачі"
+          }
+        },
+        {
+          "id": "t3",
+          "title": {
+            "en": "Cadence, cron & the awake rule",
+            "uk": "Cadence, cron і правило про пробудження"
+          }
+        },
+        {
+          "id": "t4",
+          "title": {
+            "en": "Managing & debugging schedules",
+            "uk": "Керування та дебаг розкладів"
+          }
+        }
+      ],
+      "seeAlso": [
+        "m15",
+        "m16",
+        "m25",
+        "m11"
+      ],
+      "authored": true
+    },
+    {
+      "id": "m18",
+      "section": "s4",
+      "order": 18,
+      "level": "senior",
+      "title": {
+        "en": "Computer use",
+        "uk": "Computer use"
+      },
+      "tagline": {
+        "en": "When no connector or browser tool fits, Claude takes the slow, powerful path: it looks at your screen and clicks, types and navigates apps directly — asking permission for every app.",
+        "uk": "Коли немає connector чи browser-tool, Claude обирає повільний, але потужний шлях: дивиться на екран і клікає, друкує й керує застосунками напряму — питаючи дозвіл для кожного застосунку."
+      },
+      "mentalModel": {
+        "en": "The tool of last resort: connector first, browser next, screen control only for what nothing else can reach — because driving the screen has no sandbox.",
+        "uk": "Інструмент останнього шансу: спершу connector, потім browser, а керування екраном — лише для того, що інакше не дістати — бо керування екраном не має sandbox."
+      },
+      "readMins": 9,
+      "topics": [
+        {
+          "id": "t1",
+          "title": {
+            "en": "When Claude drives your screen",
+            "uk": "Коли Claude керує екраном"
+          }
+        },
+        {
+          "id": "t2",
+          "title": {
+            "en": "The three tiers of acting",
+            "uk": "Три рівні дій"
+          }
+        },
+        {
+          "id": "t3",
+          "title": {
+            "en": "Granting apps & access tiers",
+            "uk": "Надання застосунків і рівні доступу"
+          }
+        },
+        {
+          "id": "t4",
+          "title": {
+            "en": "Link & financial safety",
+            "uk": "Безпека посилань і фінансів"
+          }
+        }
+      ],
+      "seeAlso": [
+        "m15",
+        "m17",
+        "m20",
+        "m25"
+      ],
+      "authored": true
+    },
+    {
+      "id": "m19",
+      "section": "s4",
+      "order": 19,
+      "level": "senior",
+      "title": {
+        "en": "Cowork projects, connectors, plugins & mobile",
+        "uk": "Cowork projects, connectors, plugins і mobile"
+      },
+      "tagline": {
+        "en": "Turn one-off Cowork tasks into a standing workspace: a project that keeps files, instructions, schedules and memory — powered by your account connectors and plugins, and reachable from your phone.",
+        "uk": "Перетвори разові Cowork-задачі на постійний workspace: project, що тримає файли, instructions, розклади й memory — на основі твоїх акаунтних connectors і plugins, і доступний навіть із телефону."
+      },
+      "mentalModel": {
+        "en": "A Cowork project is a folder with a memory; your connectors and plugins plug in from the account level; Dispatch is one phone-to-desktop thread that routes each task to the right agent.",
+        "uk": "Cowork project — це папка з памʼяттю; твої connectors і plugins під'єднуються з рівня акаунта; Dispatch — це один thread «телефон↔десктоп», що скеровує кожну задачу до потрібного агента."
+      },
+      "readMins": 8,
+      "topics": [
+        {
+          "id": "t1",
+          "title": {
+            "en": "Cowork projects — persistent context for recurring work",
+            "uk": "Cowork projects — персистентний context для повторюваної роботи"
+          }
+        },
+        {
+          "id": "t2",
+          "title": {
+            "en": "Connectors in Cowork",
+            "uk": "Connectors у Cowork"
+          }
+        },
+        {
+          "id": "t3",
+          "title": {
+            "en": "Plugins & role workflows",
+            "uk": "Plugins і рольові процеси"
+          }
+        },
+        {
+          "id": "t4",
+          "title": {
+            "en": "Mobile & dispatch — start from your phone",
+            "uk": "Mobile і dispatch — запуск із телефону"
+          }
+        }
+      ],
+      "seeAlso": [
+        "m15",
+        "m7",
+        "m14",
+        "m17"
+      ],
+      "authored": true
+    },
+    {
+      "id": "m20",
+      "section": "s5",
+      "order": 20,
+      "level": "middle",
+      "title": {
+        "en": "Claude in Chrome",
+        "uk": "Claude in Chrome"
+      },
+      "tagline": {
+        "en": "A browser extension that works the web in a side panel: it reads the page via screenshots, clicks, types and fills forms — asking per site and before anything irreversible.",
+        "uk": "Розширення браузера, що працює з вебом у бічній панелі: читає сторінку через скриншоти, клікає, друкує й заповнює форми — питаючи per-site і перед будь-чим незворотним."
+      },
+      "mentalModel": {
+        "en": "An agent in a side panel: it sees only the active tab (via screenshots), acts through the browser like you would, and stops to ask per site and before anything irreversible.",
+        "uk": "Агент у бічній панелі: бачить лише активну вкладку (через скриншоти), діє через браузер, як ти, і спиняється спитати per-site і перед будь-чим незворотним."
+      },
+      "readMins": 7,
+      "topics": [
+        {
+          "id": "t1",
+          "title": {
+            "en": "What the browser agent is",
+            "uk": "Що таке browser-agent"
+          }
+        },
+        {
+          "id": "t2",
+          "title": {
+            "en": "The loop: navigate, click, fill, extract",
+            "uk": "Цикл: навігація, клік, форми, extract"
+          }
+        },
+        {
+          "id": "t3",
+          "title": {
+            "en": "Shortcuts, recordings & scheduled web tasks",
+            "uk": "Shortcuts, записи й заплановані web-задачі"
+          }
+        },
+        {
+          "id": "t4",
+          "title": {
+            "en": "Permissions & safety",
+            "uk": "Дозволи та безпека"
+          }
+        }
+      ],
+      "seeAlso": [
+        "m18",
+        "m11",
+        "m25",
+        "m17"
+      ],
+      "authored": true
+    },
+    {
+      "id": "m21",
+      "section": "s5",
+      "order": 21,
+      "level": "middle",
+      "title": {
+        "en": "Claude for Excel & PowerPoint",
+        "uk": "Claude for Excel і PowerPoint"
+      },
+      "tagline": {
+        "en": "Office add-ins that work inside the apps: Excel answers with clickable cell-level citations and edits safely; PowerPoint builds on your template — and one feature carries context across the whole Microsoft 365 suite.",
+        "uk": "Office-add-in, що працюють усередині застосунків: Excel відповідає клікабельними cell-level citations і редагує безпечно; PowerPoint будує на твоєму шаблоні — а одна можливість переносить context по всьому Microsoft 365."
+      },
+      "mentalModel": {
+        "en": "A teammate inside Excel and PowerPoint that shows its work — every answer cites the exact cell, every edit is highlighted and explained — and can carry context between your open Office files.",
+        "uk": "Колега всередині Excel і PowerPoint, що показує свою роботу — кожна відповідь цитує конкретну клітинку, кожна правка підсвічена й пояснена — і вміє переносити context між відкритими Office-файлами."
+      },
+      "readMins": 7,
+      "topics": [
+        {
+          "id": "t1",
+          "title": {
+            "en": "The Excel agent: ask, cite, navigate",
+            "uk": "Excel-agent: запит, цитата, навігація"
+          }
+        },
+        {
+          "id": "t2",
+          "title": {
+            "en": "Safe edits: dependencies, tracking, overwrite protection",
+            "uk": "Безпечні правки: залежності, tracking, захист від перезапису"
+          }
+        },
+        {
+          "id": "t3",
+          "title": {
+            "en": "Pivot tables & formatting by language; skills & connectors",
+            "uk": "Pivot tables і форматування мовою; skills і connectors"
+          }
+        },
+        {
+          "id": "t4",
+          "title": {
+            "en": "PowerPoint & working across Microsoft 365",
+            "uk": "PowerPoint і робота крізь Microsoft 365"
+          }
+        }
+      ],
+      "seeAlso": [
+        "m20",
+        "m12",
+        "m11",
+        "m26"
+      ],
+      "authored": true
+    },
+    {
+      "id": "m22",
+      "section": "s5",
+      "order": 22,
+      "level": "senior",
+      "title": {
+        "en": "Claude Code essentials",
+        "uk": "Claude Code: основи"
+      },
+      "tagline": {
+        "en": "The same coding agent in your terminal, IDE and CI — running the agent loop over your real repo, with CLAUDE.md for its brain and permissions for its leash.",
+        "uk": "Той самий кодувальний agent у терміналі, IDE і CI — виконує agent loop над твоїм справжнім репозиторієм, із CLAUDE.md за мозок і permissions за повідець."
+      },
+      "mentalModel": {
+        "en": "Cowork’s engineer sibling: one agent, three doorways (terminal · IDE · CI) working your actual files and shell — not a sandbox — so CLAUDE.md steers it and permissions contain it.",
+        "uk": "Інженерний родич Cowork: один agent, троє дверей (terminal · IDE · CI), що працює з твоїми реальними файлами й shell — не в пісочниці — тож CLAUDE.md ним керує, а permissions його стримують."
+      },
+      "readMins": 9,
+      "topics": [
+        {
+          "id": "t1",
+          "title": {
+            "en": "Two ways in, and where it runs",
+            "uk": "Два входи і де воно працює"
+          }
+        },
+        {
+          "id": "t2",
+          "title": {
+            "en": "Models, effort & permissions",
+            "uk": "Моделі, effort і permissions"
+          }
+        },
+        {
+          "id": "t3",
+          "title": {
+            "en": "CLAUDE.md — the project brain",
+            "uk": "CLAUDE.md — мозок проєкту"
+          }
+        },
+        {
+          "id": "t4",
+          "title": {
+            "en": "Plan mode & verification",
+            "uk": "Plan mode і верифікація"
+          }
+        },
+        {
+          "id": "t5",
+          "title": {
+            "en": "MCP in Code",
+            "uk": "MCP у Code"
+          }
+        }
+      ],
+      "seeAlso": [
+        "m15",
+        "m23",
+        "m11",
+        "m25",
+        "m26"
+      ],
+      "authored": true
+    },
+    {
+      "id": "m23",
+      "section": "s5",
+      "order": 23,
+      "level": "staff",
+      "title": {
+        "en": "Sub-agents, agent teams & worktrees",
+        "uk": "Sub-agents, agent teams і worktrees"
+      },
+      "tagline": {
+        "en": "Fan out into agents with their own context, then merge what comes back — from a single summary-returning sub-agent to a git-coordinated team building in parallel.",
+        "uk": "Розгалужуйся в агентів із власним context і зливай те, що повертається — від одного sub-agent, що віддає summary, до git-координованої команди, яка будує паралельно."
+      },
+      "mentalModel": {
+        "en": "One Claude can become many: a sub-agent does a noisy side-quest in its own window and hands back a summary; scale that up and you get parallel sessions, then a git-coordinated team. Fan out, merge back.",
+        "uk": "Один Claude може стати багатьма: sub-agent робить галасливий побічний квест у власному вікні й повертає summary; масштабуй це — і маєш паралельні сесії, далі git-координовану команду. Розгалузити, злити назад."
+      },
+      "readMins": 10,
+      "topics": [
+        {
+          "id": "t1",
+          "title": {
+            "en": "Sub-agents: own context, isolation, parallelism",
+            "uk": "Sub-agents: власний context, ізоляція, паралелізм"
+          }
+        },
+        {
+          "id": "t2",
+          "title": {
+            "en": "Three scales: sub-agents → background → teams",
+            "uk": "Три масштаби: sub-agents → background → teams"
+          }
+        },
+        {
+          "id": "t3",
+          "title": {
+            "en": "Git worktrees & parallelization",
+            "uk": "Git worktrees і паралелізація"
+          }
+        },
+        {
+          "id": "t4",
+          "title": {
+            "en": "Skills vs sub-agents — when which",
+            "uk": "Skills vs sub-agents — що коли"
+          }
+        }
+      ],
+      "seeAlso": [
+        "m22",
+        "m24",
+        "m12",
+        "m10"
+      ],
+      "authored": true
+    },
+    {
+      "id": "m24",
+      "section": "s5",
+      "order": 24,
+      "level": "staff",
+      "title": {
+        "en": "Hooks, slash commands & advanced agentic patterns",
+        "uk": "Hooks, slash commands і просунуті agentic-патерни"
+      },
+      "tagline": {
+        "en": "Hooks are deterministic gates around the loop; slash commands are shortcuts into it; patterns and harnesses are how you orchestrate it at scale.",
+        "uk": "Hooks — детерміновані ворота навколо циклу; slash commands — скорочення в нього; патерни й harnesses — як ти оркеструєш його в масштабі."
+      },
+      "mentalModel": {
+        "en": "The agent loop is probabilistic; hooks make chosen moments guaranteed, commands make them fast, and a harness is the program that runs the whole loop for you.",
+        "uk": "Agent loop імовірнісний; hooks роблять обрані моменти гарантованими, commands — швидкими, а harness — це програма, що крутить увесь цикл за тебе."
+      },
+      "readMins": 10,
+      "topics": [
+        {
+          "id": "t1",
+          "title": {
+            "en": "Hooks: deterministic gates around the loop",
+            "uk": "Hooks: детерміновані ворота навколо циклу"
+          }
+        },
+        {
+          "id": "t2",
+          "title": {
+            "en": "Slash commands & output styles",
+            "uk": "Slash commands і output styles"
+          }
+        },
+        {
+          "id": "t3",
+          "title": {
+            "en": "Patterns: fan-out, pipeline, consensus, research",
+            "uk": "Патерни: fan-out, pipeline, consensus, research"
+          }
+        },
+        {
+          "id": "t4",
+          "title": {
+            "en": "Harnesses & orchestration",
+            "uk": "Harnesses і оркестрація"
+          }
+        }
+      ],
+      "seeAlso": [
+        "m23",
+        "m22",
+        "m25",
+        "m13"
+      ],
+      "authored": true
+    },
+    {
+      "id": "m25",
+      "section": "s6",
+      "order": 25,
+      "level": "senior",
+      "title": {
+        "en": "Security & safe agent use",
+        "uk": "Безпека та безпечне використання агентів"
+      },
+      "tagline": {
+        "en": "An agent reads from an untrusted world and acts on your trusted one — security is keeping those two facts from meeting in a way that hurts you.",
+        "uk": "Agent читає з недовіреного світу і діє у твоєму довіреному — безпека в тому, щоб ці два факти не зустрілися так, що зашкодять тобі."
+      },
+      "mentalModel": {
+        "en": "Treat everything the agent reads from outside as untrusted, and give it the least power that still does the job — an attack needs both to land.",
+        "uk": "Стався до всього, що agent читає ззовні, як до недовіреного, і давай йому найменше прав, яких вистачає для задачі — атаці потрібні обидва, щоб спрацювати."
+      },
+      "readMins": 9,
+      "topics": [
+        {
+          "id": "t1",
+          "title": {
+            "en": "Permissions & least privilege",
+            "uk": "Дозволи та least privilege"
+          }
+        },
+        {
+          "id": "t2",
+          "title": {
+            "en": "Prompt injection & untrusted content",
+            "uk": "Prompt injection і недовірений контент"
+          }
+        },
+        {
+          "id": "t3",
+          "title": {
+            "en": "Link safety & data boundaries",
+            "uk": "Безпека посилань і межі даних"
+          }
+        },
+        {
+          "id": "t4",
+          "title": {
+            "en": "Financial actions & human-in-the-loop",
+            "uk": "Фінансові дії та human-in-the-loop"
+          }
+        },
+        {
+          "id": "t5",
+          "title": {
+            "en": "A practical safety checklist",
+            "uk": "Практичний чеклист безпеки"
+          }
+        }
+      ],
+      "seeAlso": [
+        "m11",
+        "m18",
+        "m20",
+        "m26"
+      ],
+      "authored": true
+    },
+    {
+      "id": "m26",
+      "section": "s6",
+      "order": 26,
+      "level": "senior",
+      "title": {
+        "en": "Choosing the right tool",
+        "uk": "Вибір правильного інструмента"
+      },
+      "tagline": {
+        "en": "Same model, many doorways. The skill is matching the task to the surface — and knowing when two of them overlap.",
+        "uk": "Та сама модель, багато дверей. Майстерність — підібрати поверхню під задачу і знати, де дві з них перетинаються."
+      },
+      "mentalModel": {
+        "en": "One model family, many surfaces. Pick by what the work touches and how much autonomy it needs; reach for the most precise tool that covers the job.",
+        "uk": "Одна сімʼя моделей, багато поверхонь. Обирай за тим, чого торкається робота і скільки автономії треба; бери найточніший інструмент, що покриває задачу."
+      },
+      "readMins": 8,
+      "topics": [
+        {
+          "id": "t1",
+          "title": {
+            "en": "The decision model: task → tool",
+            "uk": "Модель рішення: задача → інструмент"
+          }
+        },
+        {
+          "id": "t2",
+          "title": {
+            "en": "The tools compared",
+            "uk": "Порівняння інструментів"
+          }
+        },
+        {
+          "id": "t3",
+          "title": {
+            "en": "Cost / speed / control trade-offs",
+            "uk": "Баланс вартість / швидкість / контроль"
+          }
+        },
+        {
+          "id": "t4",
+          "title": {
+            "en": "Worked scenarios",
+            "uk": "Розібрані сценарії"
+          }
+        }
+      ],
+      "seeAlso": [
+        "m15",
+        "m22",
+        "m11",
+        "m27"
+      ],
+      "authored": true
+    },
+    {
+      "id": "m27",
+      "section": "s6",
+      "order": 27,
+      "level": "senior",
+      "title": {
+        "en": "The ecosystem map",
+        "uk": "Мапа екосистеми"
+      },
+      "tagline": {
+        "en": "Five layers, one picture — how models, surfaces, context, capabilities and orchestration compose into everything in this guide.",
+        "uk": "Пʼять шарів, одна картина — як моделі, поверхні, context, можливості й оркестрація складаються в усе з цього гайду."
+      },
+      "mentalModel": {
+        "en": "One model family, reached through many surfaces, grounded by context, extended by capabilities, scaled by orchestration — wrapped in security.",
+        "uk": "Одна сімʼя моделей, доступна через багато поверхонь, заземлена context, розширена можливостями, масштабована оркестрацією — і загорнута в безпеку."
+      },
+      "readMins": 7,
+      "topics": [
+        {
+          "id": "t1",
+          "title": {
+            "en": "The layers",
+            "uk": "Шари"
+          }
+        },
+        {
+          "id": "t2",
+          "title": {
+            "en": "How the pieces compose",
+            "uk": "Як складаються частини"
+          }
+        },
+        {
+          "id": "t3",
+          "title": {
+            "en": "The one-picture overview",
+            "uk": "Огляд однією картиною"
+          }
+        }
+      ],
+      "seeAlso": [
+        "m1",
+        "m26",
+        "m25",
+        "m28"
+      ],
+      "authored": true
+    },
+    {
+      "id": "m28",
+      "section": "s6",
+      "order": 28,
+      "level": "middle",
+      "title": {
+        "en": "Mental models, glossary & cheat-sheet",
+        "uk": "Mental models, глосарій і cheat-sheet"
+      },
+      "tagline": {
+        "en": "The revision layer — recall the pictures, look up the terms, and carry one printable page.",
+        "uk": "Шар повторення — згадай картини, знайди терміни і носи одну друковану сторінку."
+      },
+      "mentalModel": {
+        "en": "Don’t re-read 27 modules — recall the picture, and look up only the detail you’re missing.",
+        "uk": "Не перечитуй 27 модулів — згадай картину, а деталь, якої бракує, просто подивись."
+      },
+      "readMins": 8,
+      "topics": [
+        {
+          "id": "t1",
+          "title": {
+            "en": "The mental models gallery",
+            "uk": "Галерея mental models"
+          }
+        },
+        {
+          "id": "t2",
+          "title": {
+            "en": "The glossary — bilingual",
+            "uk": "Глосарій — двомовний"
+          }
+        },
+        {
+          "id": "t3",
+          "title": {
+            "en": "The cheat-sheet — one printable page",
+            "uk": "Cheat-sheet — одна друкована сторінка"
+          }
+        },
+        {
+          "id": "t4",
+          "title": {
+            "en": "Flashcards & self-check",
+            "uk": "Flashcards і самоперевірка"
+          }
+        }
+      ],
+      "seeAlso": [
+        "m27",
+        "m26",
+        "m1",
+        "m6"
+      ],
+      "authored": true
+    }
+  ]
+}

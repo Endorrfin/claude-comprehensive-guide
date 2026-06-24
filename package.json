@@ -5,9 +5,12 @@
   "type": "module",
   "description": "Claude: The Comprehensive Guide — a deep, interactive, bilingual (EN/UA) guide to mastering Claude and its tools. By Vasyl Krupka.",
   "scripts": {
+    "gen:meta": "node --experimental-strip-types --disable-warning=ExperimentalWarning scripts/genMeta.ts",
+    "predev": "npm run gen:meta",
     "dev": "vite",
+    "prebuild": "npm run gen:meta",
     "build": "tsc && vite build",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "tsc --noEmit && tsc -p tsconfig.node.json --noEmit",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -15,6 +18,7 @@
     "react-dom": "^19.2.0"
   },
   "devDependencies": {
+    "@types/node": "^22.10.0",
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",
     "@vitejs/plugin-react": "^6.0.0",

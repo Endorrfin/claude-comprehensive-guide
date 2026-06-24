@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useLang } from "../../i18n/LangContext";
 import { UI } from "../../i18n/ui";
-import { MODULES, SECTIONS } from "../../data/concepts";
+import { MODULES, SECTIONS } from "../../data/meta";
 import { go } from "../../lib/hashRouter";
 import { cx } from "../../lib/utils";
 import type { Level, Localized } from "../../data/types";

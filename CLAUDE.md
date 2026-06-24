@@ -895,4 +895,50 @@ Footer: **"Vasyl Krupka · Senior Fullstack Engineer"** + 🇺🇦. Dark is prim
   **Next (S11–S12 buffer, optional): the metadata/body data-split + prebuilt search index (to shrink the 625 KB
   entry further); a final full UA proofreading pass; optional PDF/LinkedIn pack.** **Pending user:** repo is live
   (§11) — S10b appears live once committed & **merged to `main`**; locally `npm install` (darwin-arm64) +
-  `npm run build`.
+  `npm run build`. *(Landed: committed `6ee9f14 feat(s10b): author M28 + glossary/gallery study surfaces;
+  route/sim code-splitting`, merged to `main` via PR #13.)*
+
+- **2026-06-24 · S10c Data-split — metadata/body separation + prebuilt index** *(branch
+  `s10c-data-split-meta-index`; built on `main` after the PR #13 merge)* — Did the **§13-flagged "next lever"**
+  the user green-lit: split the module **metadata** from the **bodies** so `concepts.ts` (~600 KB of content)
+  **no longer ships in the initial bundle**. **Result: the eager entry chunk dropped 625 KB → 59 KB raw
+  (195.6 → 20.0 KB gzip)**; the bodies moved into the **lazy `ModulePage` chunk** (623 KB / 193 KB gzip) that
+  loads only on first module open. **First-paint payload (landing) ≈ 85 KB gzip** (index 20 + react-vendor 59 +
+  EcosystemMap 0.75 + css 5.6) — down from the original ~324 KB-gzip monolith (**~74% smaller initial JS/CSS**).
+  **How:** new **`scripts/genMeta.ts`** codegen reads `concepts.ts` (the content SSOT) and emits
+  **`src/data/meta.json`** (the prebuilt nav/search index: per-module id/section/order/level/title/tagline/
+  mentalModel/readMins/topic id+title/seeAlso/**authored** + sections + signatureSims). New typed
+  **`src/data/meta.ts`** loads that JSON and re-exports `MODULES`(meta)/`SECTIONS`/`SIGNATURE_SIMS`/`modulesOf`/
+  `moduleById`/`sectionById`/`prevNext`/`isAuthored` under the **same names** as `concepts.ts`, so consumers
+  swapped only the import path. **Repointed every metadata consumer → `meta.ts`:** the eager shell **TopBar**
+  (search), **Sidebar** (nav), **Footer** (counts), plus the lazy **EcosystemMap**, **MentalModelsPage**,
+  **GlossaryPage** and **ToolPickerSim**. **`ModulePage` is now the ONLY importer of `concepts.ts`** (full
+  bodies via `moduleById`+`isAuthored`) and it's lazy → `concepts.ts` rides its on-demand chunk. **npm scripts:**
+  `gen:meta` (`node --experimental-strip-types --disable-warning=ExperimentalWarning scripts/genMeta.ts`) wired
+  as **`prebuild`** *and* **`predev`** so the index is regenerated before every build/dev — **production never
+  ships stale metadata**; `meta.json` is **committed** (like a lockfile). Global search still works (it only ever
+  indexed title/tagline/topic-titles — all in meta), so no behaviour change.
+  **Verification (linux-arm64; `/tmp` bindings via `NODE_PATH`):** `tsc --noEmit` ✓ (strict) · **`gen:meta`** ✓
+  (28 modules · 6 sections · 7 sims; **deterministic** — re-run leaves `meta.json` byte-identical) ·
+  **meta-sync check** ✓ (a new script asserts every module's order/level/section/title/tagline/mentalModel/
+  topics/seeAlso/**authored** in `meta.json` matches `concepts.ts` — 0 drift) · **data-integrity** ✓ (re-run:
+  ALL PASS) · **render smoke** ✓ (`MentalModelsPage` + `GlossaryPage`, now meta-backed, still render via
+  `react-dom/server`) · `vite build` ✓ (**84 modules**, 44 JS + 11 CSS chunks; entry `index` **59 KB / 20 KB
+  gzip**, `react-vendor` 190/59, lazy `ModulePage` 623/193, `GlossaryPage` 54/19). **Only `concepts.ts` is now
+  imported by a lazy route** (verified by grep).
+  **Challenges / notes:** (1) the codegen depends on Node 22's `--experimental-strip-types`; the project pins
+  Node 22 (user 22.17, CI `setup-node@22`), and `--disable-warning=ExperimentalWarning` keeps build output clean
+  — if a future Node drops the flag, set `gen:meta` to a tsx/esbuild runner instead. (2) `meta.json` is a
+  **generated, committed artifact** — after editing module **metadata** (title/tagline/mentalModel/topics/level/
+  order/seeAlso) in `concepts.ts`, it's regenerated automatically by `predev`/`prebuild`, or run `npm run
+  gen:meta`; the meta-sync check catches drift. (3) authoring workflow is **unchanged** — content is still edited
+  only in `src/data/concepts.ts`. (4) the Node-side codegen imports `node:fs/url/path`, which the app
+  `tsconfig.json` (`types: []`, `include: ["src"]`) doesn't type — so editors flagged `TS2307 Cannot find module
+  'node:fs'`. Fixed by adding **`@types/node`** (devDep) + a dedicated **`tsconfig.node.json`** (`include:
+  ["scripts/**/*.ts","vite.config.ts"]`, `types: ["node"]`); `typecheck` now runs **both** projects
+  (`tsc --noEmit && tsc -p tsconfig.node.json --noEmit`). The app build (`tsc && vite build`) is unchanged
+  (still app-only); **run `npm install`** to pull `@types/node`. **Suggested branch `s10c-data-split-meta-index`;
+  commit `perf(s10c): split module metadata (meta.json + meta.ts) from bodies; entry 625→59 KB`.**
+  **Status: guide content-complete AND the documented data-split shipped — initial JS/CSS ≈85 KB gzip.**
+  **Next (optional buffer): final full UA proofreading pass; optional PDF/LinkedIn pack; per-module body chunks
+  (split the 623 KB `ModulePage` body chunk further) only if module-open latency ever warrants it.**

@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from "react";
 import { useLang } from "../../i18n/LangContext";
 import { FACETS, recommend, SURFACES, type Answers, type Facet, type Ranked } from "../../data/decide";
-import { moduleById } from "../../data/concepts";
+import { moduleById } from "../../data/meta";
 import { go } from "../../lib/hashRouter";
 import type { Localized } from "../../data/types";
 import "./toolPicker.css";
