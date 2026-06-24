@@ -1,15 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { useRoute } from "./lib/hashRouter";
 import { useLang } from "./i18n/LangContext";
-import { UI } from "./i18n/ui";
 import { TopBar } from "./components/layout/TopBar";
 import { Sidebar } from "./components/layout/Sidebar";
 import { Footer } from "./components/layout/Footer";
-import { EcosystemMap } from "./components/map/EcosystemMap";
-import { ModulePage } from "./components/chapter/ModulePage";
-import { StubPage } from "./components/pages/StubPage";
-import { DecidePage } from "./components/pages/DecidePage";
 import type { Level } from "./data/types";
+
+// CHANGED (S10b): route pages are lazy-loaded so each becomes its own chunk;
+// the shell (TopBar/Sidebar/Footer) stays eager for instant nav + search.
+const EcosystemMap = React.lazy(() => import("./components/map/EcosystemMap").then((m) => ({ default: m.EcosystemMap })));
+const ModulePage = React.lazy(() => import("./components/chapter/ModulePage").then((m) => ({ default: m.ModulePage })));
+const MentalModelsPage = React.lazy(() => import("./components/pages/MentalModelsPage").then((m) => ({ default: m.MentalModelsPage })));
+const GlossaryPage = React.lazy(() => import("./components/pages/GlossaryPage").then((m) => ({ default: m.GlossaryPage })));
+const DecidePage = React.lazy(() => import("./components/pages/DecidePage").then((m) => ({ default: m.DecidePage })));
 
 type Filter = Level | "all";
 
@@ -38,27 +41,13 @@ export default function App(): React.ReactElement {
         <div className="layout">
           <Sidebar activeId={activeId} level={level} />
           <main id="main" className="main">
-            {route.name === "map" ? <EcosystemMap level={level} /> : null}
-            {route.name === "module" ? <ModulePage id={route.id} topicId={route.topic} /> : null}
-            {route.name === "mental-models" ? (
-              <StubPage
-                title={UI.nav.mentalModels}
-                note={{
-                  en: "The gallery of mental models to recall from memory — built in a later session.",
-                  uk: "Галерея mental models для запамʼятовування — у наступній сесії.",
-                }}
-              />
-            ) : null}
-            {route.name === "glossary" ? (
-              <StubPage
-                title={UI.nav.glossary}
-                note={{
-                  en: "A bilingual glossary; technical terms stay English — built in a later session.",
-                  uk: "Двомовний глосарій; технічні терміни лишаються English — у наступній сесії.",
-                }}
-              />
-            ) : null}
-            {route.name === "decide" ? <DecidePage /> : null}
+            <Suspense fallback={<div className="route-loading">{t({ en: "Loading…", uk: "Завантаження…" })}</div>}>
+              {route.name === "map" ? <EcosystemMap level={level} /> : null}
+              {route.name === "module" ? <ModulePage id={route.id} topicId={route.topic} /> : null}
+              {route.name === "mental-models" ? <MentalModelsPage level={level} /> : null}
+              {route.name === "glossary" ? <GlossaryPage /> : null}
+              {route.name === "decide" ? <DecidePage /> : null}
+            </Suspense>
           </main>
         </div>
       )}

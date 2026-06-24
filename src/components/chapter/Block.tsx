@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { useLang } from "../../i18n/LangContext";
 import { SIMS, FIGURES } from "../../lib/registry";
 import { Md } from "./Md";
@@ -6,6 +6,8 @@ import type { Block as B } from "../../data/types";
 
 export function Block({ block }: { block: B }): React.ReactElement | null {
   const { t } = useLang();
+  // CHANGED (S10b): sims/figures are lazy-loaded — show a light placeholder while their chunk loads.
+  const loading = <div className="widget-loading">{t({ en: "Loading…", uk: "Завантаження…" })}</div>;
 
   switch (block.kind) {
     case "prose":
@@ -25,7 +27,13 @@ export function Block({ block }: { block: B }): React.ReactElement | null {
       const F = FIGURES[block.fig];
       return (
         <figure className="figure">
-          {F ? <F /> : <div className="planned">figure: {block.fig}</div>}
+          {F ? (
+            <Suspense fallback={loading}>
+              <F />
+            </Suspense>
+          ) : (
+            <div className="planned">figure: {block.fig}</div>
+          )}
           {block.caption ? <figcaption className="fig-cap">{t(block.caption)}</figcaption> : null}
         </figure>
       );
@@ -33,7 +41,13 @@ export function Block({ block }: { block: B }): React.ReactElement | null {
 
     case "sim": {
       const S = SIMS[block.sim];
-      return S ? <S /> : <div className="planned">sim: {block.sim}</div>;
+      return S ? (
+        <Suspense fallback={loading}>
+          <S />
+        </Suspense>
+      ) : (
+        <div className="planned">sim: {block.sim}</div>
+      );
     }
 
     case "table":
