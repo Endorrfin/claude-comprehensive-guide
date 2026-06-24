@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useLang } from "../../i18n/LangContext";
 import { UI } from "../../i18n/ui";
 import { go, type Route } from "../../lib/hashRouter";
-import { MODULES } from "../../data/concepts";
+import { MODULES } from "../../data/meta";
 import { LEVELS, cx } from "../../lib/utils";
 import type { Level } from "../../data/types";
 

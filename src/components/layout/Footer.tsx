@@ -1,7 +1,7 @@
 import React from "react";
 import { useLang } from "../../i18n/LangContext";
 import { UI } from "../../i18n/ui";
-import { MODULES, SECTIONS, SIGNATURE_SIMS } from "../../data/concepts";
+import { MODULES, SECTIONS, SIGNATURE_SIMS } from "../../data/meta";
 
 /* Three centred rows: identity · tagline + live stats · built-with.
    Stats are derived from the data so they can never drift from reality. */

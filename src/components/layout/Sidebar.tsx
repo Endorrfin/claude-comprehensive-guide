@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLang } from "../../i18n/LangContext";
-import { SECTIONS, MODULES, modulesOf, moduleById, SIGNATURE_SIMS } from "../../data/concepts";
+import { SECTIONS, MODULES, modulesOf, moduleById, SIGNATURE_SIMS } from "../../data/meta";
 import { go } from "../../lib/hashRouter";
 import { cx } from "../../lib/utils";
 import type { Level } from "../../data/types";

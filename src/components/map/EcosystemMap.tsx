@@ -1,7 +1,7 @@
 import React from "react";
 import { useLang } from "../../i18n/LangContext";
 import { UI } from "../../i18n/ui";
-import { SECTIONS, MODULES, modulesOf, SIGNATURE_SIMS } from "../../data/concepts";
+import { SECTIONS, MODULES, modulesOf, SIGNATURE_SIMS } from "../../data/meta";
 import { go } from "../../lib/hashRouter";
 import { cx } from "../../lib/utils";
 import type { Level } from "../../data/types";

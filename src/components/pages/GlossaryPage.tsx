@@ -3,7 +3,7 @@ import { useLang } from "../../i18n/LangContext";
 import { UI } from "../../i18n/ui";
 import { GLOSSARY, GLOSSARY_CATEGORIES } from "../../data/glossary";
 import type { GlossaryCategory, GlossaryTerm } from "../../data/glossary";
-import { moduleById } from "../../data/concepts";
+import { moduleById } from "../../data/meta";
 import { go } from "../../lib/hashRouter";
 import { cx } from "../../lib/utils";
 
