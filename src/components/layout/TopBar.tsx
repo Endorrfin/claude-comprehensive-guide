@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useLang } from "../../i18n/LangContext";
 import { UI } from "../../i18n/ui";
 import { go, type Route } from "../../lib/hashRouter";
@@ -21,6 +21,27 @@ export function TopBar({
 }): React.ReactElement {
   const { lang, setLang, t } = useLang();
   const [query, setQuery] = useState("");
+  // CHANGED (S10.5): level filter is a dropdown now — track open state + close on outside-click / Escape.
+  const [lvlOpen, setLvlOpen] = useState(false);
+  const lvlRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!lvlOpen) return;
+    const onDoc = (e: MouseEvent): void => {
+      if (lvlRef.current && !lvlRef.current.contains(e.target as Node)) setLvlOpen(false);
+    };
+    const onKey = (e: KeyboardEvent): void => {
+      if (e.key === "Escape") setLvlOpen(false);
+    };
+    document.addEventListener("mousedown", onDoc);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("mousedown", onDoc);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [lvlOpen]);
+
+  const levelLabel = (lv: Filter): string => (lv === "all" ? t(UI.levelAll) : lv);
 
   const results = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -73,12 +94,34 @@ export function TopBar({
         </nav>
 
         <div className="tb-right">
-          <div className="segl" role="group" aria-label={t(UI.level)}>
-            <span className="lbl">{t(UI.level)}</span>
-            <button className={cx("seg", level === "all" && "on")} onClick={() => setLevel("all")}>{t(UI.levelAll)}</button>
-            {LEVELS.map((lv) => (
-              <button key={lv} className={cx("seg", level === lv && "on")} onClick={() => setLevel(lv)}>{lv}</button>
-            ))}
+          <div className="lvlf" ref={lvlRef}>
+            <button
+              className="lvl-btn"
+              aria-haspopup="listbox"
+              aria-expanded={lvlOpen}
+              onClick={() => setLvlOpen((o) => !o)}
+            >
+              <span className="lvl-k">{t(UI.level)}</span>
+              <span className="lvl-v">{levelLabel(level)}</span>
+              <span className="lvl-car" aria-hidden="true">▾</span>
+            </button>
+            {lvlOpen ? (
+              <ul className="lvl-menu" role="listbox" aria-label={t(UI.level)}>
+                {(["all", ...LEVELS] as Filter[]).map((lv) => (
+                  <li key={lv} role="option" aria-selected={level === lv}>
+                    <button
+                      className={cx("lvl-opt", level === lv && "on")}
+                      onClick={() => {
+                        setLevel(lv);
+                        setLvlOpen(false);
+                      }}
+                    >
+                      {levelLabel(lv)}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            ) : null}
           </div>
 
           <div className="search-wrap" style={{ position: "relative" }}>

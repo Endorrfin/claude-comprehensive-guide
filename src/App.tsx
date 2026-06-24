@@ -32,14 +32,13 @@ export default function App(): React.ReactElement {
       </a>
       <TopBar route={route} level={level} setLevel={setLevel} onMenuOpen={() => setNavOpen(true)} />
 
-      {route.name === "map" ? (
-        <main id="main" style={{ flex: 1 }}>
-          <EcosystemMap level={level} />
-        </main>
-      ) : (
+      {/* CHANGED (S10.5): one shell everywhere — the landing/map now keeps the
+          persistent sidebar instead of rendering as a full-width hero. */}
+      {(
         <div className="layout">
           <Sidebar activeId={activeId} level={level} />
           <main id="main" className="main">
+            {route.name === "map" ? <EcosystemMap level={level} /> : null}
             {route.name === "module" ? <ModulePage id={route.id} topicId={route.topic} /> : null}
             {route.name === "mental-models" ? (
               <StubPage

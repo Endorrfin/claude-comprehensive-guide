@@ -106,7 +106,7 @@
   border: 0;
   color: var(--tx);
   font-size: 13px;
-  width: 170px;
+  width: 240px; /* CHANGED (S10.5): wider search (170 → 240) now there's room */
   outline: none;
 }
 .search input::placeholder {
@@ -200,44 +200,59 @@
   border-top: 1px solid var(--line);
   background: var(--surface);
 }
+/* CHANGED (S10.5): three centred rows — identity · tagline+stats · built-with. */
 .footer-inner {
   max-width: var(--maxw);
   margin: 0 auto;
-  padding: 18px 20px;
+  padding: 28px 20px 32px;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
+  gap: 8px;
+  text-align: center;
   font-size: 12.5px;
   color: var(--tx2);
 }
-.flag {
-  width: 22px;
-  height: 15px;
-  border-radius: 3px;
-  overflow: hidden;
-  flex: 0 0 auto;
-  border: 1px solid var(--line2);
+.footer-id,
+.footer-tag,
+.footer-built {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.footer-id b {
+  color: var(--tx);
+  font-weight: 600;
+}
+.footer-tag {
+  color: var(--tx3);
+  font-size: 12px;
+  max-width: 720px;
+}
+.footer-built {
+  color: var(--tx3);
+  font-size: 11px;
+  font-family: var(--font-mono);
+  letter-spacing: 0.2px;
 }
 .footer-inner .sep {
-  color: var(--tx3);
-}
-.footer-inner .src {
-  margin-left: auto;
-  color: var(--tx3);
+  color: var(--line2);
 }
 .footer-inner .flink {
   color: var(--tx2);
 }
 .footer-inner .flink:hover {
   color: var(--accent-bright);
+  text-decoration: none;
 }
 
 /* ----- Concept map (landing) -------------------------------------------- */
 .map-wrap {
-  max-width: var(--maxw);
-  margin: 0 auto;
-  padding: 30px 22px 64px;
+  /* CHANGED (S10.5): now sits inside .main (sidebar persistent on landing) — fill, don't re-cap */
+  max-width: 100%;
+  padding: 6px 0 40px;
   width: 100%;
 }
 .map-hero {
@@ -1129,34 +1144,73 @@ table.data td code {
   color: var(--ink);
 }
 
-/* level segmented filter */
-.segl {
+/* CHANGED (S10.5): level filter is now a compact dropdown (was 5 inline pills).
+   Container is .lvlf (not .lvl) to avoid colliding with the .qa .lvl badge. */
+.lvlf {
+  position: relative;
+}
+.lvl-btn {
   display: inline-flex;
-  gap: 5px;
   align-items: center;
-}
-.segl .lbl {
-  font-size: 11px;
-  color: var(--tx3);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-.seg {
+  gap: 7px;
   background: var(--surface);
   border: 1px solid var(--line);
   color: var(--tx2);
   border-radius: 999px;
-  padding: 4px 10px;
+  padding: 5px 11px;
   font-size: 12px;
   cursor: pointer;
-  text-transform: capitalize;
 }
-.seg:hover {
+.lvl-btn:hover {
   color: var(--tx);
   border-color: var(--line2);
 }
-.seg.on {
-  border-color: var(--accent-deep);
+.lvl-k {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--tx3);
+}
+.lvl-v {
+  color: var(--tx);
+  text-transform: capitalize;
+}
+.lvl-car {
+  font-size: 9px;
+  color: var(--tx3);
+}
+.lvl-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  z-index: 50;
+  min-width: 142px;
+  list-style: none;
+  margin: 0;
+  padding: 5px;
+  background: var(--s2);
+  border: 1px solid var(--line2);
+  border-radius: var(--r-sm);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+}
+.lvl-opt {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: 0;
+  color: var(--tx2);
+  font-size: 12.5px;
+  padding: 7px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  text-transform: capitalize;
+}
+.lvl-opt:hover {
+  background: var(--surface);
+  color: var(--tx);
+}
+.lvl-opt.on {
   background: var(--accent-dim);
   color: var(--tx);
 }
@@ -1326,7 +1380,7 @@ table.data td code {
   .tb-right {
     gap: 7px;
   }
-  .segl .lbl {
+  .lvl-k { /* CHANGED (S10.5): hide the "Level" label on the dropdown when tight */
     display: none;
   }
 }

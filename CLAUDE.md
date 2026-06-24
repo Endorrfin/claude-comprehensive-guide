@@ -372,7 +372,7 @@ Footer: **"Vasyl Krupka · Senior Fullstack Engineer"** + 🇺🇦. Dark is prim
 - **S8 · Claude Code & agentic** ✅ — Ch.22 Code essentials; Ch.23 Sub-agents/teams/worktrees + **Sub-agent Fan-out**; Ch.24 hooks/slash/advanced patterns.
 - **S9 · Beginner block** — Ch.1–5 (what is Claude, interface, prompting basics, attachments/styles, memory/search) — reuses components built above.
 - **S10a · Mastery (teaching close)** ✅ — Ch.25 Security; Ch.26 Choosing the right tool + ★ **Tool Picker** (last signature sim, also the live `#/decide` page); Ch.27 Ecosystem map. *(Scoped with user 2026-06-23: M25–M27 + Tool Picker now; M28 + polish → S10b, because M28 is study-UI + new datasets, a different kind of build.)*
-- **S10b · Revision layer + polish** — Ch.28 Mental models gallery + glossary (new `glossary.ts`) + cheat-sheet + flashcards; wire `#/mental-models` & `#/glossary`; global search; mobile/a11y/**perf incl. code-splitting / lazy-loading** *(bundle ~986 kB / 296 kB gzip after S10a — past Vite's >500 kB note; introduce route-/sim-level lazy-loading here)*; **bilingual QA**. *(web-search to confirm latest facts.)*
+- **S10b · Revision layer + polish** — Ch.28 Mental models gallery + glossary (new `glossary.ts` — **comprehensive: every term across all 27 modules**, user choice 2026-06-23) + cheat-sheet + flashcards; wire `#/mental-models` & `#/glossary`; global search; mobile/a11y/**perf incl. code-splitting / lazy-loading** *(bundle ~986 kB / 296 kB gzip after S10a — past Vite's >500 kB note; introduce route-/sim-level lazy-loading here)*; **bilingual QA**. *(web-search to confirm latest facts.)*
 - **S11–S12 · Buffer** — extra "maximal" interactives, full UA pass, final QA; optional PDF/LinkedIn pack.
 
 ## 14. Status / progress log

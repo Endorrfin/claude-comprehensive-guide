@@ -57,7 +57,7 @@
   --r-sm: 8px;
   --r: 12px;
   --r-lg: 16px;
-  --maxw: 1180px;
+  --maxw: 1440px; /* CHANGED (S10.5): 1180 → 1440 — fuller use of the viewport */
 }
 
 * {
