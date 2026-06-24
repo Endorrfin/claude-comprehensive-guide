@@ -833,3 +833,66 @@ Footer: **"Vasyl Krupka · Senior Fullstack Engineer"** + 🇺🇦. Dark is prim
   **safe to delete on your Mac**.)*
   **Next (S10b): M28 mental-models gallery + glossary (`glossary.ts`) + cheat-sheet + flashcards; wire
   `#/mental-models` & `#/glossary`; then perf (code-splitting/lazy-loading) + bilingual QA.**
+
+- **2026-06-24 · S10b Revision layer + perf + bilingual QA (M28 + study surfaces)** *(branch
+  `s10b-revision-glossary-codesplit`)* — Completed the guide: authored the **final module M28** and built the
+  whole **revision/study layer**, then did the **full S10b scope** the user chose ("Everything in S10b" via
+  AskUserQuestion) — including the **code-splitting** and a **bilingual QA** sweep. **All 28 modules are now
+  authored (no stubs left); the `mod()` stub-builder and the unused `Level` import were removed.**
+  **M28 · Mental models, glossary & cheat-sheet** `[middle]` (4 topics: the gallery · the bilingual glossary ·
+  the **one-printable-page cheat-sheet** · flashcards & self-check) — cheat-sheet built as **six recap tables**
+  (consumer models + $/MTok, the three cost levers, the M26 tool-choice recap, plan-gates/limits, capability
+  one-liners) + an active-recall compare + security/prompting one-liner callouts; mental model, 5 keyPoints, 3
+  pitfalls, 3 interview Q&A, 4 web-verified sources. Web-re-checked the headline facts (Opus 4.8 $5/$25 · Sonnet
+  4.6 $3/$15 · Haiku 4.5 $1/$5; Batch −50% / caching −90%; Fable/Mythos stay developer-platform-only) — all still
+  current, matching the existing `concepts.ts`.
+  **New study surfaces (the long-deferred `#/mental-models` & `#/glossary` are now live, replacing the StubPages):**
+  · **`src/data/glossary.ts`** — a comprehensive bilingual term bank, **119 terms** across 10 categories
+  (models/plans · prompting · context · connectors/MCP · skills/plugins · cowork · tools/code · agentic ·
+  security · general), definitions EN+UA with **technical terms kept English**, each cross-linked to its
+  module(s) — **covers all 28 modules**. · **`MentalModelsPage`** (`#/mental-models`) — all 28 mental models as
+  per-section-tinted flip-cards with a **flashcard self-check mode** (recall → reveal → mark *known*/*again*,
+  *hide-known*, **shuffle**, progress counter, **localStorage-persisted** known-set + reset), live filter, level-
+  aware, ARIA (`aria-pressed`/`aria-live`) + reduced-motion-safe. · **`GlossaryPage`** (`#/glossary`) — live
+  search + category chips + **A–Z grouping**, two-column on wide screens, term→module link chips. Reused the
+  S1 `.mm-*` card base + `.fbtn` chips; appended a `CHANGED (S10b)` block to `global.css` (gallery/glossary
+  styles + lazy-load placeholders + an **`@media print`** stylesheet so M28 prints as a clean one-pager — chrome
+  hidden, surfaces lightened, tables `break-inside: avoid`). Page-specific copy uses inline `t({en,uk})` like
+  `DecidePage` (nav labels already in `ui.ts`).
+  **Perf — code-splitting / lazy-loading (the §13 S10 item):** rewrote `registry.tsx` so the **10 sims + 26
+  figures are `React.lazy` dynamic imports** (named-export adapters), wrapped sim/figure render in `<Suspense>`
+  in `Block.tsx`; **lazy-loaded the 5 route pages** in `App.tsx` behind one `<Suspense>` (shell TopBar/Sidebar/
+  Footer stay eager for instant nav + search); added a **`react-vendor` manualChunk**. Result: the single
+  **monolith 1,069 KB / 323.6 KB gzip → app entry 625 KB / 195.6 KB gzip** + a cacheable **react-vendor 190 KB /
+  59.7 KB gzip**, and **44 JS + 11 CSS chunks** total — each sim's co-located CSS now splits into its own
+  on-demand chunk, and a module page pulls only the widgets it renders. The remaining entry weight is
+  **`concepts.ts` (all 28 modules' bilingual content)**, which TopBar (search) + Sidebar (nav) import eagerly —
+  the documented next lever (**split module *metadata* from *bodies* + a prebuilt search index**) is left as a
+  deliberate future step, exactly as §13 flags ("may need a lightweight prebuilt index"); did **not** attempt it
+  to avoid breaking global search.
+  **Verification (repo + scratch, linux-arm64; bindings `@rolldown/binding-linux-arm64-gnu@1.0.3` +
+  `lightningcss-linux-arm64-gnu@1.32.0` in `/tmp` via `NODE_PATH`; built into fresh `/tmp` outDirs to dodge the
+  sandbox unlink/`emptyOutDir` limit):** `tsc --noEmit` ✓ (strict · noUnusedLocals/Parameters — caught & fixed
+  the now-unused `Level` import + `UI` import in App) · **data-integrity** ✓ (6 sections · **28 modules, 28/28
+  authored** · orders 1..28 · table widths == head · compare 3-tuples · callout tones · **10 sim + 25 used
+  figure keys resolve** against the new lazy registry · seeAlso valid · **glossary 119 terms unique, categories/
+  module-links valid, covers all 28** · **2596 Localized pairs, all EN+UA non-empty**) · **bilingual QA** — the
+  EN==UA heuristic flagged only **5 legitimately-identical** strings (UI menu paths, a pricing line, technical-
+  term lists, a verbatim SKILL.md example), none from the new M28/glossary content · **render smoke** ✓
+  (`react-dom/server` of `MentalModelsPage` + `GlossaryPage` inside `LangProvider` — gallery renders the
+  flashcard control + M15..M28, glossary renders the MCP definition + a category label) · `vite build` ✓ (**82
+  modules**, 44 JS / 11 CSS chunks).
+  **Challenges / notes:** (1) **npm-prune gotcha** — installing `tsx` into the `/tmp` bindings dir with
+  `--no-save` **pruned** the earlier `--no-save` rolldown/lightningcss linux bindings (npm reconciles
+  node_modules against package.json), which broke the next build with `Cannot find module …binding`; fixed by
+  reinstalling **all three together**. Worth noting for future sandbox sessions: install every `--no-save`
+  helper in one `npm install`. (2) **`StubPage.tsx` is now orphaned** (only M-models/glossary used it) — left in
+  place (harmless, reusable; sandbox can't unlink) — **safe to delete on your Mac**. (3) No scripts/`_smoke`
+  files were written into the repo this session — the data-integrity + render-smoke scripts live only in `/tmp`,
+  so **nothing to clean up in the repo** and no stale `.git/index.lock`.
+  **Status: the teaching guide is content-complete — 28/28 modules authored, all 7 signature sims + 2 light
+  interactives, 3 study surfaces (`#/mental-models`, `#/glossary`, `#/decide`) live, code-split & bilingual-QA'd.**
+  **Next (S11–S12 buffer, optional): the metadata/body data-split + prebuilt search index (to shrink the 625 KB
+  entry further); a final full UA proofreading pass; optional PDF/LinkedIn pack.** **Pending user:** repo is live
+  (§11) — S10b appears live once committed & **merged to `main`**; locally `npm install` (darwin-arm64) +
+  `npm run build`.

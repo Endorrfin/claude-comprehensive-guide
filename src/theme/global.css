@@ -1384,3 +1384,277 @@ table.data td code {
     display: none;
   }
 }
+
+/* =========================================================================
+   CHANGED (S10b) · Study surfaces — Mental-models gallery, Glossary, and the
+   cheat-sheet print stylesheet. Reuses the S1 .mm-* card base + .fbtn chips.
+   ========================================================================= */
+
+/* widen the two study pages beyond the 820px reading column */
+.page.mm-page,
+.page.gl-page {
+  max-width: 1180px;
+}
+
+/* ----- shared study toolbar --------------------------------------------- */
+.mm-toolbar,
+.gl-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.mm-search,
+.gl-search {
+  flex: 1 1 240px;
+  min-width: 200px;
+  max-width: 440px;
+}
+.mm-search input,
+.gl-search input {
+  width: 100%;
+  background: none;
+  border: 0;
+  color: var(--tx);
+  font-size: 14px;
+  outline: none;
+}
+.mm-count,
+.gl-count {
+  font-size: 13px;
+  color: var(--tx2);
+}
+.mm-count b,
+.gl-count b {
+  color: var(--tx);
+  font-variant-numeric: tabular-nums;
+}
+.mm-reset {
+  background: none;
+  border: 1px solid var(--line2);
+  color: var(--tx2);
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-size: 12.5px;
+  cursor: pointer;
+}
+.mm-reset:hover {
+  border-color: var(--sem-warn);
+  color: var(--tx);
+}
+
+/* ----- gallery cards (extends the S1 .mm-* base) ------------------------- */
+.mm-card {
+  border-top: 3px solid var(--accent); /* tinted per-section via inline style */
+  position: relative;
+}
+.mm-card.is-known {
+  opacity: 0.72;
+}
+.mm-card-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.mm-num {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 12px;
+}
+.mm-known {
+  margin-left: auto;
+  color: var(--sem-ok);
+  font-weight: 700;
+}
+.mm-sec {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+  margin-top: -2px;
+}
+.mm-prompt {
+  text-align: left;
+  background: var(--s2);
+  border: 1px dashed var(--line2);
+  color: var(--tx3);
+  border-radius: var(--r-sm);
+  padding: 12px;
+  font-size: 13px;
+  font-style: italic;
+  cursor: pointer;
+}
+.mm-prompt:hover {
+  color: var(--tx);
+  border-color: var(--accent-deep);
+}
+
+/* ----- glossary --------------------------------------------------------- */
+.gl-cats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.gl-letter {
+  font-family: var(--font-head);
+  font-size: 20px;
+  color: var(--accent-bright);
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 4px;
+  margin: 18px 0 10px;
+}
+.gl-list {
+  margin: 0;
+  display: grid;
+  gap: 14px;
+}
+.gl-item {
+  display: grid;
+  gap: 3px;
+}
+.gl-term {
+  font-weight: 700;
+  color: var(--tx);
+  font-size: 15px;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.gl-cat {
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: var(--tx3);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 1px 8px;
+  font-weight: 600;
+}
+.gl-def {
+  margin: 0;
+  color: var(--tx2);
+  font-size: 14px;
+  line-height: 1.6;
+}
+.gl-mods {
+  display: inline-flex;
+  gap: 6px;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+.gl-modlink {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--accent-bright);
+  background: var(--accent-dim);
+  border: 1px solid var(--accent-deep);
+  border-radius: 6px;
+  padding: 1px 6px;
+  cursor: pointer;
+}
+.gl-modlink:hover {
+  background: var(--accent-deep);
+  color: var(--ink);
+}
+
+/* two-column glossary lists on wide screens */
+@media (min-width: 900px) {
+  .gl-list {
+    grid-template-columns: 1fr 1fr;
+    gap: 14px 28px;
+  }
+}
+
+/* ----- lazy-load placeholders (code-split chunks) ----------------------- */
+.route-loading,
+.widget-loading {
+  color: var(--tx3);
+  font-size: 13px;
+  padding: 18px 0;
+}
+.widget-loading {
+  border: 1px dashed var(--line);
+  border-radius: var(--r-sm);
+  text-align: center;
+  padding: 22px;
+  margin: 8px 0;
+}
+
+/* ----- print: the cheat-sheet (M28) prints as a clean one-pager --------- */
+@media print {
+  .topbar,
+  .sidebar,
+  .footer,
+  .prevnext,
+  .toc,
+  .nav-toggle,
+  .skip-link,
+  .drawer-backdrop {
+    display: none !important;
+  }
+  .layout {
+    display: block !important;
+  }
+  .main {
+    padding: 0 !important;
+  }
+  body {
+    background: #fff !important;
+    color: #111 !important;
+  }
+  .chapter,
+  .page {
+    max-width: 100% !important;
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  .ch-title,
+  .sec-h,
+  .prose,
+  .ch-tagline,
+  .mental p,
+  .gl-def,
+  .keypoints .kp {
+    color: #111 !important;
+  }
+  .data th {
+    background: #f0f0f0 !important;
+    color: #111 !important;
+  }
+  .data td {
+    color: #111 !important;
+  }
+  .data,
+  .data th,
+  .data td,
+  .callout,
+  .compare .cell,
+  .compare .head,
+  .code,
+  .mental,
+  .keypoints .kp,
+  .pitfall {
+    background: #fff !important;
+    border-color: #ccc !important;
+  }
+  .code pre {
+    color: #111 !important;
+  }
+  .data,
+  .compare,
+  .callout,
+  .figure,
+  .qa,
+  .pitfall {
+    break-inside: avoid;
+  }
+  a {
+    color: #111 !important;
+    text-decoration: none !important;
+  }
+}

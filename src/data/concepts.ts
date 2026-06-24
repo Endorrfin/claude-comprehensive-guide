@@ -1,4 +1,4 @@
-import type { Localized, Level, Module, Section } from "./types";
+import type { Localized, Module, Section } from "./types";
 
 /* Single source of truth. Pages render from this data. Bilingual EN/UA;
    technical terms stay English in both. M15 is fully authored (the golden
@@ -48,36 +48,6 @@ export const SECTIONS: Section[] = [
     blurb: L("Security, choosing the right tool, and the whole picture.", "Безпека, вибір інструмента і повна картина."),
   },
 ];
-
-/* ---- compact builder for planned (stub) modules -------------------------- */
-function mod(
-  id: string,
-  section: string,
-  order: number,
-  level: Level,
-  title: Localized,
-  tagline: Localized,
-  mentalModel: Localized,
-  readMins: number,
-  topics: [string, string][],
-  seeAlso: string[] = [],
-): Module {
-  return {
-    id,
-    section,
-    order,
-    level,
-    title,
-    tagline,
-    readMins,
-    mentalModel,
-    topics: topics.map((p, i) => ({ id: `t${i + 1}`, title: L(p[0], p[1]), blocks: [] })),
-    keyPoints: [],
-    pitfalls: [],
-    seeAlso,
-    sources: [],
-  };
-}
 
 /* ======================================================================
    M15 · Cowork mental model & setup  — GOLDEN MODULE (fully authored)
@@ -3040,18 +3010,8 @@ const planned: Module[] = [
 
   // Section V (m20 · m21 are fully authored above; m22 · m23 · m24 authored below)
 
-  // Section VI — m25 · m26 · m27 fully authored below (S10a); m28 stays a planned stub
-  mod("m28", "s6", 28, "middle",
-    L("Mental models gallery + glossary", "Галерея mental models + глосарій"),
-    L("The pictures and terms to recall from memory.", "Картини й терміни, які треба памʼятати."),
-    L("The pictures and terms to recall from memory.", "Картини й терміни, які треба памʼятати з памʼяті."),
-    6,
-    [
-      ["The mental models gallery", "Галерея mental models"],
-      ["Glossary (bilingual)", "Глосарій (двомовний)"],
-      ["Cheat-sheet", "Cheat-sheet"],
-      ["Flashcards / self-check", "Flashcards / самоперевірка"],
-    ], ["m27"]),
+  // Section VI — m25 · m26 · m27 · m28 all fully authored below (S10a · S10b).
+  // Every module is authored now; `planned` is intentionally empty.
 ];
 
 /* ======================================================================
@@ -4132,6 +4092,237 @@ const m27: Module = {
 };
 
 /* ======================================================================
+   M28 · Mental models, glossary & cheat-sheet — fully authored (S10b)
+   The revision layer that closes the guide: how to recall the pictures,
+   look up the terms, and carry one printable page. Cross-links the three
+   study surfaces (#/mental-models, #/glossary, #/decide).
+   ====================================================================== */
+const m28: Module = {
+  id: "m28",
+  section: "s6",
+  order: 28,
+  level: "middle",
+  title: L("Mental models, glossary & cheat-sheet", "Mental models, глосарій і cheat-sheet"),
+  tagline: L(
+    "The revision layer — recall the pictures, look up the terms, and carry one printable page.",
+    "Шар повторення — згадай картини, знайди терміни і носи одну друковану сторінку.",
+  ),
+  readMins: 8,
+  mentalModel: L(
+    "Don’t re-read 27 modules — recall the picture, and look up only the detail you’re missing.",
+    "Не перечитуй 27 модулів — згадай картину, а деталь, якої бракує, просто подивись.",
+  ),
+  topics: [
+    {
+      id: "t1",
+      title: L("The mental models gallery", "Галерея mental models"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "Every module in this guide opens with one **mental model** — a single line or picture meant to be recalled from memory, not looked up. This module gathers all of them in one place so you can revise the whole guide in minutes: glance at a title, try to **say its mental model out loud before you flip the card**, then check yourself. That retrieval — recall first, verify second — is what moves a fact from “I’ve read it” to “I know it”.",
+            "Кожен модуль гайду відкривається одним **mental model** — рядком або картиною, які треба згадати з памʼяті, а не дивитися. Цей модуль збирає всі їх в одному місці, щоб повторити весь гайд за хвилини: глянь на назву, спробуй **проговорити mental model вголос, перш ніж перевернути картку**, а тоді перевір себе. Саме це пригадування — спершу згадати, потім звірити — переводить факт зі стану «я це читав» у «я це знаю».",
+          ),
+        },
+        {
+          kind: "callout",
+          tone: "tip",
+          title: L("Open the gallery", "Відкрий галерею"),
+          md: L(
+            "All 28 mental models live at **[Mental models](#/mental-models)** as flip-cards. Turn on **flashcard mode** to hide the answers and self-test; mark each one *known* and the deck shrinks to just what you still miss.",
+            "Усі 28 mental models — на **[Mental models](#/mental-models)** у вигляді flip-карток. Увімкни **flashcard mode**, щоб сховати відповіді й перевірити себе; познач кожну як *known*, і колода скоротиться до того, що ще не вивчено.",
+          ),
+        },
+        {
+          kind: "prose",
+          md: L(
+            "If you remember one shape from the whole guide, remember the ecosystem (M27): **one model family, reached through many surfaces, grounded by context, extended by capabilities, scaled by orchestration — wrapped in security.** Every other mental model hangs off that skeleton.",
+            "Якщо запамʼятати з усього гайду одну форму — запамʼятай екосистему (M27): **одна сімʼя моделей, доступна через багато поверхонь, заземлена context, розширена можливостями, масштабована оркестрацією — і загорнута в безпеку.** Усі інші mental models тримаються на цьому скелеті.",
+          ),
+        },
+      ],
+    },
+    {
+      id: "t2",
+      title: L("The glossary — bilingual", "Глосарій — двомовний"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "The guide spans a lot of vocabulary — *token*, *context window*, *MCP*, *connector*, *skill*, *artifact*, *sub-agent*, *prompt injection*, *progressive disclosure*. The glossary is the fast lookup: a comprehensive, searchable term bank covering every concept across all 27 teaching modules, each definition written in **both EN and UA**, each term linked back to the module where it’s taught.",
+            "Гайд охоплює багато термінів — *token*, *context window*, *MCP*, *connector*, *skill*, *artifact*, *sub-agent*, *prompt injection*, *progressive disclosure*. Глосарій — це швидкий пошук: вичерпний термінологічний банк із пошуком, що покриває кожне поняття з усіх 27 навчальних модулів; кожне визначення — **і EN, і UA**, кожен термін веде назад до модуля, де його пояснено.",
+          ),
+        },
+        {
+          kind: "callout",
+          tone: "senior",
+          title: L("Why the terms stay English", "Чому терміни лишаються English"),
+          md: L(
+            "Across the whole guide the **technical terms stay in English in both languages** — *token*, *MCP*, *connector*, *prompt*, *context window*. That’s deliberate: the industry, the docs and the product UI are all English, so translating the terms would only add a second name to learn. UA carries the *explanation*; English carries the *term*.",
+            "У всьому гайді **технічні терміни лишаються English в обох мовах** — *token*, *MCP*, *connector*, *prompt*, *context window*. Це навмисно: індустрія, докси й UI продукту — англійською, тож переклад термінів лише додав би другу назву для запамʼятовування. UA несе *пояснення*; English несе *термін*.",
+          ),
+        },
+        {
+          kind: "callout",
+          tone: "tip",
+          title: L("Open the glossary", "Відкрий глосарій"),
+          md: L(
+            "Search or browse by category at **[Glossary](#/glossary)** — type a few letters to filter live, or jump by group (Models & plans · Prompting · Context · Connectors/MCP · Skills & plugins · Cowork · Tools & code · Agentic · Security).",
+            "Шукай або гортай за категорією на **[Glossary](#/glossary)** — введи кілька літер для живого фільтра або стрибни за групою (Models & plans · Prompting · Context · Connectors/MCP · Skills & plugins · Cowork · Tools & code · Agentic · Security).",
+          ),
+        },
+      ],
+    },
+    {
+      id: "t3",
+      title: L("The cheat-sheet — one printable page", "Cheat-sheet — одна друкована сторінка"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "Everything you reach for most, on one page. Print this module (your browser’s **Print** lays it out as a clean one-pager) and keep it next to the keyboard. Every block is a recap of a full module — follow the **M-links** when you want the depth.",
+            "Усе, чим користуєшся найчастіше, на одній сторінці. Роздрукуй цей модуль (**Print** у браузері складе його в охайну сторінку) і тримай біля клавіатури. Кожен блок — це конспект цілого модуля; коли треба глибина, йди за **M-лінками**.",
+          ),
+        },
+        {
+          kind: "table",
+          head: [L("Model", "Модель"), L("Best for", "Найкраще для"), L("Context", "Context"), L("$ / MTok (in · out)", "$ / MTok (in · out)")],
+          rows: [
+            [L("**Opus 4.8**", "**Opus 4.8**"), L("Hard reasoning, code, agents", "Складні міркування, код, agents"), L("1M (flat-rate)", "1M (flat-rate)"), L("$5 · $25", "$5 · $25")],
+            [L("**Sonnet 4.6**", "**Sonnet 4.6**"), L("The everyday default — best balance", "Щоденний default — найкращий баланс"), L("1M (flat-rate)", "1M (flat-rate)"), L("$3 · $15", "$3 · $15")],
+            [L("**Haiku 4.5**", "**Haiku 4.5**"), L("Speed & volume, cheap classification", "Швидкість і обсяг, дешева класифікація"), L("200K", "200K"), L("$1 · $5", "$1 · $5")],
+          ],
+          caption: L("The consumer chat lineup (M1). Output ≈ 5× input. The developer platform also ships more models. Re-check prices — they drift.", "Лінійка для chat (M1). Output ≈ 5× input. На developer-платформі є й інші моделі. Перевіряй ціни — вони змінюються."),
+        },
+        {
+          kind: "table",
+          head: [L("Cost lever", "Важіль вартості"), L("Effect", "Ефект"), L("When", "Коли")],
+          rows: [
+            [L("Prompt caching", "Prompt caching"), L("Cached input −90% (writes 1.25× / 2×)", "Кешований input −90% (запис 1.25× / 2×)"), L("Stable, reused prefixes (system/knowledge)", "Стабільні, повторювані префікси (system/knowledge)")],
+            [L("Batch API", "Batch API"), L("−50% on everything; stacks with caching", "−50% на все; складається з caching"), L("Non-urgent, large jobs", "Несрочні великі задачі")],
+            [L("1M context", "1M context"), L("Flat-rate on Opus 4.8/4.7 & Sonnet 4.6", "Flat-rate на Opus 4.8/4.7 і Sonnet 4.6"), L("Big repos/docs — but curate, don’t dump (M10)", "Великі репо/докси — але курируй, не звалюй (M10)")],
+          ],
+          caption: L("The three cost levers from M10. The cheapest token is the one you don’t send.", "Три важелі вартості з M10. Найдешевший token — той, який ти не надіслав."),
+        },
+        {
+          kind: "table",
+          head: [L("Reach for…", "Бери…"), L("When the work touches…", "Коли робота про…"), L("Module", "Модуль")],
+          rows: [
+            [L("Chat + Artifacts", "Chat + Artifacts"), L("Thinking, drafting, a self-contained mini-app", "Думання, чернетки, самодостатній mini-app"), L("M8 · M9", "M8 · M9")],
+            [L("Cowork", "Cowork"), L("Your local files & folders, on the desktop", "Твої локальні файли й теки на десктопі"), L("M15–M19", "M15–M19")],
+            [L("Claude Code", "Claude Code"), L("A codebase, the terminal, agentic engineering", "Кодова база, термінал, agentic engineering"), L("M22–M24", "M22–M24")],
+            [L("Claude in Chrome", "Claude in Chrome"), L("The live web — a site with no API", "Живий веб — сайт без API"), L("M20", "M20")],
+            [L("Excel / PowerPoint", "Excel / PowerPoint"), L("A spreadsheet or deck, with citations", "Таблиця чи презентація, з цитуваннями"), L("M21", "M21")],
+            [L("A Connector (MCP)", "Connector (MCP)"), L("One app’s data — Gmail, Notion, Drive", "Дані одного застосунку — Gmail, Notion, Drive"), L("M11", "M11")],
+            [L("A Skill", "Skill"), L("Repeatable expertise or an output format", "Повторювана експертиза чи формат виводу"), L("M12 · M13", "M12 · M13")],
+          ],
+          caption: L("The tool-choice recap (M26). Not sure? The interactive [Tool picker](#/decide) ranks them for your task.", "Конспект вибору інструмента (M26). Не певен? Інтерактивний [Tool picker](#/decide) оцінить їх під твою задачу."),
+        },
+        {
+          kind: "table",
+          head: [L("Surface / feature", "Поверхня / фіча"), L("Plan & availability", "План і доступність"), L("Key limit", "Ключове обмеження")],
+          rows: [
+            [L("Chat uploads", "Chat-завантаження"), L("All plans", "Усі плани"), L("500 MB/file · 20 files/chat", "500 MB/файл · 20 файлів/chat")],
+            [L("Cowork", "Cowork"), L("Paid plans (Pro/Max/Team/Ent), Desktop", "Платні плани (Pro/Max/Team/Ent), Desktop"), L("Deliverables 30 MB/file; file-creation on all plans", "Deliverables 30 MB/файл; створення файлів — усі плани")],
+            [L("Computer use", "Computer use"), L("Research preview — **Pro/Max only**, off by default", "Research preview — **лише Pro/Max**, off за замовч."), L("No sandbox; trading/crypto blocked", "Без sandbox; трейдинг/крипто заблоковані")],
+            [L("Claude in Chrome", "Claude in Chrome"), L("Beta, all paid plans, Chrome-only", "Beta, усі платні плани, лише Chrome"), L("Pro = Haiku 4.5 only", "Pro = лише Haiku 4.5")],
+            [L("Excel / PowerPoint", "Excel / PowerPoint"), L("GA on all paid plans (M365 add-ins)", "GA на всіх платних планах (M365 add-ins)"), L("Excel: no macros/VBA", "Excel: без macros/VBA")],
+            [L("Memory", "Memory"), L("All plans incl. Free (since Mar 2026)", "Усі плани, включно з Free (з берез. 2026)"), L("Global + a walled per-project space", "Глобальна + ізольована per-project")],
+            [L("Connectors", "Connectors"), L("Hundreds in the directory, all plans", "Сотні в directory, усі плани"), L("Free = 1 custom connector", "Free = 1 custom connector")],
+          ],
+          caption: L("Plan gates & limits that bite most often. Availability drifts — when in doubt, check the in-app plan page.", "Гейти планів і ліміти, що чіпляють найчастіше. Доступність змінюється — у разі сумніву дивись сторінку плану в застосунку."),
+        },
+        {
+          kind: "table",
+          head: [L("Capability", "Можливість"), L("One-line model", "Модель одним рядком"), L("Module", "Модуль")],
+          rows: [
+            [L("Connectors / MCP", "Connectors / MCP"), L("Open protocol; **remote** (HTTP) vs **local** (stdio); OAuth scopes; writes pause for approval", "Відкритий протокол; **remote** (HTTP) vs **local** (stdio); OAuth scopes; запис чекає підтвердження"), L("M11", "M11")],
+            [L("Skills", "Skills"), L("SKILL.md: frontmatter (L1) → body (L2) → bundled files (L3); progressive disclosure keeps context cheap", "SKILL.md: frontmatter (L1) → тіло (L2) → файли (L3); progressive disclosure тримає context дешевим"), L("M12 · M13", "M12 · M13")],
+            [L("Plugins", "Plugins"), L("A bundle = skills + sub-agents + commands + hooks + MCP, shipped via a marketplace", "Бандл = skills + sub-agents + commands + hooks + MCP, через marketplace"), L("M14", "M14")],
+            [L("Artifacts", "Artifacts"), L("A standalone output; **live** = persistent storage + Claude API + MCP", "Самостійний вивід; **live** = persistent storage + Claude API + MCP"), L("M8 · M9", "M8 · M9")],
+          ],
+          caption: L("The four ways Claude’s reach is extended (Section III + Artifacts).", "Чотири способи розширити можливості Claude (Секція III + Artifacts)."),
+        },
+        {
+          kind: "callout",
+          tone: "security",
+          title: L("Security in one line", "Безпека одним рядком"),
+          md: L(
+            "An attack needs **two gates**: untrusted content has to get *in* (the read gate) **and** Claude has to be able to *act* on it (the act gate). Close either and the injection dies. Least privilege on every connector; protected actions (purchase, delete, account changes) always ask. (M25)",
+            "Атаці потрібні **два гейти**: недовірений контент має *потрапити* (read-гейт) **і** Claude має змогти *діяти* (act-гейт). Закрий будь-який — і injection гине. Least privilege на кожному connector; захищені дії (купівля, видалення, зміна акаунта) завжди питають. (M25)",
+          ),
+        },
+        {
+          kind: "callout",
+          tone: "tip",
+          title: L("Prompting in one line", "Prompting одним рядком"),
+          md: L(
+            "Be specific; give role + context + task + format; show an example or two; let modern models think on their own (don’t hand-write “think step by step”); then iterate on the gap. (M6)",
+            "Будь конкретним; дай role + context + task + format; покажи приклад-два; дай сучасним моделям думати самим (не пиши вручну «think step by step»); потім ітеруй по різниці. (M6)",
+          ),
+        },
+      ],
+    },
+    {
+      id: "t4",
+      title: L("Flashcards & self-check", "Flashcards і самоперевірка"),
+      blocks: [
+        {
+          kind: "prose",
+          md: L(
+            "Reading is recognition; recall is what sticks. The gallery’s **flashcard mode** hides each answer so you have to produce it from memory before checking — the single most effective study move there is. Mark a card *known* and it drops out of the deck, so each pass is shorter and targets exactly what you still miss.",
+            "Читання — це впізнавання; памʼять будує саме пригадування. **Flashcard mode** у галереї ховає відповідь, тож ти маєш видати її з памʼяті, перш ніж перевірити — це найефективніший навчальний прийом. Познач картку як *known* — і вона випадає з колоди, тож кожен прохід коротший і б’є саме по тому, що ще не вивчено.",
+          ),
+        },
+        {
+          kind: "compare",
+          a: L("Passive re-reading", "Пасивне перечитування"),
+          b: L("Active recall (flashcards)", "Активне пригадування (flashcards)"),
+          rows: [
+            [L("Effort", "Зусилля"), L("Feels easy, fluent", "Здається легким, плавним"), L("Feels harder — that’s the point", "Здається важчим — у цьому й сенс")],
+            [L("What it trains", "Що тренує"), L("Recognising the words again", "Впізнавання тих самих слів"), L("Producing the answer from memory", "Видачу відповіді з памʼяті")],
+            [L("Retention", "Утримання"), L("Fades fast", "Швидко згасає"), L("Sticks — strongest when spaced over days", "Тримається — найкраще, коли рознести на дні")],
+          ],
+        },
+        {
+          kind: "callout",
+          tone: "tip",
+          title: L("A 10-minute revision loop", "10-хвилинна петля повторення"),
+          md: L(
+            "Open **[Mental models](#/mental-models)**, switch on flashcard mode, and go section by section: say the model out loud, flip, mark *known* or *again*. Anything you miss, follow its module link and re-skim just that. Come back tomorrow — spacing it across a few days beats one long cram.",
+            "Відкрий **[Mental models](#/mental-models)**, увімкни flashcard mode і йди секція за секцією: проговори model вголос, переверни, познач *known* або *again*. Що пропустив — іди за лінком модуля й перечитай лише його. Повернись завтра: розтягнути на кілька днів краще, ніж одне довге зубріння.",
+          ),
+        },
+      ],
+    },
+  ],
+  keyPoints: [
+    L("Revise by **retrieval**: recall each mental model before flipping the card — recognition isn’t knowledge.", "Повторюй **пригадуванням**: згадай кожен mental model до перевертання картки — впізнавання ≠ знання."),
+    L("The glossary is the fast lookup — comprehensive, bilingual, terms stay English, each linked to its module.", "Глосарій — швидкий пошук: вичерпний, двомовний, терміни English, кожен лінкований до модуля."),
+    L("The cheat-sheet is one printable page: models & prices, cost levers, tool-choice, plan gates, capability one-liners.", "Cheat-sheet — одна друкована сторінка: моделі й ціни, важелі вартості, вибір інструмента, гейти планів, можливості одним рядком."),
+    L("If you keep one shape: one model family → surfaces → context → capabilities → orchestration, wrapped in security.", "Якщо тримати одну форму: одна сімʼя моделей → поверхні → context → можливості → оркестрація, загорнуті в безпеку."),
+    L("Product facts drift — treat the cheat-sheet numbers as “re-check before you quote them”.", "Факти про продукт змінюються — числа cheat-sheet вважай за «перевір, перш ніж цитувати»."),
+  ],
+  pitfalls: [
+    { title: L("Re-reading instead of recalling", "Перечитувати замість пригадувати"), body: L("Skimming the modules again feels productive but mostly builds familiarity. Force the answer out first (flashcard mode), then verify.", "Перечитування модулів здається продуктивним, але здебільшого будує лише знайомість. Спершу витисни відповідь (flashcard mode), потім звір.") },
+    { title: L("Trusting a memorised number", "Довіряти завченому числу"), body: L("Prices, plan gates and limits move. The cheat-sheet is a starting point, not a citation — confirm version-sensitive facts before you rely on them.", "Ціни, гейти планів і ліміти змінюються. Cheat-sheet — відправна точка, не цитата: підтверджуй версійно-залежні факти, перш ніж покладатися.") },
+    { title: L("Memorising surfaces, missing the shape", "Завчити поверхні, проґавити форму"), body: L("Names of features fade; the five-layer shape (and the security wrap) is the load-bearing model that lets you place any new feature.", "Назви фіч згасають; пʼятишарова форма (і безпекова обгортка) — несуча модель, що дозволяє розмістити будь-яку нову фічу.") },
+  ],
+  interview: [
+    { q: L("What’s the most effective way to revise this material?", "Який найефективніший спосіб повторити цей матеріал?"), a: L("Active recall over re-reading: for each module, produce its mental model from memory before checking, mark what you know, and re-study only the gaps — ideally spaced across several days rather than one cram.", "Активне пригадування замість перечитування: для кожного модуля видай його mental model з памʼяті до перевірки, познач відоме й перевчи лише прогалини — краще рознести на кілька днів, ніж одне зубріння."), level: "beginner" },
+    { q: L("Why keep technical terms in English in the Ukrainian text?", "Чому лишати технічні терміни English в українському тексті?"), a: L("The industry, the docs and the product UI are all English. Translating the term just adds a second name to learn; the precision lives in the English term, so UA carries the explanation while the term stays canonical.", "Індустрія, докси й UI — англійською. Переклад терміна лише додає другу назву; точність живе в англійському терміні, тож UA несе пояснення, а термін лишається канонічним."), level: "middle" },
+    { q: L("Recall the whole guide in one sentence.", "Згадай весь гайд одним реченням."), a: L("One model family (Opus/Sonnet/Haiku), reached through many surfaces (Chat, Cowork, Code, Chrome, Office), grounded by context (window, Projects, Memory), extended by capabilities (connectors/MCP, Skills, Artifacts, computer use), scaled by orchestration (sub-agents, teams, hooks, schedules) — wrapped in security throughout.", "Одна сімʼя моделей (Opus/Sonnet/Haiku), доступна через багато поверхонь (Chat, Cowork, Code, Chrome, Office), заземлена context (вікно, Projects, Memory), розширена можливостями (connectors/MCP, Skills, Artifacts, computer use), масштабована оркестрацією (sub-agents, teams, hooks, розклади) — і скрізь загорнута в безпеку."), level: "senior" },
+  ],
+  seeAlso: ["m27", "m26", "m1", "m6"],
+  sources: [
+    { title: "Pricing — Claude Platform docs", url: "https://platform.claude.com/docs/en/about-claude/pricing" },
+    { title: "Models overview — Claude Platform docs", url: "https://platform.claude.com/docs/en/about-claude/models/overview" },
+    { title: "Get started with Claude Cowork — Help Center", url: "https://support.claude.com/en/articles/13345190-get-started-with-claude-cowork" },
+    { title: "Make the most of Claude Memory — Help Center", url: "https://support.claude.com/en/articles/11023659-understanding-claude-s-memory" },
+  ],
+};
+
+/* ======================================================================
    SECTION I · Foundations & first steps (beginner on-ramp) — authored S9.
    Web-verified 2026-06-23: model lineup & plans, surfaces, the interface,
    attachments (chat uploads 500 MB/file · 20/chat), styles→Skills migration,
@@ -4797,7 +4988,7 @@ const m5: Module = {
 
 
 /* ---- assembled, ordered, and indexed ------------------------------------ */
-export const MODULES: Module[] = [...planned, m1, m2, m3, m4, m5, m6, m7, m8, m9, m10, m11, m12, m13, m14, m15, m16, m17, m18, m19, m20, m21, m22, m23, m24, m25, m26, m27].sort((a, b) => a.order - b.order);
+export const MODULES: Module[] = [...planned, m1, m2, m3, m4, m5, m6, m7, m8, m9, m10, m11, m12, m13, m14, m15, m16, m17, m18, m19, m20, m21, m22, m23, m24, m25, m26, m27, m28].sort((a, b) => a.order - b.order);
 
 export function sectionById(id: string): Section | undefined {
   return SECTIONS.find((s) => s.id === id);
