@@ -33,7 +33,13 @@ export function MentalModelsPage({ level }: { level: Filter }): React.ReactEleme
   const [hideKnown, setHideKnown] = useState(false);
   const [revealed, setRevealed] = useState<Set<string>>(new Set());
   const [known, setKnown] = useState<Set<string>>(loadKnown);
-  const [seed, setSeed] = useState(0); // 0 = natural order; non-zero = shuffled
+  // CHANGED (S13, P2 #9): a FIXED shuffled id list, not a re-derived seed.
+  // null = natural order. Storing the order (a snapshot of all module ids) means
+  // marking a card "known" mid-run no longer reshuffles the rest: `deck` only
+  // filters + orders `base` by this list. Previously `deck` re-ran Fisher–Yates
+  // over `base` (which depends on `known`), so removing a known card changed the
+  // array length and produced a different permutation of the remaining cards.
+  const [order, setOrder] = useState<string[] | null>(null);
 
   useEffect(() => {
     if (typeof localStorage === "undefined") return;
@@ -47,9 +53,11 @@ export function MentalModelsPage({ level }: { level: Filter }): React.ReactEleme
   // CHANGED (S11): re-hide all cards when the working set changes (filter / level /
   // shuffle) so a revealed card can't carry over onto a different card and break
   // the self-test. `enterFlash` still clears reveals when toggling flash mode.
+  // (S13) `order` replaces `seed`: re-hiding still fires on shuffle/reset, but NOT
+  // on mark-known (which leaves `order` untouched), so the run stays stable.
   useEffect(() => {
     setRevealed(new Set());
-  }, [query, level, seed]);
+  }, [query, level, order]);
 
   const sec = (sid: string): { accent: string; name: Localized } => {
     const s = SECTIONS.find((x) => x.id === sid);
@@ -69,17 +77,31 @@ export function MentalModelsPage({ level }: { level: Filter }): React.ReactEleme
     // CHANGED (S12): t is now memoized — deps are honest, disable removed.
   }, [query, level, flash, hideKnown, known, t]);
 
+  // CHANGED (S13, P2 #9): order the (filtered) base by the fixed shuffle snapshot
+  // rather than re-shuffling base itself. Filtering out a known card just drops it
+  // from the sequence; the remaining cards keep their positions.
   const deck = useMemo(() => {
-    if (seed === 0) return base;
-    const arr = base.slice();
-    let s = seed;
-    for (let i = arr.length - 1; i > 0; i--) {
-      s = (s * 1103515245 + 12345) & 0x7fffffff;
-      const j = s % (i + 1);
-      [arr[i], arr[j]] = [arr[j], arr[i]];
-    }
-    return arr;
-  }, [base, seed]);
+    if (!order) return base;
+    const rank = new Map(order.map((id, i) => [id, i] as const));
+    return base.slice().sort((a, b) => (rank.get(a.id) ?? 0) - (rank.get(b.id) ?? 0));
+  }, [base, order]);
+
+  // CHANGED (S13, P2 #9): a click snapshots a Fisher–Yates shuffle of ALL ids once
+  // (or clears it). Because the snapshot covers every module, no later filter can
+  // change the relative order of what remains.
+  const toggleShuffle = (): void => {
+    setOrder((cur) => {
+      if (cur) return null;
+      const ids = MODULES.map((m) => m.id);
+      let s = (Date.now() & 0x7fffffff) || 1;
+      for (let i = ids.length - 1; i > 0; i--) {
+        s = (s * 1103515245 + 12345) & 0x7fffffff;
+        const j = s % (i + 1);
+        [ids[i], ids[j]] = [ids[j], ids[i]];
+      }
+      return ids;
+    });
+  };
 
   const reveal = (id: string): void => setRevealed((r) => new Set(r).add(id));
   const markKnown = (id: string): void => {
@@ -148,8 +170,8 @@ export function MentalModelsPage({ level }: { level: Filter }): React.ReactEleme
           </button>
         ) : null}
 
-        <button className="fbtn" onClick={() => setSeed(seed === 0 ? Date.now() : 0)}>
-          {seed === 0 ? t({ en: "Shuffle", uk: "Перемішати" }) : t({ en: "Reset order", uk: "Скинути порядок" })}
+        <button className="fbtn" onClick={toggleShuffle}>
+          {order ? t({ en: "Reset order", uk: "Скинути порядок" }) : t({ en: "Shuffle", uk: "Перемішати" })}
         </button>
 
         {/* CHANGED (S11): no aria-live — the count updated on every keystroke,

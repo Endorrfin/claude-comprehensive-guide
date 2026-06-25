@@ -1069,3 +1069,65 @@ Footer: **"Vasyl Krupka · Senior Fullstack Engineer"** + 🇺🇦. Dark is prim
   highest-value remaining build).
   **Pending user:** commit on `s12-hooks-tiers` → `npm install` (darwin-arm64) → `npm run build`; optional cleanup
   `rm -rf scripts/_ssr-s12 scripts/_smoke-s12.tsx`; S12 appears live once merged to `main`.
+
+- **2026-06-25 · S13 Polish #3 — P2 #9 stable-shuffle fix + ★ M22 Permission-Rules Resolver**
+  *(branch `s13-shuffle-permission-resolver`)* — Third polish slice against `POLISH-PLAN.md`: the last open P2 code fix
+  (#9) + the highest-value remaining new sim (Q3 #4). No new modules (guide is content-complete). Signature interactives
+  **10 → 11**. **P2 #9 · stable shuffle** (`MentalModelsPage.tsx`): the flashcard deck **reshuffled the remaining cards
+  whenever you marked one *known*** — `deck` re-ran Fisher–Yates over `base`, and `base` depends on `known`, so removing a
+  known card changed the array length and produced a *different* permutation of the rest. Replaced the `seed:number` with a
+  **fixed `order:string[]|null`** snapshot of *all* 28 module ids: `deck` now just **filters + orders `base` by that fixed
+  list**, so dropping a known card leaves every remaining card in place. The reveal-reset effect dep moved `seed → order`
+  (still re-hides on shuffle/reset, but **not** on mark-known, so a run stays stable); the button reads Shuffle/Reset off
+  `order`. **★ M22 · Permission-Rules Resolver** (`sims/PermissionResolverSim.tsx`, key `permission-resolver`,
+  `permissionResolver.css`): a **toggle-driven resolver** (mirrors `ToolPickerSim`/`ActingTiersSim` — inherently
+  reduced-motion-safe, no animation loop) that makes M22's `.claude/settings.json` block pokeable. Pick one of **6 tool
+  calls** (`Edit(src/api.ts)` · `Edit(README.md)` · `Bash(git push origin main)` · `Bash(rm -rf ~)` · `Read(./.env)` ·
+  `Read(src/config.ts)`) × one of **4 permission modes** (default · acceptEdits · plan · bypassPermissions) and watch the
+  **exact ruleset from M22's code block** resolve it **top-to-bottom deny → ask → allow → mode, first match wins**: the
+  matched rule lights up, earlier buckets show "no match", later ones "not reached", and a verdict (**Allowed / Ask first /
+  Blocked**) explains *what decided it* and *why*. Inserted as a `sim` block into **M22 t2 beside the settings.json code
+  block** (code = the config, sim = fire calls at it). New `.prc-*` CSS; sim registered in `registry.tsx`; **m22 added to
+  `SIGNATURE_SIMS`** (10 → 11); `meta.json` regenerated (only the `signatureSims` array changed — `+m22`).
+  **Web-verified this session** (canonical **Claude Code permissions doc**, code.claude.com/docs/en/permissions): rules are
+  scanned **deny → ask → allow, first match wins, and rule specificity does NOT change the order** (a matching ask prompts
+  even when a more specific allow also matches) — confirms M22's existing "deny → ask → allow" note; **a deny blocks in
+  every mode, including `bypassPermissions`**; **`bypassPermissions` skips prompts EXCEPT those forced by an explicit `ask`
+  rule** (+ `rm -rf ~`/`/` circuit breakers); **`plan` is read-only** (reads + read-only shell only, no source edits);
+  **`acceptEdits` auto-accepts file edits + common fs commands in the working dir**; **read-only tools (Read/Grep/Glob) need
+  no approval** unless an explicit deny names them. The sim encodes exactly this: matched calls are rule-decided (mode-
+  independent — deny/ask survive bypass), and the **mode only decides a call no rule matches** (the `Edit(README.md)` case
+  flips Ask/Allow/Blocked/Allow across the four modes; `Read(src/config.ts)` is allowed in every mode; both contrast with
+  their explicitly-ruled siblings).
+  **Decision (user-rule-8, flagged):** the **★** in the user's request + `POLISH-PLAN` Q3 rank this a signature build, and
+  the data-integrity check **enforces** that every signature module carries a sim block (m22 now does). §6's "~6 hero sims"
+  target is unchanged *in spirit* — this continues the S11/S12 trajectory (8 → 10 → 11); the sidebar/map ★ + Footer count now
+  read 11. **Confirm the bump 10 → 11 is wanted** (recommended — it's the plan's #4 top build and the marquee interactive for
+  the Code module).
+  **Verification (repo, linux-arm64; the linux rolldown binding `@rolldown/binding-linux-arm64-gnu` was already present in
+  `node_modules`):** `npm run typecheck` ✓ (app `tsc --noEmit` + `tsc -p tsconfig.node.json --noEmit` + **checkMeta →
+  META-SYNC OK · 28 modules · 11 signature sims**) · **gen:meta** ✓ (28 modules · 6 sections · 11 signature sims; the only
+  `meta.json` delta vs `main` is `+m22` in `signatureSims`) · **data-integrity** (`_integrity-s11.ts`) ✓ (**28 modules · 393
+  blocks · 14 sim refs (14 registered) · 26 figure refs (26 registered) · 2466 Localized pairs · glossary 119 terms ·
+  signature 11** — all keys resolve, every signature module carries a sim block) · **render smoke** ✓ (Vite SSR of
+  `PermissionResolverSim` **EN + UA** inside the real `LangProvider` → default = **Allowed** (allow rule), `.claude/settings.json`
+  + `Bash(rm:*)`/`Bash(git push:*)` + deny→ask→allow + all 4 modes; UA `Режим permission`/`Дозволено`/`перший збіг` with call
+  labels staying English; **plus `MentalModelsPage` renders with the Shuffle control** after the stable-order refactor) ·
+  `vite build` ✓ (**PermissionResolverSim 11.6 KB / 3.97 KB gzip + permissionResolver.css 4.7 KB / 1.21 KB gzip** split into
+  its own on-demand chunk; **eager `index` entry unchanged at 20.03 KB gzip** — the sim loads only on the M22 page).
+  **Sandbox gotchas (expected, §12):** built into `/tmp/dist-s13` + the **gitignored** `scripts/_ssr-s13c/` (the SSR smoke
+  must run from inside the repo tree so node resolves `react` from `node_modules`; `/tmp` has none). One SSR rebuild failed
+  only because the sandbox can't `unlink` to empty an existing output dir — building to a fresh dir worked. Smoke entry
+  `scripts/_smoke-s13.tsx` + the `scripts/_ssr-s13*/` dirs are gitignored (`scripts/_*`) — **safe to delete on your Mac**
+  (`rm -rf scripts/_ssr-s13 scripts/_ssr-s13c scripts/_smoke-s13.tsx`). **No stale `.git/index.lock`** (avoided in-sandbox
+  `git status`). No ESLint config exists; the lint gate is TypeScript strict (passed) — all edits marked `// CHANGED (S13)`.
+  **Session summary —** *(1) Done:* P2 #9 stable-shuffle fix (`MentalModelsPage`); ★ M22 PermissionResolverSim (registered,
+  in `SIGNATURE_SIMS` 10→11, `meta.json` regenerated); POLISH-PLAN #9 + Q3 #4 marked done. *(2) Branch*
+  `s13-shuffle-permission-resolver`; *commit* `feat(s13): stable flashcard shuffle + ★ M22 permission-rules resolver`;
+  *desc:* polish slice #3 from POLISH-PLAN — the last P2 code fix (deck no longer reshuffles on mark-known) and the
+  highest-value remaining sim (deny→ask→allow→mode resolver over M22's exact ruleset, web-verified). *(3) Challenges/Q:*
+  confirm the signature bump **10 → 11**; remaining POLISH-PLAN highlights — Q3 quick-win sims (#5 M16 read/write/scratchpad,
+  #6 M21 cell-citation, #7 M5 memory), Q2 polish (flashcard keyboard shortcuts, gallery section chips, deeper global search),
+  P3 #11–#14.
+  **Pending user:** commit on `s13-shuffle-permission-resolver` → `npm install` (darwin-arm64) → `npm run build`; optional
+  cleanup `rm -rf scripts/_ssr-s13 scripts/_ssr-s13c scripts/_smoke-s13.tsx`; S13 appears live once merged to `main`.

@@ -23,6 +23,8 @@ export const SIMS: Record<string, Lazy> = {
   // CHANGED (S12): two figure→sim promotions — M24 hooks stepper + M18 acting-tiers router.
   "hooks": React.lazy(() => import("../components/sims/HooksSim").then((m) => ({ default: m.HooksSim }))),
   "acting-tiers-router": React.lazy(() => import("../components/sims/ActingTiersSim").then((m) => ({ default: m.ActingTiersSim }))),
+  // CHANGED (S13): ★ M22 permission-rules resolver (deny → ask → allow → mode).
+  "permission-resolver": React.lazy(() => import("../components/sims/PermissionResolverSim").then((m) => ({ default: m.PermissionResolverSim }))),
 };
 
 /** Static diagrams, referenced by key from concepts.ts blocks (kind: 'figure'). */
