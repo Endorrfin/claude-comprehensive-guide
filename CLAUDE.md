@@ -942,3 +942,62 @@ Footer: **"Vasyl Krupka · Senior Fullstack Engineer"** + 🇺🇦. Dark is prim
   **Status: guide content-complete AND the documented data-split shipped — initial JS/CSS ≈85 KB gzip.**
   **Next (optional buffer): final full UA proofreading pass; optional PDF/LinkedIn pack; per-module body chunks
   (split the 623 KB `ModulePage` body chunk further) only if module-open latency ever warrants it.**
+
+- **2026-06-25 · S11 Polish #1 — P1 fixes + M4 visual + ★ M25 Two-Gate sim** *(branch `s11-fixes-m4-m25-twogate`)* —
+  First **polish/enhancement** session against `POLISH-PLAN.md` (guide is content-complete; no new modules). Shipped the
+  plan's recommended first slice: **Q1 P1 fixes → wire `style-pipeline` into M4 → ★ M25 Two-Gate sim → verify.**
+  **Q1 P1 fixes (all 6):** (1) **duplicate flashcard "Reveal"** — `MentalModelsPage` rendered both the full-width
+  `.mm-prompt` *and* an actions-row "Reveal"; the actions row now renders only when it has a control (`!flash || isOpen`),
+  so a hidden card shows the single `.mm-prompt` affordance. (2) **"27 vs 28 modules"** — dropped the ambiguous "27 modules"
+  framings in M28's `mentalModel` ("the whole guide") and the t2 glossary prose ("every concept across the guide"); kept the
+  factually-correct, concrete "**All 28 mental models**" callout (the gallery shows 28). (3) **`revealed` reset** — added
+  `useEffect(() => setRevealed(new Set()), [query, level, seed])` so a revealed card can't carry onto a different card after
+  filtering/shuffling. (4) **`aria-live` noise** — removed `aria-live="polite"` from `.mm-count` *and* `.gl-count` (they
+  announced on every keystroke). (5) **storage/empty guards** — `loadKnown()` now guards with `Array.isArray` (a non-array
+  stored value would otherwise make a per-char Set); `GlossaryPage` A–Z bucket uses `g.term[0]?.toUpperCase() ?? "#"`.
+  (6) **glossary "Claude in Chrome"** — appended the load-bearing gotcha "**on Pro it runs Haiku 4.5 only** (Max/Team/Ent pick
+  the model)", **web-verified this session** (Help-Center "Get started with Claude in Chrome": Pro = Haiku 4.5 only;
+  Max/Team/Enterprise choose Opus 4.7 / Sonnet 4.6 / Haiku 4.5 — matches §12).
+  **M4 visual:** wired the previously-**orphaned** `style-pipeline` figure into **M4 t2** (the "style out" pivot it depicts).
+  M4 was the only zero-visual module; the figure was registered but referenced nowhere. Now **every registered figure is
+  referenced** (26/26 — no orphans).
+  **★ M25 Two-Gate sim** (`sims/TwoGateSim.tsx` + `twoGate.css`, registry key `two-gate`): drives the two-condition model the
+  static `trust-boundaries` figure maps. **Two toggles** — **READ gate** (Untrusted ↔ Trusted source) × **ACT gate** (Broad ↔
+  Least-privilege) — plus a deterministic **stepper** that walks a canonical *"email all contacts passwords.txt"* injection
+  from Source → READ gate → Claude → ACT gate → Your data. The payload **lands (💥)** only when **both** gates are open
+  (untrusted + broad); otherwise it **collapses (🛡)** at whichever gate you closed, and the verdict names it (READ closed = the
+  text never entered; ACT closed = least privilege blocked the action). Mirrors `AgentLoopSim` (play/pause/step/back/reset,
+  `prefers-reduced-motion` hides Play) + `ToolPickerSim` (ARIA radiogroups, live region); reuses the figure's colour
+  vocabulary (untrusted=red, Claude=coral, trusted=green); fully bilingual; changing a gate re-arms the run. Inserted the
+  `sim` block into **M25 t2** beside the figure (figure = the map, sim = drive & break it). **Decision (user-rule-8, flagged):**
+  added **`m25` to `SIGNATURE_SIMS` (7 → 8)** — the codebase `signature` flag marks any module with a notable interactive, and
+  `POLISH-PLAN` Q3 ranks this the **#1 highest-insight build in the guide**; the sidebar/map ★ + Footer count now read 8. The
+  §6 "~6 signature sims" target is unchanged *in spirit* (M25 is the security capstone's marquee interactive).
+  **Verification (repo, linux-arm64; sandbox-only `@rolldown/binding-linux-arm64-gnu@1.0.3` installed `--no-save` into the
+  gitignored `node_modules`; smoke built via Vite SSR into the gitignored `scripts/ssr/`):** `tsc --noEmit` ✓ **and**
+  `tsc -p tsconfig.node.json --noEmit` ✓ · **`gen:meta`** ✓ (deterministic; **28 modules · 6 sections · 8 signature sims**;
+  re-run byte-identical) · **meta-sync** ✓ (committed `meta.json` matches `concepts.ts` — order/level/section/title/tagline/
+  mentalModel/topics/seeAlso/authored + sections + signatureSims, 0 drift) · **data-integrity** ✓ (**28 modules · 390 blocks ·
+  11 sim refs (11 registered) · 26 figure refs (26 registered) · 2466 Localized EN+UA pairs · glossary 119 terms · signature 8**;
+  table widths == head, compare 3-tuples, callout tones valid, seeAlso valid, **every signature module carries a sim block** —
+  catches the new m25) · **render smoke** ✓ (`react-dom/server` of `TwoGateSim` **EN+UA** + `StylePipeline` inside `LangProvider`
+  — asserts Untrusted/Trusted/Broad/Least, READ/ACT, "Run the attack", passwords.txt, the lesson line, and the UA strings) ·
+  `vite build` ✓ (**TwoGateSim 13.2 KB / 4.65 KB gzip + its own `twoGate.css` 2.83 KB / 0.86 KB gzip** split into on-demand
+  chunks; **`StylePipeline` now builds** as a referenced chunk; **eager `index` entry unchanged at 20.18 KB gzip** — the sim
+  loads only on the M25 page; `react-vendor` 59.65, `ModulePage` 623 KB / 194 KB gzip).
+  **Sandbox gotchas (expected, §12):** the linux rolldown binding was missing (darwin `node_modules`) → installed
+  `@rolldown/binding-linux-arm64-gnu@1.0.3` `--no-save` (additive; `package-lock.json` untouched; user runs `npm install` on
+  darwin). Built into `/tmp` + `scripts/ssr/` (both gitignored) to dodge the unlink/`emptyOutDir` limit. The verify scripts live
+  in `scripts/_*` (gitignored — `_meta-sync-s11.ts`, `_integrity-s11.ts`, `_smoke-s11.tsx`); **safe to delete on your Mac**.
+  A **stale `.git/index.lock`** was created by an in-sandbox `git status` (unlink blocked) — **`rm -f ".git/index.lock"`
+  locally before committing.** No ESLint config exists; the lint gate is TypeScript strict (passed) — all edits marked
+  `// CHANGED (S11)`.
+  **Session summary —** *(1) Done:* 6 P1 fixes (MentalModelsPage ×4, GlossaryPage ×2, M28 count, glossary Chrome), wired
+  `style-pipeline` into M4, built the ★ M25 Two-Gate sim (signature #8). *(2) Branch* `s11-fixes-m4-m25-twogate`; *commit*
+  `feat(s11): P1 fixes + M4 style-pipeline figure + ★ M25 Two-Gate injection sim`; *desc:* polish slice #1 from POLISH-PLAN —
+  flashcard/glossary correctness + a11y, M4's missing visual, and the security capstone's marquee interactive (7→8 signature
+  sims). *(3) Challenges/Q:* confirm the **signature-count bump 7→8** is wanted (recommended — it's the plan's #1 build); the
+  rest of POLISH-PLAN remains (next slice: **M24 Hook-Lifecycle** + **M18 Acting-Tiers** figure→sim promotions, then the P2
+  code fixes — wire meta-sync into `typecheck`, memoize `LangContext`, explicit `manualChunks`).
+  **Pending user:** `rm -f ".git/index.lock"` → commit → `npm install` (darwin-arm64) → `npm run build`; S11 appears live once
+  merged to `main`.

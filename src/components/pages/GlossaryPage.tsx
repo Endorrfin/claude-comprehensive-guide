@@ -29,7 +29,8 @@ export function GlossaryPage(): React.ReactElement {
   const groups = useMemo(() => {
     const map = new Map<string, GlossaryTerm[]>();
     for (const g of filtered) {
-      const first = g.term[0].toUpperCase();
+      // CHANGED (S11): guard an empty term so g.term[0] can't throw.
+      const first = g.term[0]?.toUpperCase() ?? "#";
       const key = /[A-Z]/.test(first) ? first : "#";
       const bucket = map.get(key);
       if (bucket) bucket.push(g);
@@ -78,7 +79,8 @@ export function GlossaryPage(): React.ReactElement {
         </div>
       </div>
 
-      <div className="gl-count" aria-live="polite">
+      {/* CHANGED (S11): no aria-live — it announced the count on every keystroke. */}
+      <div className="gl-count">
         <b>{filtered.length}</b> {t({ en: "terms", uk: "термінів" })}
       </div>
 
