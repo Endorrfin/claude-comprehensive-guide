@@ -11,7 +11,8 @@ const L = (en: string, uk: string): Localized => ({ en, uk });
 // CHANGED (S11): + m25 — the Two-Gate prompt-injection sim (the security capstone's
 // marquee interactive; POLISH-PLAN ranks it the highest-insight build in the guide).
 // CHANGED (S12): +m18 (Acting-Tiers Router) +m24 (Hook-Lifecycle stepper) — both figure→sim promotions.
-export const SIGNATURE_SIMS = new Set<string>(["m6", "m10", "m11", "m12", "m15", "m18", "m23", "m24", "m25", "m26"]);
+// CHANGED (S13): +m22 — the ★ Permission-Rules Resolver (POLISH-PLAN Q3 #4) makes M22 a signature module (10 → 11).
+export const SIGNATURE_SIMS = new Set<string>(["m6", "m10", "m11", "m12", "m15", "m18", "m22", "m23", "m24", "m25", "m26"]);
 
 export const SECTIONS: Section[] = [
   {
@@ -3089,6 +3090,8 @@ const m22: Module = {
           code: "// .claude/settings.json — rules run deny -> ask -> allow, first match wins\n{\n  \"permissions\": {\n    \"allow\": [\"Bash(npm run test:*)\", \"Edit(src/**)\"],\n    \"ask\":   [\"Bash(git push:*)\"],\n    \"deny\":  [\"Read(./.env)\", \"Bash(rm:*)\"]\n  }\n}",
           note: L("Tool-scoped rules; a deny always wins over an allow.", "Правила привʼязані до tool; deny завжди перемагає allow."),
         },
+        // CHANGED (S13): ★ permission-rules resolver — fire calls against this exact ruleset.
+        { kind: "sim", sim: "permission-resolver" },
         {
           kind: "callout",
           tone: "senior",

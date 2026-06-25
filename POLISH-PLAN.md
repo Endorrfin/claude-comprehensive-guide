@@ -45,9 +45,11 @@
    **zero** caching and the disable hides a real future bug. `useMemo` the value + `useCallback` `t` on
    `lang`; then list `t` honestly in deps and drop the disables. Highest-leverage code fix. *(S)*
    → `t = useCallback(…,[lang])`, `value = useMemo(…,[lang,t])`; all three disables dropped (TopBar deps → `[query, t]`).
-9. **Stable shuffle order.** `deck` re-derives from `base`, and `base` depends on `known`, so marking a card
-   *known* in flash mode **reshuffles the remaining cards mid-run**. Store the shuffled id list in state and
-   filter it for display instead. *(M)*
+9. ✅ **DONE (S13).** **Stable shuffle order.** `deck` re-derived from `base`, and `base` depends on `known`, so
+   marking a card *known* in flash mode **reshuffled the remaining cards mid-run**. Store the shuffled id list in
+   state and filter it for display instead. *(M)*
+   → `MentalModelsPage`: `seed:number` → fixed `order:string[]|null` (a snapshot of all ids); `deck` filters+orders
+   `base` by it; reveal-reset effect dep `seed` → `order` (still fires on shuffle/reset, not on mark-known).
 10. ✅ **DONE (S12).** **`vite.config.ts` manualChunks lumps ALL `node_modules` into `react-vendor`.** Fine today (only
     react/react-dom) but any future dep silently joins the eager critical path. Make it explicit:
     `if (id.includes('react')) return 'react-vendor'`. *(S)*
@@ -108,8 +110,12 @@
    **and** the per-app access tier (View/Click/Full). Resolves the module's own "don't conflate the two tiers"
    warning. Quick + high value.
    → `sims/ActingTiersSim.tsx` (key `acting-tiers-router`), M18 t3; signature.
-4. **★ Permission-Rules Resolver — M22 Claude Code** *(M)* — allow/ask/deny rules + permission-mode selector;
-   fire `Edit(...)`, `Bash(rm -rf)`, `Read(.env)` and watch **deny→ask→allow first-match-wins** resolve.
+4. ✅ **DONE (S13).** **★ Permission-Rules Resolver — M22 Claude Code** *(M)* — allow/ask/deny rules +
+   permission-mode selector; fire `Edit(...)`, `Bash(rm -rf)`, `Read(.env)` and watch **deny→ask→allow
+   first-match-wins** resolve. → `sims/PermissionResolverSim.tsx` (key `permission-resolver`), M22 t2 beside the
+   settings.json block; signature (10 → 11). Web-verified the precedence + mode facts against the canonical
+   Claude Code permissions doc (deny survives bypass; explicit ask survives bypass; plan is read-only; read-only
+   tools need no approval; mode decides only unmatched calls).
 5. **Read/Write/Scratchpad sim — M16** *(M)* — 3 lanes (uploads · sandbox VM · granted folder); run a task,
    watch the scratchpad get **wiped** while the deliverable persists; delete hits the permission gate.
 
