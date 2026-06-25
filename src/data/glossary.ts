@@ -784,8 +784,8 @@ export const GLOSSARY: GlossaryTerm[] = [
     term: "Claude in Chrome",
     category: "tools",
     def: L(
-      "A browser-extension agent that reads the active tab (screenshot + DOM) and navigates, clicks, types and extracts. Beta, all paid plans, Chrome-only.",
-      "Agent-розширення браузера, що читає активну вкладку (скриншот + DOM) і навігує, клікає, друкує та витягує дані. Beta, усі платні плани, лише Chrome.",
+      "A browser-extension agent that reads the active tab (screenshot + DOM) and navigates, clicks, types and extracts. Beta, all paid plans, Chrome-only — and on Pro it runs Haiku 4.5 only (Max/Team/Enterprise pick the model).",
+      "Agent-розширення браузера, що читає активну вкладку (скриншот + DOM) і навігує, клікає, друкує та витягує дані. Beta, усі платні плани, лише Chrome — а на Pro працює лише Haiku 4.5 (Max/Team/Enterprise обирають модель).",
     ),
     modules: ["m20"],
   },

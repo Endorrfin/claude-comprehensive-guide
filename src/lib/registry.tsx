@@ -19,6 +19,7 @@ export const SIMS: Record<string, Lazy> = {
   "browser-agent-loop": React.lazy(() => import("../components/sims/BrowserAgentLoopSim").then((m) => ({ default: m.BrowserAgentLoopSim }))),
   "sub-agent-fanout": React.lazy(() => import("../components/sims/SubAgentFanoutSim").then((m) => ({ default: m.SubAgentFanoutSim }))),
   "tool-picker": React.lazy(() => import("../components/sims/ToolPickerSim").then((m) => ({ default: m.ToolPickerSim }))),
+  "two-gate": React.lazy(() => import("../components/sims/TwoGateSim").then((m) => ({ default: m.TwoGateSim }))),
 };
 
 /** Static diagrams, referenced by key from concepts.ts blocks (kind: 'figure'). */

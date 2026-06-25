@@ -13,7 +13,10 @@ function loadKnown(): Set<string> {
   if (typeof localStorage === "undefined") return new Set();
   try {
     const raw = localStorage.getItem(KNOWN_KEY);
-    return new Set(raw ? (JSON.parse(raw) as string[]) : []);
+    // CHANGED (S11): guard against a non-array stored value — `new Set("abc")`
+    // would otherwise yield a per-character Set rather than an empty one.
+    const parsed: unknown = raw ? JSON.parse(raw) : [];
+    return new Set(Array.isArray(parsed) ? (parsed as string[]) : []);
   } catch {
     return new Set();
   }
@@ -40,6 +43,13 @@ export function MentalModelsPage({ level }: { level: Filter }): React.ReactEleme
       /* storage unavailable — non-fatal */
     }
   }, [known]);
+
+  // CHANGED (S11): re-hide all cards when the working set changes (filter / level /
+  // shuffle) so a revealed card can't carry over onto a different card and break
+  // the self-test. `enterFlash` still clears reveals when toggling flash mode.
+  useEffect(() => {
+    setRevealed(new Set());
+  }, [query, level, seed]);
 
   const sec = (sid: string): { accent: string; name: Localized } => {
     const s = SECTIONS.find((x) => x.id === sid);
@@ -142,7 +152,9 @@ export function MentalModelsPage({ level }: { level: Filter }): React.ReactEleme
           {seed === 0 ? t({ en: "Shuffle", uk: "Перемішати" }) : t({ en: "Reset order", uk: "Скинути порядок" })}
         </button>
 
-        <span className="mm-count" aria-live="polite">
+        {/* CHANGED (S11): no aria-live — the count updated on every keystroke,
+            spamming screen readers; the visible number suffices. */}
+        <span className="mm-count">
           {flash ? (
             <>
               <b>{knownCount}</b> / {MODULES.length} {t({ en: "known", uk: "known" })}
@@ -191,9 +203,13 @@ export function MentalModelsPage({ level }: { level: Filter }): React.ReactEleme
                   </button>
                 )}
 
-                <div className="mm-actions">
-                  {flash ? (
-                    isOpen ? (
+                {/* CHANGED (S11): only render the actions row when it has a control.
+                    When a flashcard is still hidden, the full-width .mm-prompt above
+                    is the single reveal affordance — the old actions-row "Reveal"
+                    button was a duplicate of it. */}
+                {!flash || isOpen ? (
+                  <div className="mm-actions">
+                    {flash ? (
                       <>
                         <button className="btn" onClick={() => markKnown(m.id)}>
                           ✓ {t({ en: "Known", uk: "Known" })}
@@ -203,16 +219,12 @@ export function MentalModelsPage({ level }: { level: Filter }): React.ReactEleme
                         </button>
                       </>
                     ) : (
-                      <button className="btn" onClick={() => reveal(m.id)}>
-                        {t({ en: "Reveal", uk: "Відкрити" })}
+                      <button className="btn" onClick={() => go(`/m/${m.id}`)}>
+                        {t({ en: "Open module", uk: "Відкрити модуль" })} →
                       </button>
-                    )
-                  ) : (
-                    <button className="btn" onClick={() => go(`/m/${m.id}`)}>
-                      {t({ en: "Open module", uk: "Відкрити модуль" })} →
-                    </button>
-                  )}
-                </div>
+                    )}
+                  </div>
+                ) : null}
               </div>
             );
           })}

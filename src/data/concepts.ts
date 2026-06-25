@@ -8,7 +8,9 @@ import type { Localized, Module, Section } from "./types";
 const L = (en: string, uk: string): Localized => ({ en, uk });
 
 /** Module ids that will carry a signature interactive (sidebar / map ★). */
-export const SIGNATURE_SIMS = new Set<string>(["m6", "m10", "m11", "m12", "m15", "m23", "m26"]);
+// CHANGED (S11): + m25 — the Two-Gate prompt-injection sim (the security capstone's
+// marquee interactive; POLISH-PLAN ranks it the highest-insight build in the guide).
+export const SIGNATURE_SIMS = new Set<string>(["m6", "m10", "m11", "m12", "m15", "m23", "m25", "m26"]);
 
 export const SECTIONS: Section[] = [
   {
@@ -3612,6 +3614,10 @@ const m25: Module = {
             "Корисна частина: injection шкодить лише якщо **обидва** факти правдиві — Claude може **прочитати** текст атаки **і** може **діяти** так, що шкодить тобі. Розірви будь-яку ланку — і атака розсипається. Тому *недовірений ввід + потужна дія* — небезпечна пара, і тому least privilege (закриває бік дії) і довірені джерела (закривають бік читання) — це вся суть.",
           ),
         },
+        // CHANGED (S11): ★ Two-Gate sim — drive the two-condition model the figure
+        // above maps. Toggle source (READ) × permissions (ACT) and watch the attack
+        // land only when BOTH gates are open. M25's marquee interactive.
+        { kind: "sim", sim: "two-gate" },
         {
           kind: "prose",
           md: L(
@@ -4109,8 +4115,10 @@ const m28: Module = {
   ),
   readMins: 8,
   mentalModel: L(
-    "Don’t re-read 27 modules — recall the picture, and look up only the detail you’re missing.",
-    "Не перечитуй 27 модулів — згадай картину, а деталь, якої бракує, просто подивись.",
+    // CHANGED (S11): drop the bare "27 modules" count (the gallery shows 28 — M28
+    // itself counts) to remove the 27-vs-28 inconsistency; the picture, not the number, is the point.
+    "Don’t re-read the whole guide — recall the picture, and look up only the detail you’re missing.",
+    "Не перечитуй весь гайд — згадай картину, а деталь, якої бракує, просто подивись.",
   ),
   topics: [
     {
@@ -4149,8 +4157,8 @@ const m28: Module = {
         {
           kind: "prose",
           md: L(
-            "The guide spans a lot of vocabulary — *token*, *context window*, *MCP*, *connector*, *skill*, *artifact*, *sub-agent*, *prompt injection*, *progressive disclosure*. The glossary is the fast lookup: a comprehensive, searchable term bank covering every concept across all 27 teaching modules, each definition written in **both EN and UA**, each term linked back to the module where it’s taught.",
-            "Гайд охоплює багато термінів — *token*, *context window*, *MCP*, *connector*, *skill*, *artifact*, *sub-agent*, *prompt injection*, *progressive disclosure*. Глосарій — це швидкий пошук: вичерпний термінологічний банк із пошуком, що покриває кожне поняття з усіх 27 навчальних модулів; кожне визначення — **і EN, і UA**, кожен термін веде назад до модуля, де його пояснено.",
+            "The guide spans a lot of vocabulary — *token*, *context window*, *MCP*, *connector*, *skill*, *artifact*, *sub-agent*, *prompt injection*, *progressive disclosure*. The glossary is the fast lookup: a comprehensive, searchable term bank covering every concept across the guide, each definition written in **both EN and UA**, each term linked back to the module where it’s taught.",
+            "Гайд охоплює багато термінів — *token*, *context window*, *MCP*, *connector*, *skill*, *artifact*, *sub-agent*, *prompt injection*, *progressive disclosure*. Глосарій — це швидкий пошук: вичерпний термінологічний банк із пошуком, що покриває кожне поняття гайду; кожне визначення — **і EN, і UA**, кожен термін веде назад до модуля, де його пояснено.",
           ),
         },
         {
@@ -4780,6 +4788,13 @@ const m4: Module = {
       id: "t2",
       title: L("Writing styles: preset & custom", "Writing styles: готові та власні"),
       blocks: [
+        // CHANGED (S11): wire the previously-orphaned `style-pipeline` figure here so
+        // M4 (the only module with no visual) gets one — and it lands exactly at the
+        // "style out" pivot the figure depicts.
+        { kind: "figure", fig: "style-pipeline", caption: L(
+          "Inputs in, style out: files, images and your voice go into Claude; the style you pick shapes the voice; the answer comes back as Markdown or, when it’s substantial, an Artifact.",
+          "Входи, стиль на виході: файли, зображення й голос ідуть у Claude; обраний style формує голос; відповідь повертається як Markdown або, коли вона велика, як Artifact.",
+        ) },
         { kind: "prose", md: L(
           "**Styles** change how Claude writes without you re-asking each time. Presets include **Normal**, **Concise**, **Formal** and **Explanatory**; you can also create a **custom style** by uploading samples of your writing or describing the voice you want. Pick a style from the composer's tools menu.",
           "**Styles** змінюють те, як Claude пише, без повторних прохань щоразу. Серед готових — **Normal**, **Concise**, **Formal** і **Explanatory**; можна створити й **власний style**, завантаживши зразки свого письма або описавши потрібний голос. Обирай style у меню інструментів composer.",

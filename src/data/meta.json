@@ -79,6 +79,7 @@
     "m12",
     "m15",
     "m23",
+    "m25",
     "m26",
     "m6"
   ],
@@ -1684,8 +1685,8 @@
         "uk": "Шар повторення — згадай картини, знайди терміни і носи одну друковану сторінку."
       },
       "mentalModel": {
-        "en": "Don’t re-read 27 modules — recall the picture, and look up only the detail you’re missing.",
-        "uk": "Не перечитуй 27 модулів — згадай картину, а деталь, якої бракує, просто подивись."
+        "en": "Don’t re-read the whole guide — recall the picture, and look up only the detail you’re missing.",
+        "uk": "Не перечитуй весь гайд — згадай картину, а деталь, якої бракує, просто подивись."
       },
       "readMins": 8,
       "topics": [
