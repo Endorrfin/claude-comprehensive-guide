@@ -66,7 +66,7 @@ export function MentalModelsPage({ level }: { level: Filter }): React.ReactEleme
     }
     if (flash && hideKnown) list = list.filter((m) => !known.has(m.id));
     return list;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // CHANGED (S12): t is now memoized — deps are honest, disable removed.
   }, [query, level, flash, hideKnown, known, t]);
 
   const deck = useMemo(() => {

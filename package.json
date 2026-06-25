@@ -10,7 +10,7 @@
     "dev": "vite",
     "prebuild": "npm run gen:meta",
     "build": "tsc && vite build",
-    "typecheck": "tsc --noEmit && tsc -p tsconfig.node.json --noEmit",
+    "typecheck": "tsc --noEmit && tsc -p tsconfig.node.json --noEmit && node --experimental-strip-types --disable-warning=ExperimentalWarning scripts/checkMeta.ts",
     "preview": "vite preview"
   },
   "dependencies": {

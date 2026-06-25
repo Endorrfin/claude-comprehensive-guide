@@ -54,8 +54,8 @@ export function TopBar({
       if (hits.length >= 6) break;
     }
     return hits;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [query, lang]);
+    // CHANGED (S12): t is now memoized (stable per lang), so depend on it honestly.
+  }, [query, t]);
 
   const open = (id: string): void => {
     setQuery("");
