@@ -20,6 +20,9 @@ export const SIMS: Record<string, Lazy> = {
   "sub-agent-fanout": React.lazy(() => import("../components/sims/SubAgentFanoutSim").then((m) => ({ default: m.SubAgentFanoutSim }))),
   "tool-picker": React.lazy(() => import("../components/sims/ToolPickerSim").then((m) => ({ default: m.ToolPickerSim }))),
   "two-gate": React.lazy(() => import("../components/sims/TwoGateSim").then((m) => ({ default: m.TwoGateSim }))),
+  // CHANGED (S12): two figure→sim promotions — M24 hooks stepper + M18 acting-tiers router.
+  "hooks": React.lazy(() => import("../components/sims/HooksSim").then((m) => ({ default: m.HooksSim }))),
+  "acting-tiers-router": React.lazy(() => import("../components/sims/ActingTiersSim").then((m) => ({ default: m.ActingTiersSim }))),
 };
 
 /** Static diagrams, referenced by key from concepts.ts blocks (kind: 'figure'). */

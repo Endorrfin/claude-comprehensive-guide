@@ -1001,3 +1001,71 @@ Footer: **"Vasyl Krupka · Senior Fullstack Engineer"** + 🇺🇦. Dark is prim
   code fixes — wire meta-sync into `typecheck`, memoize `LangContext`, explicit `manualChunks`).
   **Pending user:** `rm -f ".git/index.lock"` → commit → `npm install` (darwin-arm64) → `npm run build`; S11 appears live once
   merged to `main`.
+
+- **2026-06-25 · S12 Polish #2 — ★ M24 Hook-Lifecycle sim + ★ M18 Acting-Tiers Router + P2 code fixes**
+  *(branch `s12-hooks-tiers`)* — Second polish slice against `POLISH-PLAN.md`: the two **figure→sim promotions** the plan ranks
+  #2 and #3 (value-per-effort — each turns an existing static figure into the loop/gate interaction the module already
+  describes), plus the **P2 code fixes**. Signature interactives **8 → 10**. No new modules (guide is content-complete).
+  **★ M24 · Hook-Lifecycle stepper** (`sims/HooksSim.tsx`, key `hooks`, `hooks.css`): a **stepper** (mirrors `AgentLoopSim`)
+  with a **Hooks ON ↔ No hooks** toggle (mirrors `TwoGateSim` — a toggle that flips the outcome). A dangerous
+  `Bash(rm -rf ~/project)` rides the lifecycle (SessionStart → UserPromptSubmit → PreToolUse → PostToolUse → Stop); with the
+  **block-rm deny-hook ON**, the PreToolUse hook returns `permissionDecision: deny` and the command is **blocked before it runs —
+  deterministically, every run** (then Claude adapts to a scoped `rm -rf ./dist` which the hook allows; PostToolUse format/test +
+  Stop audit hooks fire). With **No hooks**, there is no deterministic gate — blocking rides on the model refusing + your
+  permission prompt: an **honest probabilistic baseline** (amber ⚠ "no guarantee", *not* a fake 💥 "it deleted everything").
+  Play/pause/step + reduced-motion fallback (Play hidden) + ARIA live region; the command chip travels along the active node; a
+  hook box hangs off the active event when one fires (echoes the figure). Inserted as a `sim` block in **M24 t1 beside the
+  `hook-lifecycle` figure** (figure = the map, sim = drive & break it). **★ M18 · Acting-Tiers Router** (`sims/ActingTiersSim.tsx`,
+  key `acting-tiers-router`, `actingTiersSim.css`): a **toggle-driven** router (mirrors `ToolPickerSim`, inherently
+  reduced-motion-safe — no animation loop). Pick a target (Slack · internal web dashboard · native desktop app · terminal/IDE ·
+  trading platform) and the panel shows **both senses of "tier" side by side**, exactly the conflation M18 t3 warns against:
+  **(1) the mechanism fall-through** — Claude tries the most precise tool first (connector → browser → screen), with skipped
+  tiers dimmed + a reason; **(2) the per-app access cap** (View / Click / Full, fixed by category) + a synthesis line showing how
+  the cap steers work back to the precise tool (terminal = reached by screen but **Click-only**, so real shell work goes to the
+  Bash tool; trading = **View-only AND blocked by default**). ARIA radiogroup + live region; bilingual. Inserted as a `sim` block
+  at the **end of M18 t3** (after the access-tier table + "two settings" callout — the sim synthesizes t2's mechanisms + t3's
+  access caps; the `acting-tiers` figure stays in t2). Both sims **registered** in `registry.tsx` (lazy chunks) and added to
+  **`SIGNATURE_SIMS`** (`+m18 +m24` → 10); `meta.json` regenerated.
+  **Decision (user-rule-8, flagged):** the **★** in the user's request signals both should be signature; the codebase `signature`
+  flag marks any module with a notable interactive, and the data-integrity check **enforces** that every signature module carries
+  a sim block (both now do). §6's "~6 hero sims" target is unchanged *in spirit* — these are the value-per-effort promotions the
+  plan green-lit. Continues the S11 trajectory (8 → 10).
+  **P2 code fixes (POLISH-PLAN Q1):** **#7 meta-sync wired into tooling** — committed **`scripts/checkMeta.ts`** (a permanent
+  version of the S11 ad-hoc `_meta-sync` assertion) and appended it to the **`typecheck`** npm script (`tsc ×2 && node …
+  checkMeta.ts`), so an editor/CI typecheck-only path can no longer ship a stale `meta.json` (nav/search/content divergence);
+  `checkMeta.ts` is itself typechecked by `tsconfig.node.json`. **#8 LangContext memoized** — `t` is now `useCallback(…, [lang])`
+  and `value` is `useMemo(…, [lang, t])`, so they're stable while `lang` is unchanged; **dropped the three
+  `eslint-disable react-hooks/exhaustive-deps`** comments in `TopBar` (deps `[query, lang]` → honest `[query, t]`),
+  `MentalModelsPage` and `GlossaryPage` (deps already listed `t`; now real caching instead of a per-render recompute). **#10
+  explicit `manualChunks`** — `vite.config.ts` now pins only the React runtime (`react`·`react-dom`·`scheduler`) to
+  `react-vendor` via a path regex, instead of lumping **all** of `node_modules` in; any future dep gets Rollup's default
+  lazy-boundary chunking rather than silently joining the eager critical path. All edits marked `// CHANGED (S12)`.
+  **Verification (repo, linux-arm64; the linux rolldown binding `@rolldown/binding-linux-arm64-gnu` was already present in
+  `node_modules`):** `npm run typecheck` ✓ (app `tsc --noEmit` + `tsc -p tsconfig.node.json --noEmit` + the new **checkMeta gate
+  → META-SYNC OK · 28 modules · 10 signature sims**) · **gen:meta deterministic** ✓ (md5 identical on re-run; the only
+  `meta.json` delta vs `main` is `+m18 +m24` in the sorted `signatureSims`) · **data-integrity** (`_integrity-s11.ts`) ✓
+  (**28 modules · 392 blocks · 13 sim refs (13 registered) · 26 figure refs (26 registered) · 2466 Localized pairs · glossary
+  119 terms · signature 10** — all keys resolve, every signature module carries a sim block) · **render smoke** ✓ (Vite SSR of
+  `HooksSim` + `ActingTiersSim` **EN + UA** inside the real `LangProvider` → asserts Hooks ON/No hooks/block-rm/PreToolUse/
+  SessionStart/Play + UA «Без hooks»/«Грати»; Connector·MCP/Computer use/Slack/Mechanism/Access cap/via connector + UA «Механізм»/
+  «через connector») · `vite build` ✓ (**HooksSim 14.33 KB / 5.02 KB gzip + hooks.css 2.66 KB**, **ActingTiersSim 9.13 KB /
+  3.62 KB gzip + actingTiersSim.css 3.0 KB** — each split into its own on-demand chunk; **eager `index` entry unchanged at
+  20.21 KB gzip**, **`react-vendor` unchanged at 59.65 KB gzip** — the explicit chunking produced the identical vendor; the two
+  sims load only on their module pages).
+  **Sandbox gotchas (expected, §12):** built into `/tmp/dist-s12` + the **gitignored** `scripts/_ssr-s12/` (the SSR smoke must run
+  from inside the repo tree so node resolves `react` from `node_modules` — `/tmp` has none). Smoke entry `scripts/_smoke-s12.tsx`
+  + the `scripts/_ssr-s12/` dir are gitignored (`scripts/_*`) — **safe to delete on your Mac**. **No stale `.git/index.lock`**
+  (checked — absent). No ESLint config exists; the lint gate is TypeScript strict (passed). **POLISH-PLAN status:** Q3 #2 (M24)
+  + #3 (M18) **done**; Q1 P2 #7/#8/#10 **done**. Remaining backlog highlights: Q1 P2 **#9 stable shuffle order**, P3 #11–#14;
+  Q2 polish (flashcard keyboard shortcuts, section chips on the gallery, deeper global search); Q3 quick-win sims (#4 M22
+  permission-rules resolver, #5 M16 read/write/scratchpad, #6 M21 cell-citation, #7 M5 memory).
+  **Session summary —** *(1) Done:* ★ M24 HooksSim + ★ M18 ActingTiersSim (both figure→sim, registered, in SIGNATURE_SIMS 8→10,
+  meta regenerated); P2 fixes (checkMeta in typecheck, LangContext memoized + 3 disables dropped, explicit manualChunks).
+  *(2) Branch* `s12-hooks-tiers`; *commit* `feat(s12): ★ M24 hooks + ★ M18 acting-tiers sims; P2 checkMeta/memo/chunks`;
+  *desc:* polish slice #2 from POLISH-PLAN — two figure→sim promotions (deterministic hook gate; mechanism-vs-access-tier router)
+  + the three P2 code fixes (stale-meta typecheck gate, LangContext memoization, explicit React-only vendor chunk). *(3)
+  Challenges/Q:* confirm the **signature bump 8 → 10** is wanted (recommended — the ★s were in your request and the plan ranks
+  these #2/#3); next natural slice is the **P2 #9 stable-shuffle fix** + a **quick-win sim** (M22 permission-rules resolver is the
+  highest-value remaining build).
+  **Pending user:** commit on `s12-hooks-tiers` → `npm install` (darwin-arm64) → `npm run build`; optional cleanup
+  `rm -rf scripts/_ssr-s12 scripts/_smoke-s12.tsx`; S12 appears live once merged to `main`.

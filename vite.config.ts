@@ -11,11 +11,13 @@ export default defineConfig({
     chunkSizeWarningLimit: 1200,
     rollupOptions: {
       output: {
-        // CHANGED (S10b): split the React vendor into its own long-cache chunk,
-        // separate from the app shell + content. Pairs with the route/sim-level
-        // lazy-loading in App.tsx / registry.tsx.
+        // CHANGED (S12): make the vendor chunk EXPLICIT — only the React runtime
+        // (react · react-dom · scheduler) goes into the long-cache react-vendor
+        // chunk. Previously every node_modules id was lumped in, so any future
+        // dependency would silently join the eager critical path. Now anything else
+        // gets Rollup's default (lazy-boundary) chunking.
         manualChunks(id: string) {
-          if (id.includes("node_modules")) return "react-vendor";
+          if (/node_modules\/(react|react-dom|scheduler)\//.test(id)) return "react-vendor";
           return undefined;
         },
       },

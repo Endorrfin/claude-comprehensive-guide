@@ -23,7 +23,7 @@ export function GlossaryPage(): React.ReactElement {
       .filter((g) => !q || (g.term + " " + t(g.def)).toLowerCase().includes(q))
       .slice()
       .sort((a, b) => a.term.toLowerCase().localeCompare(b.term.toLowerCase()));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // CHANGED (S12): t is now memoized — deps are honest, disable removed.
   }, [query, cat, t]);
 
   const groups = useMemo(() => {

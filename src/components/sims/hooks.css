@@ -1,0 +1,189 @@
+.hk {
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  background: var(--surface);
+  padding: 16px;
+  margin: 4px 0;
+}
+
+/* the single deny-hook toggle */
+.hk-toggle-wrap {
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  background: var(--s2);
+  padding: 11px 12px;
+}
+.hk-q {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--tx);
+  margin-bottom: 9px;
+}
+.hk-opts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+.hk-opt {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1px;
+  text-align: left;
+  border: 1px solid var(--line2);
+  border-radius: var(--r-sm);
+  background: var(--surface);
+  color: var(--tx2);
+  padding: 7px 11px;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s, color 0.15s;
+}
+.hk-opt:hover {
+  border-color: var(--accent-deep);
+}
+.hk-opt.on {
+  color: var(--tx);
+}
+.hk-opt.on.ok {
+  border-color: var(--sem-ok);
+  background: rgba(108, 194, 74, 0.12);
+}
+.hk-opt.on.danger {
+  border-color: var(--sem-warn);
+  background: rgba(248, 113, 113, 0.1);
+}
+.hk-opt-l {
+  font-size: 12.5px;
+  font-weight: 600;
+}
+.hk-opt-s {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--tx3);
+}
+
+/* the stage */
+.hk-stage {
+  width: 100%;
+  height: auto;
+  margin: 12px 0 4px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hk-stage g {
+    transition: none !important;
+  }
+  .hk-opt {
+    transition: none;
+  }
+}
+
+/* step panel + verdict */
+.hk-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 14px;
+  margin-top: 8px;
+}
+@media (max-width: 680px) {
+  .hk-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.hk-panel {
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  background: var(--s2);
+  padding: 12px 13px;
+}
+.hk-step-no {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--tx3);
+}
+.hk-chip {
+  display: inline-block;
+  font-size: 10.5px;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  border-radius: 999px;
+  padding: 2px 9px;
+  margin: 6px 0;
+  color: var(--ink);
+}
+.hk-label {
+  font-size: 14.5px;
+  color: var(--tx);
+  font-weight: 600;
+  margin: 2px 0 6px;
+  font-family: var(--font-head);
+}
+.hk-detail {
+  font-size: 12.5px;
+  color: var(--tx2);
+  line-height: 1.5;
+}
+.hk-verdict {
+  border: 1px solid var(--line);
+  border-left-width: 3px;
+  border-radius: var(--r-sm);
+  background: var(--code-bg);
+  padding: 12px 13px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.hk-verdict.safe {
+  border-color: var(--sem-ok);
+  background: rgba(108, 194, 74, 0.08);
+}
+.hk-verdict.risk {
+  border-color: var(--sem-warn);
+  background: rgba(248, 113, 113, 0.08);
+}
+.hk-verdict-t {
+  font-family: var(--font-head);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--tx);
+  margin-bottom: 5px;
+}
+.hk-verdict-b {
+  font-size: 12.5px;
+  color: var(--tx2);
+  line-height: 1.5;
+}
+.hk-verdict-b b.ok {
+  color: var(--sem-ok);
+}
+.hk-verdict-b b.danger {
+  color: var(--sem-warn);
+}
+.hk-verdict-run {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--tx3);
+  margin-top: 6px;
+}
+
+/* controls */
+.hk-controls {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+.hk-controls .spacer {
+  flex: 1;
+}
+.hk-hint {
+  font-size: 11.5px;
+  color: var(--tx3);
+}
+.hk-foot {
+  margin-top: 12px;
+  font-size: 12px;
+  color: var(--tx2);
+  border-top: 1px solid var(--line);
+  padding-top: 10px;
+}

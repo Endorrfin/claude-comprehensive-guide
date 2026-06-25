@@ -35,20 +35,23 @@
    gotcha M20/M26/M28 all flag. Append it. *(S)*
 
 ### P2 — should fix
-7. **Wire the meta-sync check into tooling.** The data-split's only guard against a stale committed
+7. ✅ **DONE (S12).** **Wire the meta-sync check into tooling.** The data-split's only guard against a stale committed
    `meta.json` is `prebuild`/`predev`. Commit the meta-sync assertion (currently only run ad-hoc) as
    `scripts/checkMeta.ts` and add it to `typecheck` (e.g. `... && node --experimental-strip-types
    scripts/checkMeta.ts`) so editor/CI typecheck-only paths can't ship nav/content divergence. *(S–M)*
-8. **Memoize the LangContext value.** `LangContext.tsx:27` makes a new `t` + `value` every render, so the
+   → committed `scripts/checkMeta.ts`; `typecheck` = `tsc ×2 && node … checkMeta.ts`.
+8. ✅ **DONE (S12).** **Memoize the LangContext value.** `LangContext.tsx:27` makes a new `t` + `value` every render, so the
    `eslint-disable react-hooks/exhaustive-deps` memos in `MentalModelsPage`/`GlossaryPage`/`TopBar` give
    **zero** caching and the disable hides a real future bug. `useMemo` the value + `useCallback` `t` on
    `lang`; then list `t` honestly in deps and drop the disables. Highest-leverage code fix. *(S)*
+   → `t = useCallback(…,[lang])`, `value = useMemo(…,[lang,t])`; all three disables dropped (TopBar deps → `[query, t]`).
 9. **Stable shuffle order.** `deck` re-derives from `base`, and `base` depends on `known`, so marking a card
    *known* in flash mode **reshuffles the remaining cards mid-run**. Store the shuffled id list in state and
    filter it for display instead. *(M)*
-10. **`vite.config.ts` manualChunks lumps ALL `node_modules` into `react-vendor`.** Fine today (only
+10. ✅ **DONE (S12).** **`vite.config.ts` manualChunks lumps ALL `node_modules` into `react-vendor`.** Fine today (only
     react/react-dom) but any future dep silently joins the eager critical path. Make it explicit:
     `if (id.includes('react')) return 'react-vendor'`. *(S)*
+    → pins only `react`·`react-dom`·`scheduler` via a path regex; everything else gets default lazy chunking. Vendor chunk unchanged (59.65 KB gzip).
 
 ### P3 — nice-to-have
 11. Dead CSS `.mm-q` / `.mm-hidden` (`global.css` ~L1011–1027) — superseded by `.mm-a`/`.mm-prompt`. Delete. *(S)*
@@ -96,13 +99,15 @@
    source) and **ACT gate** (least-privilege↔broad perms); watch an injected "email all contacts" attack
    **land or collapse**, proving "needs BOTH gates → break either". The single highest-insight idea in the
    guide; currently only the static `trust-boundaries` figure. **#1 overall.**
-2. **★ Hook Lifecycle stepper — M24** *(M, figure→sim promotion)* — step UserPromptSubmit→PreToolUse→
+2. ✅ **DONE (S12).** **★ Hook Lifecycle stepper — M24** *(M, figure→sim promotion)* — step UserPromptSubmit→PreToolUse→
    PostToolUse→Stop; toggle a `block-rm` deny-hook and watch a dangerous `rm -rf` get **blocked pre-exec** vs a
    "no hooks" probabilistic baseline. Promotes the existing `hook-lifecycle` figure; pairs with AgentLoopSim.
-3. **★ Acting-Tiers Router — M18 Computer use** *(S–M, figure→sim)* — pick a target (Slack / web form / native
+   → `sims/HooksSim.tsx` (key `hooks`), M24 t1 beside the figure; signature.
+3. ✅ **DONE (S12).** **★ Acting-Tiers Router — M18 Computer use** *(S–M, figure→sim)* — pick a target (Slack / web form / native
    app / terminal / trading); see which of the 3 mechanisms (connector→browser→screen) Claude falls through to
    **and** the per-app access tier (View/Click/Full). Resolves the module's own "don't conflate the two tiers"
    warning. Quick + high value.
+   → `sims/ActingTiersSim.tsx` (key `acting-tiers-router`), M18 t3; signature.
 4. **★ Permission-Rules Resolver — M22 Claude Code** *(M)* — allow/ask/deny rules + permission-mode selector;
    fire `Edit(...)`, `Bash(rm -rf)`, `Read(.env)` and watch **deny→ask→allow first-match-wins** resolve.
 5. **Read/Write/Scratchpad sim — M16** *(M)* — 3 lanes (uploads · sandbox VM · granted folder); run a task,

@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import type { Lang, Localized } from "../data/types";
 
 type LangCtx = {
@@ -24,7 +24,12 @@ export function LangProvider({ children }: { children: React.ReactNode }): React
     if (typeof localStorage !== "undefined") localStorage.setItem(STORAGE_KEY, lang);
   }, [lang]);
 
-  const value: LangCtx = { lang, setLang, t: (v) => (v ? v[lang] : "") };
+  // CHANGED (S12): memoize t + value so they're stable while lang is unchanged.
+  // Previously a new t/value every render gave consumers' useMemo(…, [t]) zero
+  // caching (and forced the exhaustive-deps disables). Now t changes only when
+  // lang does, so the search/gallery/glossary memos actually cache.
+  const t = useCallback((v: Localized) => (v ? v[lang] : ""), [lang]);
+  const value = useMemo<LangCtx>(() => ({ lang, setLang, t }), [lang, t]);
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 }
 

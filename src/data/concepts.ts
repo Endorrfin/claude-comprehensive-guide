@@ -10,7 +10,8 @@ const L = (en: string, uk: string): Localized => ({ en, uk });
 /** Module ids that will carry a signature interactive (sidebar / map ★). */
 // CHANGED (S11): + m25 — the Two-Gate prompt-injection sim (the security capstone's
 // marquee interactive; POLISH-PLAN ranks it the highest-insight build in the guide).
-export const SIGNATURE_SIMS = new Set<string>(["m6", "m10", "m11", "m12", "m15", "m23", "m25", "m26"]);
+// CHANGED (S12): +m18 (Acting-Tiers Router) +m24 (Hook-Lifecycle stepper) — both figure→sim promotions.
+export const SIGNATURE_SIMS = new Set<string>(["m6", "m10", "m11", "m12", "m15", "m18", "m23", "m24", "m25", "m26"]);
 
 export const SECTIONS: Section[] = [
   {
@@ -667,6 +668,7 @@ const m18: Module = {
             "**Denied apps** — це blocklist: застосунки зі списку відхиляються без запиту. **Unhide apps when Claude finishes** ховає інші вікна, поки Claude працює, щоб він чіпав лише дозволений застосунок, а потім повертає їх.",
           ),
         },
+        { kind: "sim", sim: "acting-tiers-router" }, // CHANGED (S12): figure→sim — synthesizes the mechanism fall-through + the access cap (the "two tiers" t3 warns not to conflate)
       ],
     },
     {
@@ -3388,6 +3390,7 @@ const m24: Module = {
           ),
         },
         { kind: "figure", fig: "hook-lifecycle", caption: L("Hooks hang off lifecycle events. PreToolUse can block a call; PostToolUse, SessionStart and Stop observe or inject — and they run deterministically, not when the model remembers.", "Hooks висять на подіях циклу. PreToolUse може блокувати виклик; PostToolUse, SessionStart і Stop спостерігають чи інжектять — і працюють детерміновано, а не коли модель згадає.") },
+        { kind: "sim", sim: "hooks" }, // CHANGED (S12): figure→sim — drive the lifecycle, block rm -rf at PreToolUse
         {
           kind: "table",
           head: [L("Event", "Подія"), L("Fires", "Спрацьовує"), L("Typical hook", "Типовий hook")],
