@@ -25,6 +25,8 @@ export const SIMS: Record<string, Lazy> = {
   "acting-tiers-router": React.lazy(() => import("../components/sims/ActingTiersSim").then((m) => ({ default: m.ActingTiersSim }))),
   // CHANGED (S13): ★ M22 permission-rules resolver (deny → ask → allow → mode).
   "permission-resolver": React.lazy(() => import("../components/sims/PermissionResolverSim").then((m) => ({ default: m.PermissionResolverSim }))),
+  // CHANGED (S14): ★ M16 file-lifecycle stepper (uploads/sandbox/your-folder → what survived).
+  "file-flow-sim": React.lazy(() => import("../components/sims/FileFlowSim").then((m) => ({ default: m.FileFlowSim }))),
 };
 
 /** Static diagrams, referenced by key from concepts.ts blocks (kind: 'figure'). */

@@ -116,8 +116,13 @@
    settings.json block; signature (10 → 11). Web-verified the precedence + mode facts against the canonical
    Claude Code permissions doc (deny survives bypass; explicit ask survives bypass; plan is read-only; read-only
    tools need no approval; mode decides only unmatched calls).
-5. **Read/Write/Scratchpad sim — M16** *(M)* — 3 lanes (uploads · sandbox VM · granted folder); run a task,
-   watch the scratchpad get **wiped** while the deliverable persists; delete hits the permission gate.
+5. ✅ **DONE (S14).** **Read/Write/Scratchpad sim — M16** *(M, figure→sim promotion)* — 3 lanes (uploads ·
+   sandbox VM · granted folder); a csv→xlsx report runs, the scratchpad gets **wiped** while the deliverable
+   persists, and the delete step hits the permission gate. → `sims/FileFlowSim.tsx` (key `file-flow-sim`), M16
+   t2 beside the `file-flow` figure (which stays the map in t1); signature (11 → 12). Destination toggle (Your
+   folder ↔ Scratchpad-only) flips the "what survived the session" frame; Permission-mode toggle shows the
+   delete gate firing in both modes. Web-verified the 30 MB/file cap, deletes-ask-in-both-modes, sandbox-wiped,
+   and docx/xlsx/pptx/pdf-skills facts.
 
 **Quick wins (S / S–M, toggle-driven):**
 6. **Cell-Citation provenance — M21** *(S–M)* — click a citation chip → highlight source cells + the formula;
