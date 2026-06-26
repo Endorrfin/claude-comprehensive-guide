@@ -1131,3 +1131,62 @@ Footer: **"Vasyl Krupka · Senior Fullstack Engineer"** + 🇺🇦. Dark is prim
   P3 #11–#14.
   **Pending user:** commit on `s13-shuffle-permission-resolver` → `npm install` (darwin-arm64) → `npm run build`; optional
   cleanup `rm -rf scripts/_ssr-s13 scripts/_ssr-s13c scripts/_smoke-s13.tsx`; S13 appears live once merged to `main`.
+
+- **2026-06-26 · S14 Polish #4 — ★ M16 FileFlow file-lifecycle sim** *(branch `s14-m16-fileflow-sim`)* — Fourth
+  polish slice against `POLISH-PLAN.md`: the Q3 #5 figure→sim promotion (the M16 read/write/scratchpad build). No new
+  modules (guide is content-complete). Signature interactives **11 → 12**.
+  **★ M16 · FileFlow stepper** (`sims/FileFlowSim.tsx`, key `file-flow-sim`, `fileFlowSim.css`): promotes the static
+  `file-flow` figure into the task it maps. A deterministic **csv→xlsx report** walks the three places — chat **Uploads**
+  (temp) · isolated **Sandbox VM** scratchpad (temp) · **Your folder** (persists): read the CSV → build in the sandbox →
+  delete a stale `report-old.xlsx` (permission gate) → write `report.xlsx` → present a file card → **final frame "What
+  survived the session"**. **Two toggles:** a **Destination** toggle (Your folder ↔ Scratchpad-only) flips the final
+  frame — the deliverable **persists** in your granted folder, or is **wiped** with the VM (teaches "only your folder
+  lasts, so that's where finished work must land"); a **Permission-mode** toggle (Ask before acting ↔ Act without asking)
+  re-narrates the delete step to show the **deletion gate fires in BOTH modes**. Three-lane SVG with per-step file chips
+  (idle/active/danger/gone/survived), a 🔒 gate badge on the delete step, dimmed temp lanes + ⌫ "wiped" at the end.
+  Deterministic; play/pause/step + reduced-motion fallback (Play hidden); ARIA radiogroups + live region; bilingual.
+  Mirrors HooksSim (a stepper whose toggle flips the outcome). Inserted as a `sim` block in **M16 t2** (after the
+  three-places prose, before the read/write compare); the `file-flow` **figure stays the map in t1**. Registered lazy in
+  `registry.tsx`; **m16 added to `SIGNATURE_SIMS` (11 → 12)**; `meta.json` regenerated (only `signatureSims` delta:
+  `+m16`).
+  **Web-verified this session** (Help Center, live re-check — all still current): **30 MB per file** deliverable cap
+  ("Create and edit files with Claude"); Claude creates **docx · xlsx · pptx · pdf** via the pre-built skills + PNG/charts
+  via code execution (all plans incl. Free); **deletion protection is universal** — Claude asks before permanently
+  deleting *any* file in **both** permission modes, and "Act without asking" raises prompt-injection risk ("Use Claude
+  Cowork safely"); **VM isolation** (a lightweight Linux VM via Apple's VZVirtualMachine), reads/writes only mounted/
+  granted folders, the **scratchpad/sandbox is temporary** while the granted folder persists. Confirms the existing M16
+  copy (authored S6) is accurate.
+  **Decision (user-rule-8, flagged):** the **★** in the request + `POLISH-PLAN` Q3 #5 mark this a signature build, and the
+  data-integrity check **enforces** that every signature module carries a sim block (m16 now does). §6's "~6 hero sims"
+  target is unchanged *in spirit* — this continues the S11→S12→S13 trajectory (8 → 10 → 11 → 12); the sidebar/map ★ +
+  Footer count now read 12. **Confirm the bump 11 → 12 is wanted** (recommended — it's the plan's #5 top build and M16 was
+  one of the no-sim modules the plan targets).
+  **Verification (repo, linux-arm64; the linux `@rolldown/binding-linux-arm64-gnu` + `lightningcss-linux-arm64-gnu`
+  bindings were already present in `node_modules`; no esbuild needed — Vite 8 uses rolldown):** `tsc --noEmit` ✓ **and**
+  `tsc -p tsconfig.node.json --noEmit` ✓ · **`gen:meta`** ✓ (28 modules · 6 sections · 12 signature sims; sorted
+  `signatureSims` delta vs `main` = `+m16`) · **checkMeta** ✓ (META-SYNC OK · 28 modules · 12 signature sims · sections 6)
+  · **data-integrity** (`_integrity-s11.ts`) ✓ (**28 modules · 394 blocks · 15 sim refs (15 registered) · 26 figure refs
+  (26 registered) · 2466 Localized pairs · glossary 119 terms · signature 12** — all keys resolve, every signature module
+  carries a sim block) · **render smoke** ✓ (Vite SSR of `FileFlowSim` **EN + UA** inside the real `LangProvider` →
+  asserts Uploads/Sandbox VM/Your folder/Scratchpad only/Ask before acting/Act without asking/Read the input/sales.csv/
+  "always ask — in both modes"/"Only your granted folder persists"; UA «Твоя тека»/«Лише scratchpad»/«Режим дозволів»/
+  «Читання вхідних даних»/«в обох режимах»/«Куди потрапляє результат?») · `vite build` ✓ (**FileFlowSim 16.02 KB /
+  5.37 KB gzip + fileFlowSim.css 2.82 KB** split into its own on-demand chunk; the existing `file-flow` figure chunk
+  (5.35 KB) still ships for t1; **eager `index` entry unchanged at 20.22 KB gzip**, **`react-vendor` unchanged at
+  59.65 KB gzip** — the sim loads only on the M16 page).
+  **Sandbox gotchas (expected, §12):** built the SSR smoke into the **gitignored** `scripts/_ssr-s14/` (must run from
+  inside the repo tree so node resolves `react` from `node_modules`) + the prod build into `/tmp/dist-s14`. The smoke entry
+  `scripts/_smoke-s14.tsx` + `scripts/_ssr-s14/` are gitignored (`scripts/_*`); the mounted FS blocks `unlink` so the
+  sandbox can't delete `scripts/_ssr-s14/` — **safe to delete on your Mac** (`rm -rf scripts/_ssr-s14 scripts/_smoke-s14.tsx`).
+  **No stale `.git/index.lock`** (avoided in-sandbox `git status`). No ESLint config exists; the lint gate is TypeScript
+  strict (passed) — all edits marked `// CHANGED (S14)` in `registry.tsx`/`concepts.ts`.
+  **Session summary —** *(1) Done:* ★ M16 FileFlowSim (figure→sim, registered, in `SIGNATURE_SIMS` 11→12, `meta.json`
+  regenerated); web-verified the 30 MB / both-modes-delete / sandbox-wiped / office-skills facts; POLISH-PLAN Q3 #5 marked
+  done. *(2) Branch* `s14-m16-fileflow-sim`; *commit* `feat(s14): ★ M16 FileFlow file-lifecycle sim`; *desc:* polish slice
+  #4 from POLISH-PLAN — promotes the `file-flow` figure into a deterministic uploads→sandbox→your-folder stepper with a
+  Destination toggle (persist vs wiped, the "what survived the session" payoff) and a Permission-mode toggle (delete gate
+  in both modes); figure stays the map in t1. *(3) Challenges/Q:* confirm the signature bump **11 → 12**; remaining
+  POLISH-PLAN highlights — Q3 quick-win sims (#6 M21 cell-citation, #7 M5 memory), Q2 polish (flashcard keyboard shortcuts,
+  gallery section chips, deeper global search), P3 #11–#14.
+  **Pending user:** commit on `s14-m16-fileflow-sim` → `npm install` (darwin-arm64) → `npm run build`; optional cleanup
+  `rm -rf scripts/_ssr-s14 scripts/_smoke-s14.tsx`; S14 appears live once merged to `main`.

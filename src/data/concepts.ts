@@ -12,7 +12,8 @@ const L = (en: string, uk: string): Localized => ({ en, uk });
 // marquee interactive; POLISH-PLAN ranks it the highest-insight build in the guide).
 // CHANGED (S12): +m18 (Acting-Tiers Router) +m24 (Hook-Lifecycle stepper) — both figure→sim promotions.
 // CHANGED (S13): +m22 — the ★ Permission-Rules Resolver (POLISH-PLAN Q3 #4) makes M22 a signature module (10 → 11).
-export const SIGNATURE_SIMS = new Set<string>(["m6", "m10", "m11", "m12", "m15", "m18", "m22", "m23", "m24", "m25", "m26"]);
+// CHANGED (S14): +m16 — the FileFlow file-lifecycle sim makes M16 a signature module (11 → 12).
+export const SIGNATURE_SIMS = new Set<string>(["m6", "m10", "m11", "m12", "m15", "m16", "m18", "m22", "m23", "m24", "m25", "m26"]);
 
 export const SECTIONS: Section[] = [
   {
@@ -273,6 +274,7 @@ const m16: Module = {
             "Важать три місця, і залишається лише одне. **Uploads** — файли, які ти додаєш у чат, у межах розмови. **Sandbox / scratchpad** — ізольована VM на твоєму компʼютері, де Claude запускає код і робить проміжну роботу — тимчасово, очищується після задачі. **Твоя тека** — те, що зберігається: саме сюди потрапляють результати.\n\nОтже, *read path* тягне надану теку й uploads у context, а *write path* надсилає вивід Claude на диск (і показує file-картки в чаті).",
           ),
         },
+        { kind: "sim", sim: "file-flow-sim" }, // CHANGED (S14): promote the file-flow figure (t1) into the t2 stepper
         {
           kind: "compare",
           a: L("Read path", "Read path"),
