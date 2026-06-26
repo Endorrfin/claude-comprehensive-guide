@@ -202,15 +202,15 @@
 }
 /* CHANGED (S10.5): three centred rows — identity · tagline+stats · built-with. */
 .footer-inner {
-  max-width: var(--maxw);
+  max-width: 920px; /* CHANGED (S14): 1440 → 920 — ~36% narrower footer panel */
   margin: 0 auto;
-  padding: 28px 20px 32px;
+  padding: 16px 20px 18px; /* CHANGED (S14): 28/32 → 16/18 — less bulky */
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 5px; /* CHANGED (S14): 8 → 5 — tighter rows */
   text-align: center;
-  font-size: 12.5px;
+  font-size: 12px; /* CHANGED (S14): 12.5 → 12 */
   color: var(--tx2);
 }
 .footer-id,
@@ -220,7 +220,7 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 6px; /* CHANGED (S14): 8 → 6 — tighter inline gaps */
 }
 .footer-id b {
   color: var(--tx);
@@ -228,12 +228,12 @@
 }
 .footer-tag {
   color: var(--tx3);
-  font-size: 12px;
-  max-width: 720px;
+  font-size: 11px; /* CHANGED (S14): 12 → 11 */
+  max-width: 820px; /* CHANGED (S14): 720 → 820 — keep tagline + stats on one line within the narrower footer */
 }
 .footer-built {
   color: var(--tx3);
-  font-size: 11px;
+  font-size: 10.5px; /* CHANGED (S14): 11 → 10.5 */
   font-family: var(--font-mono);
   letter-spacing: 0.2px;
 }
