@@ -6,11 +6,11 @@
    concepts.ts. It is wired into `npm run typecheck` so nav/search/content divergence
    can't ship. If it fails: run `npm run gen:meta` and commit meta.json.
 
-   Run: node --experimental-strip-types --disable-warning=ExperimentalWarning scripts/checkMeta.ts */
+   Run: tsx scripts/checkMeta.ts  (wired into `npm run typecheck`). */
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
-import { SECTIONS, MODULES, SIGNATURE_SIMS } from "../src/data/concepts.ts";
+import { SECTIONS, MODULES, SIGNATURE_SIMS } from "../src/data/concepts";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const meta = JSON.parse(readFileSync(join(here, "..", "src", "data", "meta.json"), "utf8"));

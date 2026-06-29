@@ -5,12 +5,12 @@
    ModulePage imports the full bodies from concepts.ts. This keeps the ~600 KB of
    module content OUT of the initial bundle.
 
-   Run: `npm run gen:meta` (Node 22, --experimental-strip-types). Also wired as the
-   `prebuild` hook so production builds never ship stale metadata. Commit meta.json. */
+   Run: `npm run gen:meta` (Node 22, via tsx). Also wired as the `predev`/`prebuild`
+   hook so production builds never ship stale metadata. Commit meta.json. */
 import { writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
-import { SECTIONS, MODULES, SIGNATURE_SIMS } from "../src/data/concepts.ts";
+import { SECTIONS, MODULES, SIGNATURE_SIMS } from "../src/data/concepts";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const out = join(here, "..", "src", "data", "meta.json");

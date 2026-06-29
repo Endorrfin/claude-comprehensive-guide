@@ -37,7 +37,7 @@ export function MemoryAcrossSessions(): React.ReactElement {
       {arrows(249)}
       {arrows(399)}
 
-      {/* global memory store */}
+      {/* the global Memory store (CHANGED S15: leading "global" word tripped an ESLint config-comment directive) */}
       <rect x="24" y="160" width="452" height="58" rx="12" fill="var(--accent-dim)" stroke="var(--sem-context)" strokeWidth={2} />
       <text x="40" y="184" fontSize={13.5} fontWeight={700} fill="var(--sem-context)" style={{ fontFamily: "var(--font-head)" }}>Memory</text>
       <text x="40" y="202" fontSize={10.5} fill="var(--tx2)">editable summary · persists across chats · ~24h refresh</text>

@@ -5,12 +5,15 @@
   "type": "module",
   "description": "Claude: The Comprehensive Guide — a deep, interactive, bilingual (EN/UA) guide to mastering Claude and its tools. By Vasyl Krupka.",
   "scripts": {
-    "gen:meta": "node --experimental-strip-types --disable-warning=ExperimentalWarning scripts/genMeta.ts",
+    "gen:meta": "tsx scripts/genMeta.ts",
     "predev": "npm run gen:meta",
     "dev": "vite",
     "prebuild": "npm run gen:meta",
     "build": "tsc && vite build",
-    "typecheck": "tsc --noEmit && tsc -p tsconfig.node.json --noEmit && node --experimental-strip-types --disable-warning=ExperimentalWarning scripts/checkMeta.ts",
+    "typecheck": "tsc --noEmit && tsc -p tsconfig.node.json --noEmit && tsx scripts/checkMeta.ts",
+    "lint": "eslint .",
+    "check:data": "tsx scripts/check-data.ts",
+    "verify": "npm run typecheck && npm run lint && npm run check:data && npm run build",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -18,11 +21,18 @@
     "react-dom": "^19.2.0"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@types/node": "^22.10.0",
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",
     "@vitejs/plugin-react": "^6.0.0",
+    "eslint": "^10.5.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-react-refresh": "^0.5.3",
+    "globals": "^17.7.0",
+    "tsx": "^4.22.4",
     "typescript": "^5.7.0",
+    "typescript-eslint": "^8.62.0",
     "vite": "^8.0.0"
   }
 }

@@ -1,6 +1,7 @@
 # dependencies & build
 node_modules
 dist
+dist-*/
 .vite
 
 # the two reference projects + posters (each has its own nested .git + heavy assets;

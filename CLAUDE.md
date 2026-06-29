@@ -375,6 +375,39 @@ Footer: **"Vasyl Krupka · Senior Fullstack Engineer"** + 🇺🇦. Dark is prim
 - **S10b · Revision layer + polish** — Ch.28 Mental models gallery + glossary (new `glossary.ts` — **comprehensive: every term across all 27 modules**, user choice 2026-06-23) + cheat-sheet + flashcards; wire `#/mental-models` & `#/glossary`; global search; mobile/a11y/**perf incl. code-splitting / lazy-loading** *(bundle ~986 kB / 296 kB gzip after S10a — past Vite's >500 kB note; introduce route-/sim-level lazy-loading here)*; **bilingual QA**. *(web-search to confirm latest facts.)*
 - **S11–S12 · Buffer** — extra "maximal" interactives, full UA pass, final QA; optional PDF/LinkedIn pack.
 
+### Standard-conformance track — parity with `database guide` + `Node-js guide` (Waves C1–C4)
+
+> **Why:** the family now shares a Tier-1 bar (see `_standard/GUIDE-AUTHORING-STANDARD.md` §8 and the gap
+> analysis `_standard/CLAUDE-GUIDE-PARITY.md`). After cross-port Wave 1 (Node-js got ESLint + multi-gate CI)
+> and Wave 2 / database S23 (engine unit tests + a wired SSR/render smoke), **both peers share two halves —
+> infra/CI gates *and* a test/correctness layer — and Claude guide has neither wired**, though it is the
+> originator of the `gen:meta`/`meta.ts` split (already conformant, do not touch).
+>
+> **Division of labour (§12, standard §3.4/§3.11):** the agent edits + runs the verify gate in a scratch
+> copy; the **owner** runs `npm install`, commits on the `sN-*` branch, and deploys. Sandbox blocks `unlink`
+> → build to a fresh `--outDir` (e.g. `dist-s15`); SSR smokes run with the app tsconfig for the automatic
+> JSX runtime. Read `_standard/CLAUDE-GUIDE-PARITY.md` for the full gap list + effort/risk before starting.
+
+- **S15 · Wave C1 — infra parity** *(additive, low risk; mirrors Node-js Wave 1)* — add `eslint.config.js`
+  (Tier-1 flat config from `_standard/templates/tier1-spa/`) + `"lint": "eslint ."` and fix what it surfaces
+  (`// CHANGED (S15)`); **promote** the gitignored `scripts/_integrity-s11.ts` → committed
+  `scripts/check-data.ts` + `"check:data"`; add a `"verify"` aggregate (typecheck → lint → check:data →
+  build, leaving room for test + smoke); upgrade `.github/workflows/deploy.yml` to the multi-gate order +
+  `cancel-in-progress: false`. **Done when:** ESLint green, committed `check:data`, `verify` + CI green.
+  **✅ DONE 2026-06-29 — see §14 (S15).**
+- **S16 · Wave C2 — test parity** *(the new bar; mirrors database S23)* — port the permanent SSR/render
+  smoke (`scripts/smoke.ts` pattern from the database guide: render every sim/figure EN+UK + pages + module
+  headers + app-shell hashes), wire `"smoke"` into `verify` + CI; then extract 3–4 algorithmic sims into pure
+  `src/lib/*.ts` engines + `scripts/test-*.ts` golden tests (standard §4.5), folded into a `"test"` umbrella.
+- **S17 · Wave C3 — config modernization** — split tsconfig into project references
+  (`tsconfig.app.json` + `tsconfig.node.json`, `build = tsc -b && vite build`); add `verbatimModuleSyntax` +
+  `erasableSyntaxOnly` + `noUncheckedSideEffectImports`; bump **TS 5.7 → 6** and adopt **`tsx`** for scripts
+  (replaces `node --experimental-strip-types`); add `homepage`/`author`/`license` to `package.json`.
+- **S18 · Wave C4 — structural (owner-confirm; the big one)** — split the monolithic `src/data/concepts.ts`
+  (5,033 lines) into `src/data/modules/m<N>-*.ts` + a thin aggregator; add **`num`** to `Module`; fold
+  `SIGNATURE_SIMS` → `signature?: true`. Data-contract change → **confirm with owner first**; `check:data`
+  is the safety net after each step. **Recommended stop after C2** (full mutual parity); C3–C4 are polish.
+
 ## 14. Status / progress log
 
 - **2026-06-23 · S0 Planning** — Reviewed all three `_examples` projects (node-js guide = gold standard;
@@ -1190,3 +1223,89 @@ Footer: **"Vasyl Krupka · Senior Fullstack Engineer"** + 🇺🇦. Dark is prim
   gallery section chips, deeper global search), P3 #11–#14.
   **Pending user:** commit on `s14-m16-fileflow-sim` → `npm install` (darwin-arm64) → `npm run build`; optional cleanup
   `rm -rf scripts/_ssr-s14 scripts/_smoke-s14.tsx`; S14 appears live once merged to `main`.
+
+- **2026-06-28 · Next planned: S15 = Wave C1 (standard parity)** *(not started)* — the family reached a shared
+  Tier-1 bar (infra/CI gates **+** a test/correctness layer) after the database↔Node-js cross-port; Claude
+  guide has neither half wired. The **conformance track (Waves C1–C4)** is in §13; the full gap analysis with
+  effort/risk is **`_standard/CLAUDE-GUIDE-PARITY.md`**. **S15 scope = Wave C1 (infra parity):** `eslint.config.js`
+  + `lint`; promote `scripts/_integrity-s11.ts` → committed `scripts/check-data.ts` + `check:data`; add `verify`;
+  multi-gate `deploy.yml` + `cancel-in-progress:false`. Agent edits + verifies in a scratch copy; **owner** runs
+  `npm install` + commit (`s15-wave-c1-infra-parity`) + deploy. Read CLAUDE.md fully + `_standard/CLAUDE-GUIDE-PARITY.md`
+  + `_standard/GUIDE-AUTHORING-STANDARD.md` §4/§8 first.
+
+- **2026-06-29 · S15 Wave C1 — infra parity** *(branch `s15-wave-c1-infra-parity`)* — DONE. First
+  standard-conformance wave (gap analysis `_standard/CLAUDE-GUIDE-PARITY.md` #1–4); mirrors Node-js Wave 1.
+  **Additive, low risk, no content changes** — the guide stays 28/28 modules / 12 signature sims. Wired the
+  two missing halves of the **infra/CI** gate set (the test layer is C2). **(1) ESLint** — added
+  `eslint.config.js` (flat config, the database/Node-js shape: `js.recommended` + `tseslint.recommended` +
+  the classic two `react-hooks` rules + `react-refresh` + `no-unused-vars` with `^_` ignore; a second block
+  gives `scripts/**/*.ts`·`vite.config.ts`·`eslint.config.js` Node globals; ignores `dist`·`dist-*`·
+  `node_modules`·`scripts/ssr`·`scripts/_*`·`scripts/**/*.mjs`·`_ci`) + `"lint": "eslint ."` + the **six
+  devDeps** at the peers' proven versions (`@eslint/js`^10.0.1 · `eslint`^10.5.0 · `eslint-plugin-react-hooks`
+  ^7.1.1 · `eslint-plugin-react-refresh`^0.5.3 · `globals`^17.7.0 · `typescript-eslint`^8.62.0). **(2)
+  check:data** — promoted the gitignored `scripts/_integrity-s11.ts` → committed **`scripts/check-data.ts`**
+  (asserts unchanged: 6 sections · 28 modules · unique ids/orders 1..28 · bilingual completeness · registry
+  sim/figure refs · table/compare shapes · callout tones · seeAlso · every SIGNATURE_SIMS module carries a sim ·
+  glossary integrity) + `"check:data"`. *(Carries `/// <reference types="node" />` like its `genMeta`/
+  `checkMeta` siblings so an editor that checks it outside `tsconfig.node.json` still resolves node types;
+  the real gate is `tsc -p tsconfig.node.json` in `typecheck`, which is clean.)* **(3) verify** — `"verify": "typecheck → lint → check:data → build"`
+  (room left for `test` + `smoke` in C2). **(4) CI** — `deploy.yml` upgraded from build-only to the discrete
+  multi-gate order (Typecheck → Lint → Data integrity → Build) + **`cancel-in-progress: false`**. Also added
+  `dist-*/` to `.gitignore` (defensive — the sandbox builds to `dist-s15`).
+  **Lint finding + fix (1, the only one):** `MemoryAcrossSessions.tsx:40` — the JSX comment
+  `{/* global memory store */}` begins with the keyword **`global`**, which ESLint parses as a
+  `/* global … */` **config-comment directive** declaring globals `memory`+`store`, then flags them unused
+  (`tsc`'s `noUnusedLocals` can't see this — it's an ESLint-only construct). Fixed by rewording so `global`
+  isn't the leading token; marked `CHANGED (S15)`. One **benign warning remains** (`react-refresh/
+  only-export-components` on `i18n/LangContext.tsx` — it exports the provider **and** the `useLang` hook);
+  it's a `warn`, `eslint .` exits 0, and both peers ship the identical warning — left as-is (splitting the
+  context is i18n restructuring, out of C1 scope).
+  **Decisions (user-rule-8, flagged):** (1) **Adopted `tsx` for the three TS scripts** (`gen:meta` ·
+  `check:data` · `checkMeta`) with **extensionless imports** — a follow-up after the owner hit editor `TS5097`
+  (see the follow-up note below). This pulls the small **`tsx` slice of Wave C3 (gap #8)** forward (it's the
+  standard's canonical script runner, §4.1/§4.6); the **TS-6 bump (gap #7) stays in C3**. `tsx` + the ESLint
+  stack are the only new dep families. (2) **Did NOT bump TypeScript** (stays ^5.7.0) — Node-js guide proves
+  the `eslint@10`+`typescript-eslint@8` stack runs clean on TS 5.7, so the bump is deferred to C3 as planned.
+  (3) **Did not touch** the `gen:meta`/`meta.ts` split (already conformant) or start the `concepts.ts` split
+  (Wave C4, owner-confirm).
+  **Verification (clean linux-x64 `npm install` — 152 pkgs, 31 s — in a `/tmp` scratch copy of the repo; the
+  sandbox builds to `/tmp` so the mounted FS unlink limit never bites):** `npm run typecheck` ✓ (app `tsc` +
+  `tsc -p tsconfig.node.json` now also typechecks the committed `check-data.ts` + checkMeta **META-SYNC OK ·
+  28 modules · 12 signature sims · sections 6**) · `npm run lint` ✓ (**0 errors, 1 benign warning**, exit 0;
+  the `scripts/_*` scratch files were correctly ignored) · `npm run check:data` ✓ (**6 sections · 28 modules ·
+  394 blocks · 15 sim refs (15 registered) · 26 figure refs (26 registered) · 2466 Localized pairs · glossary
+  119 terms · signature 12**) · `npm run build` ✓ (eager `index` **20.23 kB gzip**, `react-vendor`
+  **59.65 kB gzip**, `ModulePage` 193.99 kB gzip — all unchanged from S14; the reworded figure chunk still
+  builds) · **`npm run verify` exit 0** end-to-end · `gen:meta` deterministic (regenerated `meta.json`
+  **byte-identical** to the committed one — no metadata drift). Workspace holds **source only** — the build ran
+  only in `/tmp`; no `dist/` or git lock written to the mounted FS; **6 files touched** (new `eslint.config.js`
+  + `scripts/check-data.ts`; modified `package.json` · `.github/workflows/deploy.yml` · `.gitignore` ·
+  `src/components/figures/MemoryAcrossSessions.tsx`).
+  **Follow-up (same session) — editor `TS5097` → `tsx`:** the owner's IDE flagged `TS5097` on
+  `check-data.ts`'s `.ts`-extension imports. Root cause: the flat (non-project-reference) tsconfig means
+  WebStorm doesn't reliably route `scripts/*.ts` to `tsconfig.node.json`, so it checks them under **bare
+  defaults** (no `allowImportingTsExtensions`). The combination of *both* "missing node types" *and* TS5097 is
+  the tell — only bare defaults produce both. First added `/// <reference types="node" />` (matched the
+  `genMeta`/`checkMeta` convention; cleared the node-type errors), but TS5097 needs the config. **Best-practice
+  fix (owner chose "what you recommend"): switched all three scripts to `tsx` + extensionless imports**,
+  dropping the `--experimental-strip-types --disable-warning` flags. Extensionless imports **cannot** trigger
+  TS5097 in any editor, and `tsx` is the standard's canonical runner (database guide uses it verbatim).
+  **Re-verified (sandbox):** `npm install` adds `tsx` (5 pkgs); `typecheck` (checkMeta via tsx) · `lint`
+  (0 err/1 warn) · `check:data` (same counts) · `build` · **`verify` exit 0**; **`gen:meta` via tsx →
+  `meta.json` byte-identical** to committed (no drift); a bare-default `tsc scripts/check-data.ts` now reports
+  **0× TS5097**. Touched 3 more files (`scripts/genMeta.ts` · `scripts/checkMeta.ts` extensionless+tsx note) +
+  `package.json` (+`tsx`@^4.22.4, 3 script cmds). **8 files total this session.**
+  **Session summary —** *(1) Done:* ESLint flat config + `lint` + 6 devDeps (one lint fix: the `/* global */`
+  comment-directive gotcha); promoted `_integrity-s11.ts` → committed `check-data.ts` + `check:data`; `verify`
+  aggregate; multi-gate `deploy.yml` + `cancel-in-progress:false`; `.gitignore` `dist-*/`; **follow-up: moved
+  the 3 TS scripts to `tsx`/extensionless imports (editor TS5097 fix)**. *(2) Branch* `s15-wave-c1-infra-parity`;
+  *commit* `chore(s15): wave C1 infra parity — ESLint + check:data + verify + multi-gate CI; tsx for scripts`;
+  *desc:* additive infra/CI gates to match the database + Node-js Tier-1 bar — flat ESLint config (one fix), a
+  committed data-integrity check, a `verify` aggregate, and a discrete-gate Pages workflow; the **`tsx` slice of
+  C3 pulled forward** (editor TS5097 fix, extensionless imports); no content/structural changes; TS-6 (rest of
+  C3) + the test layer (C2) stay deferred. *(3) Challenges/Q:* none blocking (the TS5097 follow-up is resolved).
+  Next wave **C2 = test parity**: port the permanent SSR/render smoke (`scripts/smoke.ts`) + extract 3–4 sim
+  engines into `src/lib/*.ts` with golden tests, then fold `test` + `smoke` into `verify` + CI.
+  **Pending user:** `npm install` (darwin-arm64 — pulls the 6 ESLint deps **+ `tsx`** + refreshes
+  `package-lock.json`) → `npm run verify` to confirm locally → commit on `s15-wave-c1-infra-parity` → merge to
+  `main` (CI now runs the multi-gate before deploy). S15 appears live once merged.
