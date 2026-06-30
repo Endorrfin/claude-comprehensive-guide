@@ -32,8 +32,9 @@ jobs:
       - name: Install
         run: npm ci
 
-      # CHANGED (S15): discrete gates in standard order (typecheck -> lint ->
-      # check:data -> build) instead of build-only. Wave C2 adds `test` + `smoke`.
+      # CHANGED (S15): discrete gates in standard order instead of build-only.
+      # CHANGED (S16): Wave C2 filled the test + smoke slots — the full order is now
+      # typecheck -> lint -> check:data -> test -> smoke -> build (matches `npm run verify`).
       - name: Typecheck
         run: npm run typecheck
 
@@ -42,6 +43,12 @@ jobs:
 
       - name: Data integrity
         run: npm run check:data
+
+      - name: Engine tests (token-budget · decide · permission-resolver)
+        run: npm run test
+
+      - name: SSR / render smoke
+        run: npm run smoke
 
       - name: Build
         run: npm run build

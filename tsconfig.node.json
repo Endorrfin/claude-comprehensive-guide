@@ -1,10 +1,15 @@
 {
   "compilerOptions": {
     "target": "ES2022",
-    "lib": ["ES2022"],
+    // CHANGED (S16): the committed SSR smoke (scripts/smoke.ts) + engine tests live in this Node
+    // project and import React components, so it now needs the DOM libs + the React JSX runtime in
+    // addition to Node types (mirrors the database guide's tsconfig.node.json). The smoke itself
+    // uses createElement (no JSX), but the .tsx components it imports do.
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "moduleResolution": "bundler",
     "types": ["node"],
+    "jsx": "react-jsx",
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
@@ -16,5 +21,8 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true
   },
-  "include": ["scripts/**/*.ts", "vite.config.ts"]
+  // scripts/_* are gitignored scratch drafts (older _integrity/_meta-sync/_smoke); they are never
+  // committed (so absent in CI) and not part of the gate — exclude them from the typecheck.
+  "include": ["scripts/**/*.ts", "vite.config.ts"],
+  "exclude": ["scripts/_*"]
 }

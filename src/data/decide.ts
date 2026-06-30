@@ -1,4 +1,9 @@
 import type { Localized } from "./types";
+// CHANGED (S16): the pure scoring engine moved to src/lib/decide.ts (Wave C2, test parity).
+// This file keeps the bilingual surface catalog + facet copy and re-exports the engine, so
+// consumers (ToolPickerSim) keep importing recommend/Answers/Ranked from data/decide unchanged.
+import { rankSurfaces, type Answers, type Ranked as LibRanked, type ScorableSurface } from "../lib/decide";
+export type { WhereId, AutonomyId, PlanId, Answers } from "../lib/decide";
 
 /* Data + scoring for the ★ Tool Picker (M26, also the #/decide page).
    You answer three facets about a task; recommend() ranks the surfaces.
@@ -6,10 +11,6 @@ import type { Localized } from "./types";
    `plan` gates the paid-only surfaces (they still surface, clearly tagged).
    Deterministic and pure — no side effects. Bilingual EN/UA. */
 const L = (en: string, uk: string): Localized => ({ en, uk });
-
-export type WhereId = "chat" | "files" | "web" | "code" | "office" | "app" | "expertise";
-export type AutonomyId = "reply" | "task" | "recurring";
-export type PlanId = "free" | "paid";
 
 export type FacetOption = { id: string; label: Localized; sub?: Localized };
 export type Facet = { id: "where" | "autonomy" | "plan"; question: Localized; options: FacetOption[] };
@@ -47,15 +48,13 @@ export const FACETS: Facet[] = [
   },
 ];
 
-export type Surface = {
-  id: string;
+// CHANGED (S16): Surface = the engine's scoring shape (id/paidOnly/fit/autonomy) plus the
+// bilingual display fields, so SURFACES passes straight to rankSurfaces().
+export type Surface = ScorableSurface & {
   name: Localized;
   module: string;
-  paidOnly: boolean;
   why: Localized;
   limit: Localized;
-  fit: Partial<Record<WhereId, number>>;
-  autonomy: Partial<Record<AutonomyId, number>>;
 };
 
 export const SURFACES: Surface[] = [
@@ -131,18 +130,12 @@ export const SURFACES: Surface[] = [
   },
 ];
 
-export type Answers = { where: WhereId; autonomy: AutonomyId; plan: PlanId };
-export type Ranked = { surface: Surface; score: number; gated: boolean };
+// CHANGED (S16): Ranked is the engine's generic specialised to the bilingual Surface, so the
+// consumer's `Ranked` type is unchanged. recommend() is a thin wrapper over the pure engine.
+export type Ranked = LibRanked<Surface>;
 
-/** Rank the surfaces for a set of answers. `where` dominates; `autonomy`
-   modifies; paid-only surfaces on a Free plan are penalised and flagged. */
+/** Rank the surfaces for a set of answers — delegates to the pure, unit-tested engine
+   (src/lib/decide.ts). Kept here so existing imports of `recommend` keep working. */
 export function recommend(a: Answers): Ranked[] {
-  return SURFACES.map((s) => {
-    const base = (s.fit[a.where] ?? 0) * 10 + (s.autonomy[a.autonomy] ?? 0);
-    const gated = a.plan === "free" && s.paidOnly;
-    const score = gated ? base * 0.34 : base;
-    return { surface: s, score, gated };
-  })
-    .filter((r) => r.score > 0)
-    .sort((x, y) => y.score - x.score);
+  return rankSurfaces(SURFACES, a);
 }
