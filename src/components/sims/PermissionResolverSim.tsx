@@ -2,6 +2,10 @@ import React, { useMemo, useState } from "react";
 import { useLang } from "../../i18n/LangContext";
 import { Md } from "../chapter/Md";
 import type { Localized } from "../../data/types";
+// CHANGED (S16): the ruleset + resolution order moved to the pure engine
+// src/lib/permissionResolver.ts (Wave C2, test parity). This component overlays the bilingual
+// copy onto the engine's structural CallSpec/Mode and renders identically.
+import { CALLS, MODES, RULES, resolve, type CallSpec, type Mode, type Verdict } from "../../lib/permissionResolver";
 import "./permissionResolver.css";
 
 /* ★ Permission-Rules Resolver — M22 Claude Code. Makes the abstract permission
@@ -24,102 +28,46 @@ import "./permissionResolver.css";
    ToolPickerSim / ActingTiersSim. */
 const L = (en: string, uk: string): Localized => ({ en, uk });
 
-type Verdict = "deny" | "ask" | "allow"; // a rule bucket AND a resolved outcome
-type Mode = "default" | "acceptEdits" | "plan" | "bypass";
-
-/* The fixed ruleset — mirrors the .claude/settings.json block in M22 t2. */
-const RULES: { bucket: Verdict; patterns: string[] }[] = [
-  { bucket: "deny", patterns: ["Read(./.env)", "Bash(rm:*)"] },
-  { bucket: "ask", patterns: ["Bash(git push:*)"] },
-  { bucket: "allow", patterns: ["Edit(src/**)", "Bash(npm run test:*)"] },
-];
-const BUCKET_INDEX: Record<Verdict, number> = { deny: 0, ask: 1, allow: 2 };
-
-type Call = {
-  id: string;
-  label: string; // the literal call Claude attempts
-  tool: "Edit" | "Bash" | "Read";
-  desc: Localized;
-  match: { bucket: Verdict; rule: string } | null; // the rule that decides (precedence-first), or null
-  readOnly?: boolean; // unmatched read-only tool -> allowed in every mode
-  why: Localized; // explanation for a rule-decided verdict
-  modeNote?: Localized; // how the mode interacts (deny beats bypass, ask survives bypass, …)
-};
-
-const CALLS: Call[] = [
-  {
-    id: "edit-src",
-    label: "Edit(src/api.ts)",
-    tool: "Edit",
+/* CHANGED (S16): bilingual copy overlaid on the engine's structural CALLS, keyed by call id. */
+const CALL_COPY: Record<string, { desc: Localized; why: Localized; modeNote?: Localized }> = {
+  "edit-src": {
     desc: L("edit a file under src/", "редагувати файл під src/"),
-    match: { bucket: "allow", rule: "Edit(src/**)" },
     why: L("It falls under the `Edit(src/**)` allow rule, so the scoped edit runs with no prompt.", "Воно підпадає під allow-правило `Edit(src/**)`, тож точкова правка виконується без запиту."),
     modeNote: L("An allow rule pre-approves it — the mode only steps in for calls no rule matches.", "Allow-правило схвалює його заздалегідь — режим втручається лише для викликів, які не збіглися з жодним правилом."),
   },
-  {
-    id: "edit-readme",
-    label: "Edit(README.md)",
-    tool: "Edit",
+  "edit-readme": {
     desc: L("edit a file at the repo root", "редагувати файл у корені репо"),
-    match: null, // README.md is not under src/ -> no rule matches -> the MODE decides
     why: L("No rule matches `README.md` (the allow rule only covers `src/**`), so the permission MODE decides — switch modes and watch the verdict flip.", "Жодне правило не збігається з `README.md` (allow покриває лише `src/**`), тож вирішує РЕЖИМ permission — перемикай режими й дивись, як змінюється вердикт."),
   },
-  {
-    id: "git-push",
-    label: "Bash(git push origin main)",
-    tool: "Bash",
+  "git-push": {
     desc: L("push commits to the remote", "запушити коміти у remote"),
-    match: { bucket: "ask", rule: "Bash(git push:*)" },
     why: L("It matches the `Bash(git push:*)` ask rule, so Claude pauses for your confirmation before pushing.", "Воно збігається з ask-правилом `Bash(git push:*)`, тож Claude зупиняється по твоє підтвердження перед push."),
     modeNote: L("An explicit ask rule prompts in EVERY mode — bypassPermissions skips prompts except the ones an ask rule forces.", "Явне ask-правило питає в БУДЬ-ЯКОМУ режимі — bypassPermissions пропускає запити, крім тих, які примушує ask-правило."),
   },
-  {
-    id: "rm",
-    label: "Bash(rm -rf ~)",
-    tool: "Bash",
+  rm: {
     desc: L("delete the home directory", "видалити домашню теку"),
-    match: { bucket: "deny", rule: "Bash(rm:*)" },
     why: L("It matches the `Bash(rm:*)` deny rule — blocked outright, and the scan stops at the first deny.", "Воно збігається з deny-правилом `Bash(rm:*)` — заблоковано одразу, і скан зупиняється на першому deny."),
     modeNote: L("A deny wins in EVERY mode, including bypassPermissions — and `rm -rf ~` also trips a built-in circuit breaker.", "Deny перемагає в БУДЬ-ЯКОМУ режимі, навіть bypassPermissions — а ще `rm -rf ~` спрацьовує вбудований запобіжник."),
   },
-  {
-    id: "read-env",
-    label: "Read(./.env)",
-    tool: "Read",
+  "read-env": {
     desc: L("read the secrets file", "прочитати файл секретів"),
-    match: { bucket: "deny", rule: "Read(./.env)" },
     why: L("It matches the `Read(./.env)` deny rule — the secret stays unreadable, even though reads are normally free.", "Воно збігається з deny-правилом `Read(./.env)` — секрет лишається недоступним, хоча читання зазвичай безкоштовне."),
     modeNote: L("Deny applies to reads too, and overrides the read-only default in every mode.", "Deny діє й на читання та перекриває read-only-дефолт у будь-якому режимі."),
   },
-  {
-    id: "read-config",
-    label: "Read(src/config.ts)",
-    tool: "Read",
+  "read-config": {
     desc: L("read an ordinary source file", "прочитати звичайний файл коду"),
-    match: null,
-    readOnly: true,
     why: L("No rule matches, but Read is a read-only tool — read-only tools need no approval, so it runs in every mode.", "Жодне правило не збігається, але Read — read-only tool: read-only tools не потребують схвалення, тож воно працює в будь-якому режимі."),
     modeNote: L("Contrast `Read(./.env)`: same tool, opposite outcome — an explicit deny rule is the only difference.", "Порівняй із `Read(./.env)`: той самий tool, протилежний результат — різниця лише в явному deny-правилі."),
   },
-];
+};
 
-const MODES: { id: Mode; name: string; behavior: Localized }[] = [
-  { id: "default", name: "default", behavior: L("prompts on first use of each tool", "питає при першому використанні кожного tool") },
-  { id: "acceptEdits", name: "acceptEdits", behavior: L("auto-accepts file edits in the working dir", "авто-приймає правки файлів у робочій теці") },
-  { id: "plan", name: "plan", behavior: L("read-only — explore and propose, no edits", "лише читання — дослідити й запропонувати, без правок") },
-  { id: "bypass", name: "bypassPermissions", behavior: L("skips prompts — except explicit ask rules", "пропускає запити — крім явних ask-правил") },
-];
-
-/* Outcome for an unmatched call, by mode. Read-only is handled before this. */
-const MODE_EDIT: Record<Mode, Verdict> = { default: "ask", acceptEdits: "allow", plan: "deny", bypass: "allow" };
-const MODE_BASH: Record<Mode, Verdict> = { default: "ask", acceptEdits: "ask", plan: "deny", bypass: "allow" };
-
-function resolve(call: Call, mode: Mode): { outcome: Verdict; decidedBy: "rule" | "mode" } {
-  if (call.match) return { outcome: call.match.bucket, decidedBy: "rule" };
-  if (call.readOnly) return { outcome: "allow", decidedBy: "mode" };
-  const table = call.tool === "Edit" ? MODE_EDIT : MODE_BASH;
-  return { outcome: table[mode], decidedBy: "mode" };
-}
+/* CHANGED (S16): display name + behaviour per mode (the engine keeps only the ids). */
+const MODE_META: Record<Mode, { name: string; behavior: Localized }> = {
+  default: { name: "default", behavior: L("prompts on first use of each tool", "питає при першому використанні кожного tool") },
+  acceptEdits: { name: "acceptEdits", behavior: L("auto-accepts file edits in the working dir", "авто-приймає правки файлів у робочій теці") },
+  plan: { name: "plan", behavior: L("read-only — explore and propose, no edits", "лише читання — дослідити й запропонувати, без правок") },
+  bypass: { name: "bypassPermissions", behavior: L("skips prompts — except explicit ask rules", "пропускає запити — крім явних ask-правил") },
+};
 
 const VERDICT_META: Record<Verdict, { label: Localized; cls: string }> = {
   allow: { label: L("Allowed", "Дозволено"), cls: "allow" },
@@ -127,9 +75,9 @@ const VERDICT_META: Record<Verdict, { label: Localized; cls: string }> = {
   deny: { label: L("Blocked", "Заблоковано"), cls: "deny" },
 };
 
-function modeWhy(call: Call, mode: Mode): Localized {
+function modeWhy(call: CallSpec, mode: Mode, fallbackWhy: Localized): Localized {
   // Read-only / explicitly-denied reads carry their own static `why`.
-  if (call.readOnly || call.tool === "Read") return call.why;
+  if (call.readOnly || call.tool === "Read") return fallbackWhy;
   // Unmatched, non-read-only (the Edit-at-root case) — the mode is the decider.
   const byMode: Record<Mode, Localized> = {
     default: L("No rule matches, so the **default** mode prompts you on first use of Edit.", "Жодне правило не збігається, тож режим **default** питає при першому використанні Edit."),
@@ -146,16 +94,16 @@ export function PermissionResolverSim(): React.ReactElement {
   const [mode, setMode] = useState<Mode>("default");
 
   const call = useMemo(() => CALLS.find((c) => c.id === callId) ?? CALLS[0], [callId]);
-  const { outcome, decidedBy } = resolve(call, mode);
+  const copy = CALL_COPY[call.id];
+  const { outcome, decidedBy, deciderIndex } = resolve(call, mode);
   const vmeta = VERDICT_META[outcome];
 
-  // Which pipeline row decides: 0 deny · 1 ask · 2 allow · 3 mode.
-  const deciderIndex = call.match ? BUCKET_INDEX[call.match.bucket] : 3;
+  // Which pipeline row decides: 0 deny · 1 ask · 2 allow · 3 mode (from the engine).
   const rowState = (i: number): "decides" | "nomatch" | "unreached" =>
     i === deciderIndex ? "decides" : i < deciderIndex ? "nomatch" : "unreached";
 
-  const activeMode = MODES.find((m) => m.id === mode)!;
-  const why = decidedBy === "mode" ? modeWhy(call, mode) : call.why;
+  const activeMode = MODE_META[mode];
+  const why = decidedBy === "mode" ? modeWhy(call, mode, copy.why) : copy.why;
 
   return (
     <div className="prc">
@@ -172,7 +120,7 @@ export function PermissionResolverSim(): React.ReactElement {
               return (
                 <button key={c.id} className={on ? "prc-opt on" : "prc-opt"} role="radio" aria-checked={on} onClick={() => setCallId(c.id)}>
                   <span className="prc-opt-l">{c.label}</span>
-                  <span className="prc-opt-s">{t(c.desc)}</span>
+                  <span className="prc-opt-s">{t(CALL_COPY[c.id].desc)}</span>
                 </button>
               );
             })}
@@ -182,12 +130,13 @@ export function PermissionResolverSim(): React.ReactElement {
         <div className="prc-facet">
           <div className="prc-q">{t(L("Permission mode", "Режим permission"))}</div>
           <div className="prc-opts" role="radiogroup" aria-label={t(L("Permission mode", "Режим permission"))}>
-            {MODES.map((m) => {
-              const on = m.id === mode;
+            {MODES.map((mId) => {
+              const on = mId === mode;
+              const meta = MODE_META[mId];
               return (
-                <button key={m.id} className={on ? "prc-opt on" : "prc-opt"} role="radio" aria-checked={on} onClick={() => setMode(m.id)}>
-                  <span className="prc-opt-l">{m.name}</span>
-                  <span className="prc-opt-s">{t(m.behavior)}</span>
+                <button key={mId} className={on ? "prc-opt on" : "prc-opt"} role="radio" aria-checked={on} onClick={() => setMode(mId)}>
+                  <span className="prc-opt-l">{meta.name}</span>
+                  <span className="prc-opt-s">{t(meta.behavior)}</span>
                 </button>
               );
             })}
@@ -246,7 +195,7 @@ export function PermissionResolverSim(): React.ReactElement {
             </span>
           </div>
           <div className="prc-why"><Md text={t(why)} /></div>
-          {call.modeNote ? <div className="prc-note"><Md text={t(call.modeNote)} /></div> : null}
+          {copy.modeNote ? <div className="prc-note"><Md text={t(copy.modeNote)} /></div> : null}
         </div>
       </div>
 

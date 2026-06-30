@@ -1,6 +1,9 @@
 import React, { useMemo, useState } from "react";
 import { useLang } from "../../i18n/LangContext";
 import type { Localized } from "../../data/types";
+// CHANGED (S16): pricing/window math moved to the pure engine src/lib/tokenBudget.ts (Wave
+// C2). This component keeps only the bilingual labels + colours and renders the numbers.
+import { computeBudget, MODELS, ORDER, TOGGLEABLE, type BKey } from "../../lib/tokenBudget";
 import "./tokenBudget.css";
 
 /* ★ Token Budget — the 3rd signature interactive.
@@ -13,35 +16,19 @@ import "./tokenBudget.css";
 
 const L = (en: string, uk: string): Localized => ({ en, uk });
 
-type BKey = "sys" | "know" | "cap" | "mem" | "conv" | "file" | "out";
-type Block = { key: BKey; label: Localized; color: string; cache: boolean };
+// CHANGED (S16): BKey, MODELS, ORDER, TOGGLEABLE, FIXED + the cacheable set now live in the
+// engine. BLOCKS here is display-only (bilingual label + colour, keyed by the engine's BKey).
+type Block = { key: BKey; label: Localized; color: string };
 
 const BLOCKS: Block[] = [
-  { key: "sys", label: L("System / instructions", "System / instructions"), color: "var(--sem-claude)", cache: true },
-  { key: "know", label: L("Project knowledge", "Project knowledge"), color: "var(--sem-context)", cache: true },
-  { key: "cap", label: L("Skills + MCP tools", "Skills + MCP tools"), color: "var(--sem-tool)", cache: true },
-  { key: "mem", label: L("Memory", "Memory"), color: "var(--sem-ok)", cache: false },
-  { key: "conv", label: L("Conversation", "Conversation"), color: "var(--tx3)", cache: false },
-  { key: "file", label: L("Attached file", "Attached file"), color: "var(--sem-agentic)", cache: false },
-  { key: "out", label: L("Answer reserve", "Резерв на відповідь"), color: "var(--accent-deep)", cache: false },
+  { key: "sys", label: L("System / instructions", "System / instructions"), color: "var(--sem-claude)" },
+  { key: "know", label: L("Project knowledge", "Project knowledge"), color: "var(--sem-context)" },
+  { key: "cap", label: L("Skills + MCP tools", "Skills + MCP tools"), color: "var(--sem-tool)" },
+  { key: "mem", label: L("Memory", "Memory"), color: "var(--sem-ok)" },
+  { key: "conv", label: L("Conversation", "Conversation"), color: "var(--tx3)" },
+  { key: "file", label: L("Attached file", "Attached file"), color: "var(--sem-agentic)" },
+  { key: "out", label: L("Answer reserve", "Резерв на відповідь"), color: "var(--accent-deep)" },
 ];
-
-const MODELS: { key: string; label: string; price: number }[] = [
-  { key: "opus", label: "Opus 4.8 · $5/MTok", price: 5 },
-  { key: "sonnet", label: "Sonnet 4.6 · $3/MTok", price: 3 },
-  { key: "haiku", label: "Haiku 4.5 · $1/MTok", price: 1 },
-];
-
-const TOGGLEABLE: BKey[] = ["sys", "know", "cap", "mem"];
-const ORDER: BKey[] = ["sys", "know", "cap", "mem", "conv", "file", "out"];
-
-const FIXED: Record<"sys" | "know" | "cap" | "mem" | "out", number> = {
-  sys: 1500,
-  know: 42000,
-  cap: 9000,
-  mem: 2000,
-  out: 8000,
-};
 
 export function TokenBudgetSim(): React.ReactElement {
   const { t } = useLang();
@@ -55,28 +42,11 @@ export function TokenBudgetSim(): React.ReactElement {
 
   const price = MODELS.find((m) => m.key === model)!.price;
 
-  const tok = useMemo<Record<BKey, number>>(
-    () => ({
-      sys: on.sys ? FIXED.sys : 0,
-      know: on.know ? FIXED.know : 0,
-      cap: on.cap ? FIXED.cap : 0,
-      mem: on.mem ? FIXED.mem : 0,
-      conv: turns * 2500,
-      file: fileTok,
-      out: FIXED.out, // the answer always needs room
-    }),
-    [on, turns, fileTok],
+  // CHANGED (S16): every figure comes from the pure, unit-tested engine (deterministic).
+  const { tok, total, cacheTok, over, pct, raw, opt, saved } = useMemo(
+    () => computeBudget({ on, turns, fileTok, price, win, caching, batch }),
+    [on, turns, fileTok, price, win, caching, batch],
   );
-
-  const total = ORDER.reduce((a, k) => a + tok[k], 0);
-  const cacheTok = ORDER.reduce((a, k) => a + (BLOCKS.find((b) => b.key === k)!.cache ? tok[k] : 0), 0);
-  const over = total - win;
-  const pct = Math.round((total / win) * 100);
-
-  const raw = (total / 1e6) * price;
-  const effInput = caching ? total - cacheTok + cacheTok * 0.1 : total;
-  const opt = (effInput / 1e6) * price * (batch ? 0.5 : 1);
-  const saved = raw - opt;
 
   const fmt = (n: number): string => Math.round(n).toLocaleString("en-US");
   const usd = (n: number): string => `$${n.toFixed(3)}`;

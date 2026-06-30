@@ -13,7 +13,12 @@
     "typecheck": "tsc --noEmit && tsc -p tsconfig.node.json --noEmit && tsx scripts/checkMeta.ts",
     "lint": "eslint .",
     "check:data": "tsx scripts/check-data.ts",
-    "verify": "npm run typecheck && npm run lint && npm run check:data && npm run build",
+    "test:token-budget": "tsx scripts/test-token-budget.ts",
+    "test:decide": "tsx scripts/test-decide.ts",
+    "test:permission-resolver": "tsx scripts/test-permission-resolver.ts",
+    "test": "npm run test:token-budget && npm run test:decide && npm run test:permission-resolver",
+    "smoke": "tsx --tsconfig tsconfig.json scripts/smoke.ts",
+    "verify": "npm run typecheck && npm run lint && npm run check:data && npm run test && npm run smoke && npm run build",
     "preview": "vite preview"
   },
   "dependencies": {

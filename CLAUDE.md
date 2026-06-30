@@ -399,6 +399,7 @@ Footer: **"Vasyl Krupka · Senior Fullstack Engineer"** + 🇺🇦. Dark is prim
   smoke (`scripts/smoke.ts` pattern from the database guide: render every sim/figure EN+UK + pages + module
   headers + app-shell hashes), wire `"smoke"` into `verify` + CI; then extract 3–4 algorithmic sims into pure
   `src/lib/*.ts` engines + `scripts/test-*.ts` golden tests (standard §4.5), folded into a `"test"` umbrella.
+  **✅ DONE 2026-06-30 — see §14 (S16). Claude guide now holds the full mutual Tier-1 bar (infra + tests).**
 - **S17 · Wave C3 — config modernization** — split tsconfig into project references
   (`tsconfig.app.json` + `tsconfig.node.json`, `build = tsc -b && vite build`); add `verbatimModuleSyntax` +
   `erasableSyntaxOnly` + `noUncheckedSideEffectImports`; bump **TS 5.7 → 6** and adopt **`tsx`** for scripts
@@ -1308,4 +1309,94 @@ Footer: **"Vasyl Krupka · Senior Fullstack Engineer"** + 🇺🇦. Dark is prim
   engines into `src/lib/*.ts` with golden tests, then fold `test` + `smoke` into `verify` + CI.
   **Pending user:** `npm install` (darwin-arm64 — pulls the 6 ESLint deps **+ `tsx`** + refreshes
   `package-lock.json`) → `npm run verify` to confirm locally → commit on `s15-wave-c1-infra-parity` → merge to
-  `main` (CI now runs the multi-gate before deploy). S15 appears live once merged.
+  `main` (CI now runs the multi-gate before deploy). **Landed: branch `s15-wave-c1-infra-parity` merged to
+  `main` — S15 is live; the CI multi-gate (typecheck → lint → check:data → build) is now active.**
+
+- **2026-06-30 · S16 Wave C2 — test parity** *(branch `s16-wave-c2-test-parity`)* — DONE. The second
+  standard-conformance wave (parity-doc gaps #5–6); mirrors database S23 / cross-port Wave 2. **Additive, low
+  risk, no content changes** — the guide stays 28/28 modules / 12 signature sims, and the eager bundle is
+  byte-for-byte the S15 size. Wired the **test/correctness layer** (the half C1 left open), so Claude guide
+  now holds the **full mutual Tier-1 bar** (infra/CI gates **+** render/engine tests) shared by database +
+  Node-js. **No new dependencies** — everything runs on the `tsx`/React/ESLint stack S15 already added.
+  **(1) SSR/render smoke** — committed **`scripts/smoke.ts`** (ported the database pattern). It server-renders,
+  via `react-dom/server` inside the real `LangProvider`, in **both EN and UK**: **(A)** every **sim (15) +
+  figure (26)** component, auto-discovered from `src/components/{sims,figures}/*.tsx` with a **drift guard**
+  (file count == registry-key count, so a component can't be added without registering it or vice-versa);
+  **(B)** the four route pages (`EcosystemMap` · `MentalModelsPage` · `GlossaryPage` · `DecidePage`); **(C)**
+  the `ModulePage` header/TOC/nav for **all 28 modules**; **(D)** the eager **`<App/>` shell across 9 hash
+  routes** incl. unknown/garbage (`#/m/does-not-exist`, `#/total-garbage`) to exercise the hash router +
+  TopBar/Sidebar/Footer. Asserts no-throw + ≥-length + technical-term **canaries** (e.g. `bypassPermissions`,
+  `.claude/settings.json`, `MTok`, `Cowork`, `PreToolUse`) + a **lang-toggle sanity check** (EN render ≠ UK).
+  **233 checks.** `"smoke": "tsx --tsconfig tsconfig.json scripts/smoke.ts"`; JSX is avoided in the script
+  (`createElement` only) so `tsconfig.node.json` typechecks it. **(2) Engine tests** — extracted the pure
+  logic of **three** algorithmic sims into deterministic, React-free **`src/lib/*.ts`** engines, each with a
+  **`scripts/test-*.ts` golden test** (standard §4.5): **`tokenBudget.ts`** (pricing/window math — 16 checks:
+  window fill, cacheable-prefix billed at 10%, batch −50%, linear model pricing, truncation), **`decide.ts`**
+  (Tool-Picker scoring — 16 checks: the 7 documented spot-checks files→Cowork / code→Code / web→Chrome[gated
+  on Free] / app→Connector / expertise→Skill / chat→Chat / office→Office, gated math, where-dominance,
+  recommend() parity) and **`permissionResolver.ts`** (deny→ask→allow→mode — 54 checks across 6 calls × 4
+  modes: precedence, deny/ask survive `bypassPermissions`, read-only default, mode-decides-the-unmatched).
+  **86 engine checks** under a `"test"` umbrella. The three sims were **refactored to consume the engines** —
+  behaviour-preserving: `TokenBudgetSim` imports `computeBudget`; `data/decide.ts` keeps the bilingual catalog
+  and **re-exports** `recommend`/`Answers`/`Ranked` from `lib/decide` so `ToolPickerSim` is untouched;
+  `PermissionResolverSim` overlays bilingual copy onto the engine's structural `CALLS`/`resolve`. **(3) Wiring**
+  — `package.json`: `test:token-budget` · `test:decide` · `test:permission-resolver` + a `test` umbrella +
+  `smoke`; **`verify` is now `typecheck → lint → check:data → test → smoke → build`**. `deploy.yml`: added the
+  **Engine tests** + **SSR/render smoke** gates in that order before Build. `tsconfig.node.json`: added
+  `jsx: "react-jsx"` + the **DOM** libs (so the committed smoke + tests — which import React components —
+  typecheck) and `exclude: ["scripts/_*"]` (the gitignored scratch drafts).
+  **Decisions (user-rule-8, flagged):** (1) **ToolPicker's `recommend()` was already pure** (it lived in
+  `src/data/decide.ts`); rather than just test it in place, I **split the math into `src/lib/decide.ts`** and
+  kept the bilingual surface catalog in `data/decide.ts` (which re-exports), so **all three engines live in
+  `src/lib/` per §4.5** and every consumer imports unchanged. (2) **Added `scripts/css-stub-hooks.mjs`** — a
+  `.css`→empty-module loader hook, **registered from inside `smoke.ts`** via `node:module`'s `register()`.
+  Necessary because Claude-guide sims **co-locate CSS** (`import "./x.css"`) which Node can't load as a module
+  — the database sims don't, so its smoke needs no such hook. Registering inside the script keeps the npm
+  command identical to the spec. (3) **`tsconfig.node.json` got `jsx` + DOM** — the minimal change to typecheck
+  the committed smoke; this is **not** the C3 project-reference split (the config stays flat) and TS-6 stays in
+  C3. (4) **Did not touch** the `gen:meta`/`meta.ts` split (conformant) or start the `concepts.ts` split (C4).
+  **Verification (sandbox, linux-arm64; installed `@esbuild/linux-arm64@0.28.1` `--no-save --no-package-lock`
+  so `tsx` runs — the rolldown + lightningcss linux bindings were already present; `package-lock.json`
+  untouched):** **`npm run verify` exit 0 end-to-end** — `typecheck` ✓ (app `tsc` + `tsc -p tsconfig.node.json`
+  now also typechecks `smoke.ts` + the three `test-*.ts` with jsx/DOM + checkMeta **META-SYNC OK · 28 modules ·
+  12 signature sims**) · `lint` ✓ (**0 errors, 1 benign warning** — the same `LangContext` react-refresh warn
+  both peers ship) · `check:data` ✓ (**6 sections · 28 modules · 394 blocks · 15 sim refs (15 registered) · 26
+  figure refs (26 registered) · 2466 Localized pairs · glossary 119 · signature 12** — identical to S15) ·
+  `test` ✓ (**86 checks** across the 3 engines) · `smoke` ✓ (**233 checks**) · `build` ✓ (eager `index`
+  **20.23 kB gzip**, `react-vendor` **59.65 kB**, `ModulePage` **193.99 kB gzip** — **all identical to S15**,
+  proving the engine extraction is behaviour-preserving). **`gen:meta` deterministic** (`meta.json`
+  byte-identical — no metadata drift). **8 files new** (`src/lib/{tokenBudget,decide,permissionResolver}.ts`,
+  `scripts/{test-token-budget,test-decide,test-permission-resolver,smoke}.ts`, `scripts/css-stub-hooks.mjs`)
+  + **6 modified** (`src/components/sims/{TokenBudgetSim,PermissionResolverSim}.tsx`, `src/data/decide.ts`,
+  `tsconfig.node.json`, `package.json`, `.github/workflows/deploy.yml`); all edits marked `// CHANGED (S16)`.
+  **Sandbox housekeeping (§12):** built into `dist-s16/` and renamed the pre-existing `dist/` → `dist-pre-s16/`
+  to dodge the unlink/`emptyOutDir` limit — **both gitignored** (`dist-*/`), **safe to delete on your Mac**
+  (`rm -rf dist-s16 dist-pre-s16`). The workspace `node_modules` gained extra `@esbuild/*` platform binaries
+  (`--no-save`; lock untouched) — `npm install` reconciles. No stale `.git/index.lock` (avoided in-sandbox
+  `git status`).
+  **Session summary —** *(1) Done:* committed SSR/render smoke (`scripts/smoke.ts`, 233 checks, EN+UK, +
+  `css-stub-hooks.mjs`); 3 pure engines in `src/lib/` (token-budget · decide · permission-resolver) + 3
+  `scripts/test-*.ts` golden tests (86 checks) under a `test` umbrella; refactored the 3 sims to consume them
+  (behaviour-preserving); `verify` → `typecheck → lint → check:data → test → smoke → build` + matching
+  multi-gate CI; `tsconfig.node.json` jsx+DOM. *(2) Branch* `s16-wave-c2-test-parity`; *commit*
+  `test(s16): wave C2 test parity — SSR/render smoke + 3 sim engines with golden tests`; *desc:* additive
+  test/correctness layer matching the database + Node-js Tier-1 bar — a committed render smoke (every
+  sim+figure EN+UK + pages + 28 module headers + app shell), three pure `src/lib` sim engines with golden
+  tests, folded into `verify` + CI; behaviour-preserving (build output identical); no content/structural
+  changes; **no new dependencies**. *(3) Challenges/Q:* none blocking — the only wrinkle was the CSS-import
+  loader hook (Claude sims co-locate CSS; the database's don't), solved cleanly. **After C2, Claude guide
+  holds the full mutual Tier-1 bar — the recommended stopping point.**
+  **Pending user:** **no `npm install` needed** (no new deps) — optionally run `npm install` to drop the
+  sandbox's extra esbuild binaries; run **`npm run verify`** locally (darwin-arm64) to confirm; commit on
+  `s16-wave-c2-test-parity`; merge to `main` (CI now runs typecheck → lint → check:data → test → smoke →
+  build before deploy). Optional cleanup: `rm -rf dist-s16 dist-pre-s16`.
+
+- **2026-06-30 · Next planned: S17 = Wave C3 (config modernization)** *(not started; S16 ready to land on
+  `main`)* — with C2 done, Claude guide holds the **full mutual Tier-1 bar** (infra + tests) — the parity
+  doc's **recommended stop**. C3–C4 are standard-alignment polish that can follow incrementally. **S17 scope
+  (parity-doc gaps #7–8, #10; §13 S17):** split the flat tsconfig into **project references**
+  (`tsconfig.app.json` + `tsconfig.node.json`, `build = tsc -b && vite build`); add `verbatimModuleSyntax` +
+  `erasableSyntaxOnly` + `noUncheckedSideEffectImports` (forces `import type` — med risk); **bump TS 5.7 → 6**
+  (Node-js proves `eslint@10`+`typescript-eslint@8` run clean on it); add `homepage`/`author`/`license` to
+  `package.json`. Owner runs `npm install` (TS 6). Then **S18 = Wave C4** (the `concepts.ts` split — **owner
+  confirm first**). Read CLAUDE.md fully + `_standard/CLAUDE-GUIDE-PARITY.md` gaps #7–9 + standard §4.7/§8.
